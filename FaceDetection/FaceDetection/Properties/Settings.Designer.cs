@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FaceDetection.Properties
+namespace FrameDetection.Properties
 {
 
 
