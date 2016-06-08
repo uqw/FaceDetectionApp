@@ -5,11 +5,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Reflection;
 using System.Threading;
-using System.Windows;
 using Emgu.CV.Structure;
 using FrameDetection.Model;
+using FrameDetection.Model.Recognition;
 using GalaSoft.MvvmLight.Command;
 using PostSharp.Patterns.Threading;
 using Size = System.Drawing.Size;
@@ -26,6 +25,7 @@ namespace FrameDetection.ViewModel
         private int _fps;
         private bool _progressBarShown;
         private CascadeClassifier _cascade;
+        private readonly DataManager _dataManager;
         #endregion
 
         #region Properties
@@ -103,6 +103,7 @@ namespace FrameDetection.ViewModel
             ProgressBarShown = true;
 
             _cameraHandler = new CameraHandler();
+            _dataManager = new DataManager();
 
             InitializeFaceDetection();
             RefreshCameras();
