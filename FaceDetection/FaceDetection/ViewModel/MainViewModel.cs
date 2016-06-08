@@ -4,10 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using FrameDetection.Model;
 using GalaSoft.MvvmLight.Command;
 using PostSharp.Patterns.Threading;
@@ -21,6 +18,7 @@ namespace FrameDetection.ViewModel
         private List<Camera> _availableCameras;
         private readonly CameraHandler _cameraHandler;
         private int _fps;
+        private bool _progressBarShown;
 
         public Bitmap Image
         {
@@ -75,10 +73,21 @@ namespace FrameDetection.ViewModel
             }
         }
 
+        public bool ProgressBarShown
+        {
+            get { return _progressBarShown; }
+            set
+            {
+                _progressBarShown = value;
+                RaisePropertyChanged(nameof(ProgressBarShown));
+            }
+        }
+
         public MainViewModel()
         {
             SelectedCam = 0;
             Fps = 0;
+            ProgressBarShown = true;
 
             _cameraHandler = new CameraHandler();
             
@@ -104,6 +113,7 @@ namespace FrameDetection.ViewModel
 
                 if (cam != -1)
                 {
+                    ProgressBarShown = true;
                     try
                     {
                         capture = new Capture(SelectedCam);
@@ -120,11 +130,9 @@ namespace FrameDetection.ViewModel
                     {
                         try
                         {
-                            var frame = capture.QueryFrame();
-                            if (frame.Bitmap != null)
-                            {
-                                Image = frame.Bitmap;
-                            }
+                            ProgressBarShown = false;
+                            var frame = capture?.QueryFrame();
+                            Image = frame?.Bitmap;
 
                             frames++;
 

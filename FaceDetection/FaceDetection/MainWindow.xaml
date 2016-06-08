@@ -1,17 +1,21 @@
-﻿<Window x:Class="FrameDetection.MainWindow"
+﻿<!-- ReSharper disable once InconsistentNaming -->
+<Controls:MetroWindow x:Class="FrameDetection.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FrameDetection"
+        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:vm="clr-namespace:FrameDetection.ViewModel"
         xmlns:conv="clr-namespace:FrameDetection.Views.Converters"
         mc:Ignorable="d"
-        Title="MainWindow" Height="419" Width="573">
+        Title="Face Detection App" Height="419" Width="573">
 
     <Window.Resources>
         <conv:BitmapConverter x:Key="BitmapConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
+    
     <Window.DataContext>
         <vm:MainViewModel />
     </Window.DataContext>
@@ -29,6 +33,8 @@
             <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
         <Image HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" Source="{Binding Path=Image, Converter={StaticResource BitmapConverter}}" Stretch="Fill" />
+        <Controls:ProgressRing Grid.Row="1" Grid.Column="1" IsActive="{Binding Path=ProgressBarShown}" VerticalAlignment="Center" HorizontalAlignment="Center" Height="32" Width="32" Visibility="{Binding Path=ProgressBarShown, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        
         <Label Content="{Binding Path=Fps}" ContentStringFormat="FPS: {0}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="70" Margin="0,5,0,0"/>
 
         <Grid Grid.Row="3" Grid.Column="1">
@@ -46,4 +52,4 @@
         </Grid>
         
     </Grid>
-</Window>
+</Controls:MetroWindow>

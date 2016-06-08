@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Windows.Documents;
 using DirectShowLib;
-using FilterCategory = AForge.Video.DirectShow.FilterCategory;
 
 namespace FrameDetection.Model
 {
