@@ -2,11 +2,13 @@
 using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using FrameDetection.Model;
 using PostSharp.Patterns.Threading;
 
 namespace FrameDetection.ViewModel
@@ -15,6 +17,8 @@ namespace FrameDetection.ViewModel
     {
         private Bitmap _image;
         private int _selectedCam;
+        private List<Camera> _availableCameras;
+        private readonly CameraHandler _handler;
 
         public Bitmap Image
         {
@@ -36,26 +40,51 @@ namespace FrameDetection.ViewModel
                 return _selectedCam;
             }
 
-            private set
+            set
             {
                 _selectedCam = value;
                 RaisePropertyChanged(nameof(SelectedCam));
             }
         }
 
+        public List<Camera> AvailableCameras
+        {
+            get
+            {
+                return _availableCameras;
+            }
+
+            private set
+            {
+                _availableCameras = value;
+                RaisePropertyChanged(nameof(AvailableCameras));
+            }
+        }
+
         public MainViewModel()
         {
-            SelectedCam = 1;
+            _handler = new CameraHandler();
+            AvailableCameras = _handler.GetAllCameras();
             RunCamViewer();
         }
 
         [Background]
         private void RunCamViewer()
         {
-            var cam = SelectedCam;
             while (true)
             {
-                var capture = new Capture(SelectedCam);
+                var cam = SelectedCam;
+                Capture capture = null;
+
+                try
+                {
+                    capture = new Capture(SelectedCam);
+                }
+                catch (Exception)
+                {
+                    Debug.WriteLine("Couldn't read from camera input: " + AvailableCameras[SelectedCam]);
+                }
+                
                 while (cam == SelectedCam)
                 {
                     try
@@ -68,12 +97,13 @@ namespace FrameDetection.ViewModel
                     }
                     catch (Exception ex)
                     {
-                        System.Diagnostics.Debug.WriteLine("Error reading frame: " + ex);
+                        Debug.WriteLine("Error reading frame: " + ex);
                     }
 
                     Thread.Sleep(20);
                 }
-                cam = SelectedCam;
+
+                Debug.WriteLine("Camera selection changed: " + SelectedCam);
             }
         }
     }

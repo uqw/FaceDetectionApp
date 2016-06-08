@@ -7,7 +7,7 @@
         xmlns:vm="clr-namespace:FrameDetection.ViewModel"
         xmlns:conv="clr-namespace:FrameDetection.Views.Converters"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="368" Width="549">
 
     <Window.Resources>
         <conv:BitmapConverter x:Key="bitmapConverter" />
@@ -16,7 +16,27 @@
         <vm:MainViewModel />
     </Window.DataContext>
     <Grid>
-        <Image HorizontalAlignment="Left" Height="300" Margin="10,10,0,0" VerticalAlignment="Top" Width="497" Source="{Binding Path=Image, Converter={StaticResource bitmapConverter}}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="252*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="133*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="21*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <Image HorizontalAlignment="Left" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" Source="{Binding Path=Image, Converter={StaticResource bitmapConverter}}" Height="266" Width="510"/>
+        <ListBox x:Name="listBox" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Top" Width="405" Height="36" Margin="105,0,0,0" ItemsSource="{Binding Path=AvailableCameras}" SelectedIndex="{Binding Path=SelectedCam}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Label Content="{Binding}" FontSize="18" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Label x:Name="label" Content="Kamera:" Grid.Row="3"  Grid.Column="1" HorizontalAlignment="Left" Height="36" Margin="10,0,0,0" VerticalAlignment="Top" Width="90" FontSize="22"/>
 
     </Grid>
 </Window>
