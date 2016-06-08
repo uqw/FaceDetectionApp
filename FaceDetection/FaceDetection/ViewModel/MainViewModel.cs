@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FrameDetection.Model;
+using GalaSoft.MvvmLight.Command;
 using PostSharp.Patterns.Threading;
 
 namespace FrameDetection.ViewModel
@@ -18,7 +19,8 @@ namespace FrameDetection.ViewModel
         private Bitmap _image;
         private int _selectedCam;
         private List<Camera> _availableCameras;
-        private readonly CameraHandler _handler;
+        private readonly CameraHandler _cameraHandler;
+        private int _fps;
 
         public Bitmap Image
         {
@@ -26,7 +28,8 @@ namespace FrameDetection.ViewModel
             {
                 return _image;
             }
-            private set
+
+            set
             {
                 _image = value;
                 RaisePropertyChanged(nameof(Image));
@@ -54,19 +57,37 @@ namespace FrameDetection.ViewModel
                 return _availableCameras;
             }
 
-            private set
+            set
             {
                 _availableCameras = value;
                 RaisePropertyChanged(nameof(AvailableCameras));
             }
         }
 
+        public int Fps
+        {
+            get { return _fps; }
+
+            set
+            {
+                _fps = value;
+                RaisePropertyChanged(nameof(Fps));
+            }
+        }
+
         public MainViewModel()
         {
-            _handler = new CameraHandler();
-            AvailableCameras = _handler.GetAllCameras();
+            SelectedCam = 0;
+            Fps = 0;
+
+            _cameraHandler = new CameraHandler();
+            
+            RefreshCameras();
+
             RunCamViewer();
         }
+
+        public RelayCommand RefreshCamerasCommand => new RelayCommand(RefreshCameras);
 
         [Background]
         private void RunCamViewer()
@@ -74,37 +95,64 @@ namespace FrameDetection.ViewModel
             while (true)
             {
                 var cam = SelectedCam;
-                Capture capture = null;
+                var frames = 0;
+                var timestamp = DateTime.Now;
 
-                try
+                Capture capture = null;
+                Image = null;
+                Fps = 0;
+
+                if (cam != -1)
                 {
-                    capture = new Capture(SelectedCam);
-                }
-                catch (Exception)
-                {
-                    Debug.WriteLine("Couldn't read from camera input: " + AvailableCameras[SelectedCam]);
+                    try
+                    {
+                        capture = new Capture(SelectedCam);
+                    }
+                    catch (Exception)
+                    {
+                        Debug.WriteLine("Couldn't read from camera input: " + SelectedCam);
+                    }
                 }
                 
                 while (cam == SelectedCam)
                 {
-                    try
+                    if(cam != -1)
                     {
-                        var frame = capture.QueryFrame();
-                        if (frame.Bitmap != null)
+                        try
                         {
-                            Image = frame.Bitmap;
+                            var frame = capture.QueryFrame();
+                            if (frame.Bitmap != null)
+                            {
+                                Image = frame.Bitmap;
+                            }
+
+                            frames++;
+
+                            if ((DateTime.Now.Subtract(timestamp).Ticks / TimeSpan.TicksPerMillisecond) > 1000)
+                            {
+                                Fps = frames;
+                                frames = 0;
+                                timestamp = DateTime.Now;
+                            }
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine("Error reading frame: " + ex);
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine("Error reading frame: " + ex);
+                        }
                     }
 
                     Thread.Sleep(20);
                 }
 
+                capture?.Dispose();
+
                 Debug.WriteLine("Camera selection changed: " + SelectedCam);
             }
+        }
+
+        private void RefreshCameras()
+        {
+            AvailableCameras = _cameraHandler.GetAllCameras();
         }
     }
 }

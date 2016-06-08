@@ -7,10 +7,10 @@
         xmlns:vm="clr-namespace:FrameDetection.ViewModel"
         xmlns:conv="clr-namespace:FrameDetection.Views.Converters"
         mc:Ignorable="d"
-        Title="MainWindow" Height="368" Width="549">
+        Title="MainWindow" Height="419" Width="573">
 
     <Window.Resources>
-        <conv:BitmapConverter x:Key="bitmapConverter" />
+        <conv:BitmapConverter x:Key="BitmapConverter" />
     </Window.Resources>
     <Window.DataContext>
         <vm:MainViewModel />
@@ -22,21 +22,28 @@
             <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="8*"/>
-            <RowDefinition Height="133*"/>
+            <RowDefinition Height="29*"/>
+            <RowDefinition Height="295*"/>
+            <RowDefinition Height="11*"/>
+            <RowDefinition Height="48*"/>
             <RowDefinition Height="5*"/>
-            <RowDefinition Height="21*"/>
-            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
-        <Image HorizontalAlignment="Left" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" Source="{Binding Path=Image, Converter={StaticResource bitmapConverter}}" Height="266" Width="510"/>
-        <ListBox x:Name="listBox" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Top" Width="405" Height="36" Margin="105,0,0,0" ItemsSource="{Binding Path=AvailableCameras}" SelectedIndex="{Binding Path=SelectedCam}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Label Content="{Binding}" FontSize="18" />
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        <Label x:Name="label" Content="Kamera:" Grid.Row="3"  Grid.Column="1" HorizontalAlignment="Left" Height="36" Margin="10,0,0,0" VerticalAlignment="Top" Width="90" FontSize="22"/>
+        <Image HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" Source="{Binding Path=Image, Converter={StaticResource BitmapConverter}}" Stretch="Fill" />
+        <Label Content="{Binding Path=Fps}" ContentStringFormat="FPS: {0}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="70" Margin="0,5,0,0"/>
 
+        <Grid Grid.Row="3" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="96*"/>
+                <ColumnDefinition Width="357*"/>
+                <ColumnDefinition Width="91*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Content="Kamera:" Grid.Column="0" HorizontalAlignment="Center" Height="36" VerticalAlignment="Center" Width="90" FontSize="18" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+
+            <ComboBox Grid.Column="1" HorizontalAlignment="Stretch" Height="30" VerticalAlignment="Center" SelectedIndex="{Binding Path=SelectedCam}" ItemsSource="{Binding Path=AvailableCameras}"/>
+            
+            <Button Content="Refresh" Grid.Column="2" HorizontalAlignment="Center" Height="30" VerticalAlignment="Center" Width="70" Command="{Binding Path=RefreshCamerasCommand}"/>
+        </Grid>
+        
     </Grid>
 </Window>

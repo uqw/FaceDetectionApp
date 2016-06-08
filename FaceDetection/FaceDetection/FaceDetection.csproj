@@ -192,43 +192,43 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="opencv_calib3d220.dll">
+    <Content Include="lib\opencv\opencv_calib3d220.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="opencv_contrib220.dll">
+    <Content Include="lib\opencv\opencv_contrib220.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="opencv_core220.dll">
+    <Content Include="lib\opencv\opencv_core220.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="opencv_features2d220.dll">
+    <Content Include="lib\opencv\opencv_features2d220.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="opencv_ffmpeg220.dll">
+    <Content Include="lib\opencv\opencv_ffmpeg220.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="opencv_flann220.dll">
+    <Content Include="lib\opencv\opencv_flann220.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="opencv_gpu220.dll">
+    <Content Include="lib\opencv\opencv_gpu220.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="opencv_highgui220.dll">
+    <Content Include="lib\opencv\opencv_highgui220.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="opencv_imgproc220.dll">
+    <Content Include="lib\opencv\opencv_imgproc220.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="opencv_legacy220.dll">
+    <Content Include="lib\opencv\opencv_legacy220.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="opencv_ml220.dll">
+    <Content Include="lib\opencv\opencv_ml220.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="opencv_objdetect220.dll">
+    <Content Include="lib\opencv\opencv_objdetect220.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="opencv_video220.dll">
+    <Content Include="lib\opencv\opencv_video220.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -238,6 +238,13 @@
     <Error Condition="!Exists('..\packages\PostSharp.4.2.27\tools\PostSharp.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://www.postsharp.net/links/nuget-restore." />
     <Error Condition="Exists('..\packages\PostSharp.4.2.27\tools\PostSharp.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://www.postsharp.net/links/nuget-restore." />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>:: Move all emgu related dlls to lib\opencv 
+MOVE $(ProjectDir)$(OutDir)Emgu*.dll $(ProjectDir)$(OutDir)lib\opencv
+
+:: Move all other dlls to lib\
+MOVE $(ProjectDir)$(OutDir)*.dll $(ProjectDir)$(OutDir)lib\</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
