@@ -32,6 +32,7 @@
             <RowDefinition Height="48*"/>
             <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
+        
         <Image HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" Source="{Binding Path=Image, Converter={StaticResource BitmapConverter}}" Stretch="Fill" />
         <Controls:ProgressRing Grid.Row="1" Grid.Column="1" IsActive="{Binding Path=ProgressBarShown}" VerticalAlignment="Center" HorizontalAlignment="Center" Height="32" Width="32" Visibility="{Binding Path=ProgressBarShown, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         
