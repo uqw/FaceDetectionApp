@@ -129,6 +129,28 @@ namespace FaceDetection.Model
         }
 
         /// <summary>
+        /// Creates a capture.
+        /// </summary>
+        /// <param name="selection">The camera selection.</param>
+        /// <returns>The created <see cref="Capture"/></returns>
+        public Capture CreateCapture(int selection)
+        {
+            if (selection > -1)
+            {
+                try
+                {
+                    return new Capture(selection);
+                }
+                catch (Exception)
+                {
+                    Debug.WriteLine("Couldn't read from camera input: " + selection);
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]

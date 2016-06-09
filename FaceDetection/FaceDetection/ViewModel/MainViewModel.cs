@@ -8,6 +8,7 @@ using System.Threading;
 using FaceDetection.Model;
 using FaceDetection.Model.Recognition;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace FaceDetection.ViewModel
 {
@@ -19,10 +20,11 @@ namespace FaceDetection.ViewModel
         private List<Camera> _availableCameras;
         private readonly CameraHandler _cameraHandler;
         private int _fps;
-        private readonly DataManager _dataManager;
         private CameraHandler.ProcessType _processType;
+        private RecognitionData _recognitionData;
         private bool _detectionEnabled;
-        private Thread _detectionThread;
+        private Thread _camViewerThread;
+        private bool _isAddFaceFlyoutOpen;
 
         #endregion
 
@@ -106,7 +108,22 @@ namespace FaceDetection.ViewModel
             }
         }
 
+        public bool IsAddFaceFlyoutOpen
+        {
+            get { return _isAddFaceFlyoutOpen; }
+
+            set
+            {
+                if (_isAddFaceFlyoutOpen != value)
+                {
+                    _isAddFaceFlyoutOpen = value;
+                    RaisePropertyChanged(nameof(IsAddFaceFlyoutOpen));
+                }
+            }
+        }
+
         public RelayCommand RefreshCamerasCommand => new RelayCommand(RefreshCameras);
+        public RelayCommand AddFaceCommand => new RelayCommand(AddFace);
         #endregion
 
         #region Construction
@@ -119,22 +136,27 @@ namespace FaceDetection.ViewModel
             ProcessType = CameraHandler.ProcessType.Front;
 
             _cameraHandler = new CameraHandler();
-            _dataManager = new DataManager();
+            _recognitionData = new RecognitionData();
             
             RefreshCameras();
-            StartDetection();
+            StartCamViewer();
         }
         #endregion
 
         #region Methods
 
-        private void StartDetection()
+        private void StartCamViewer()
         {
             if (!IsInDesignMode)
             {
-                _detectionThread = new Thread(RunCamViewer);
-                _detectionThread.Start();
+                _camViewerThread = new Thread(RunCamViewer);
+                _camViewerThread.Start();
             }
+        }
+
+        private void StopCamViewer()
+        {
+            _camViewerThread?.Interrupt();
         }
 
         private void RunCamViewer()
@@ -153,7 +175,7 @@ namespace FaceDetection.ViewModel
 
                     if (cam != -1)
                     {
-                        capture = CreateCapture(cam);
+                        capture = _cameraHandler.CreateCapture(cam);
                     }
 
                     while (cam == SelectedCam)
@@ -193,23 +215,6 @@ namespace FaceDetection.ViewModel
             }
         }
 
-        private Capture CreateCapture(int selection)
-        {
-            if (selection > -1)
-            {
-                try
-                {
-                    return new Capture(SelectedCam);
-                }
-                catch (Exception)
-                {
-                    Debug.WriteLine("Couldn't read from camera input: " + SelectedCam);
-                }
-            }
-
-            return null;
-        }
-
         private void RefreshCameras()
         {
             AvailableCameras = _cameraHandler.GetAllCameras();
@@ -222,7 +227,11 @@ namespace FaceDetection.ViewModel
         public void Dispose()
         {
             _cameraHandler.Dispose();
-            _dataManager.Dispose();
+        }
+
+        private void AddFace()
+        {
+            IsAddFaceFlyoutOpen = !IsAddFaceFlyoutOpen;
         }
         #endregion
     }

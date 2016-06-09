@@ -167,7 +167,8 @@
     </ApplicationDefinition>
     <Compile Include="Model\Camera.cs" />
     <Compile Include="Model\CameraHandler.cs" />
-    <Compile Include="Model\Recognition\DataManager.cs" />
+    <Compile Include="Model\Recognition\DatabaseHandler.cs" />
+    <Compile Include="Model\Recognition\RecognitionData.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="Views\Converters\BitmapConverter.cs" />
     <Page Include="MainWindow.xaml">
