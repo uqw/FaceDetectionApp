@@ -8,8 +8,8 @@
     <ProjectGuid>{50633130-FB2A-4CBC-993F-97898A50CD3D}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FrameDetection</RootNamespace>
-    <AssemblyName>FrameDetection</AssemblyName>
+    <RootNamespace>FaceDetection</RootNamespace>
+    <AssemblyName>FaceDetection</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -47,6 +47,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <SkipPostSharp>True</SkipPostSharp>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -72,11 +73,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
@@ -117,10 +118,6 @@
     </Reference>
     <Reference Include="PostSharp.Patterns.Model, Version=4.2.27.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
       <HintPath>..\packages\PostSharp.Patterns.Model.4.2.27\lib\net40\PostSharp.Patterns.Model.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PostSharp.Patterns.Threading, Version=4.2.27.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
-      <HintPath>..\packages\PostSharp.Patterns.Threading.4.2.27\lib\net45\PostSharp.Patterns.Threading.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -215,13 +212,23 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="License-LGPL.txt" />
     <Resource Include="lib\opencv\haarcascade_frontalface_alt_tree.xml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="lib\opencv\cvextern.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="lib\opencv\haarcascade_eye.xml" />
+    <Resource Include="lib\opencv\haarcascade_frontalface_alt.xml" />
+    <Resource Include="lib\opencv\haarcascade_frontalface_alt2.xml" />
+    <Resource Include="lib\opencv\haarcascade_frontalface_default.xml" />
+    <Resource Include="lib\opencv\haarcascade_lefteye_2splits.xml" />
+    <Resource Include="lib\opencv\haarcascade_mcs_lefteye.xml" />
+    <Resource Include="lib\opencv\haarcascade_mcs_mouth.xml" />
+    <Resource Include="lib\opencv\haarcascade_mcs_nose.xml" />
+    <Resource Include="lib\opencv\haarcascade_mcs_righteye.xml" />
+    <Resource Include="lib\opencv\haarcascade_profileface.xml" />
+    <Resource Include="lib\opencv\haarcascade_righteye_2splits.xml" />
     <Content Include="lib\opencv\opencv_ffmpeg310.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

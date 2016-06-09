@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using DirectShowLib;
 
-namespace FrameDetection.Model
+namespace FaceDetection.Model
 {
     public class CameraHandler
     {

@@ -1,4 +1,4 @@
-﻿namespace FrameDetection.Model
+﻿namespace FaceDetection.Model
 {
     public class Camera
     {

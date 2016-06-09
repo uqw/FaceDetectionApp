@@ -1,9 +1,9 @@
 ﻿using System.Data.SQLite;
 using System.Diagnostics;
 
-namespace FrameDetection.Model.Recognition
+namespace FaceDetection.Model.Recognition
 {
-    class DataManager
+    internal class DataManager
     {
         private readonly SQLiteConnection _dbConnection;
 

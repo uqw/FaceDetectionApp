@@ -7,13 +7,13 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 using Emgu.CV.Structure;
-using FrameDetection.Model;
-using FrameDetection.Model.Recognition;
+using FaceDetection.Model;
+using FaceDetection.Model.Recognition;
 using GalaSoft.MvvmLight.Command;
 using PostSharp.Patterns.Threading;
 using Size = System.Drawing.Size;
 
-namespace FrameDetection.ViewModel
+namespace FaceDetection.ViewModel
 {
     class MainViewModel: ViewModelBase
     {
@@ -24,8 +24,11 @@ namespace FrameDetection.ViewModel
         private readonly CameraHandler _cameraHandler;
         private int _fps;
         private bool _progressBarShown;
-        private CascadeClassifier _cascade;
+        // private CascadeClassifier _cascadeFrontAltTree;
+        // private CascadeClassifier _cascadeFrontAlt;
+        private CascadeClassifier _cascadeFrontDefault;
         private readonly DataManager _dataManager;
+
         #endregion
 
         #region Properties
@@ -54,6 +57,8 @@ namespace FrameDetection.ViewModel
             {
                 _selectedCam = value;
                 RaisePropertyChanged(nameof(SelectedCam));
+                Properties.Settings.Default.SelectedCam = value;
+                Properties.Settings.Default.Save();
             }
         }
 
@@ -98,7 +103,7 @@ namespace FrameDetection.ViewModel
         #region Construction
         public MainViewModel()
         {
-            SelectedCam = 0;
+            SelectedCam = Properties.Settings.Default.SelectedCam;
             Fps = 0;
             ProgressBarShown = true;
 
@@ -108,7 +113,7 @@ namespace FrameDetection.ViewModel
             InitializeFaceDetection();
             RefreshCameras();
 
-            RunCamViewer();
+            new Thread(RunCamViewer).Start();
         }
         #endregion
 
@@ -118,9 +123,17 @@ namespace FrameDetection.ViewModel
             try
             {
                 var cascadeFile = Path.GetTempFileName();
-                File.WriteAllText(cascadeFile, Properties.Resources.haarcascade_alt_tree);
 
-                _cascade = new CascadeClassifier(cascadeFile);
+                /*
+                File.WriteAllText(cascadeFile, Properties.Resources.haarcascade_frontalface_alt_tree);
+                _cascadeFrontAltTree = new CascadeClassifier(cascadeFile);
+                
+                File.WriteAllText(cascadeFile, Properties.Resources.haarcascade_frontalface_alt);
+                _cascadeFrontAlt = new CascadeClassifier(cascadeFile);
+                */
+
+                File.WriteAllText(cascadeFile, Properties.Resources.haarcascade_frontalface_default);
+                _cascadeFrontDefault = new CascadeClassifier(cascadeFile);
             }
             catch (Exception ex)
             {
@@ -128,7 +141,6 @@ namespace FrameDetection.ViewModel
             }
         }
 
-        [Background]
         private void RunCamViewer()
         {
             while (true)
@@ -161,12 +173,7 @@ namespace FrameDetection.ViewModel
                         try
                         {
                             ProgressBarShown = false;
-
-                            /*
-                            var frame = capture?.QueryFrame();
-                            Image = frame?.Bitmap;
-                            */
-
+                            
                             Image = ProcessImage(capture);
 
                             frames++;
@@ -184,7 +191,7 @@ namespace FrameDetection.ViewModel
                         }
                     }
 
-                    Thread.Sleep(20);
+                    Thread.Sleep(50);
                 }
 
                 capture?.Dispose();
@@ -195,10 +202,10 @@ namespace FrameDetection.ViewModel
 
         private Bitmap ProcessImage(Capture capture)
         {
-            if (capture == null || _cascade == null)
+            if (capture == null || _cascadeFrontDefault == null)
                 return null;
 
-            var imageFrame = capture.QueryFrame().ToImage<Bgr, Byte>();
+            var imageFrame = capture.QueryFrame().ToImage<Bgr, byte>();
 
             if (imageFrame == null)
                 return null;
@@ -206,12 +213,28 @@ namespace FrameDetection.ViewModel
             var grayframe = imageFrame.Convert<Gray, byte>();
 
             // Detect the face
-            var faces = _cascade.DetectMultiScale(grayframe, 1.25, 10, Size.Empty);
+            // var facesAltTree = _cascadeFrontAltTree.DetectMultiScale(grayframe, 1.4, 10, Size.Empty);
+            
+            // var facesAlt = _cascadeFrontAlt.DetectMultiScale(grayframe, 1.4, 10, Size.Empty);
 
-            foreach (var face in faces)
+            var facesDefault = _cascadeFrontDefault.DetectMultiScale(grayframe, 1.25, 10, Size.Empty);
+
+            /*
+            foreach (var face in facesAltTree)
             {
                 // Draw box around the face
                 imageFrame.Draw(face, new Bgr(Color.BurlyWood));
+            }
+
+            foreach (var face in facesAlt)
+            {
+                imageFrame.Draw(face, new Bgr(Color.Aqua));
+            }
+            */
+
+            foreach (var face in facesDefault)
+            {
+                imageFrame.Draw(face, new Bgr(Color.BlueViolet), 4);
             }
 
             return imageFrame.Bitmap;

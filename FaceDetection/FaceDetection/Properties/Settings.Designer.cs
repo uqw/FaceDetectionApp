@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FrameDetection.Properties {
+namespace FaceDetection.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -29,6 +29,18 @@ namespace FrameDetection.Properties {
         public string DetectionSqlFile {
             get {
                 return ((string)(this["DetectionSqlFile"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
+        public int SelectedCam {
+            get {
+                return ((int)(this["SelectedCam"]));
+            }
+            set {
+                this["SelectedCam"] = value;
             }
         }
     }

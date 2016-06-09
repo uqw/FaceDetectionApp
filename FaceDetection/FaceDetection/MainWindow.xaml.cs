@@ -1,4 +1,4 @@
-﻿namespace FrameDetection
+﻿namespace FaceDetection
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

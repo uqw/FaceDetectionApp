@@ -3,7 +3,7 @@ using System.IO;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
-namespace FrameDetection.Views.Converters
+namespace FaceDetection.Views.Converters
 {
     class BitmapConverter: IValueConverter
     {

@@ -1,9 +1,12 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="FrameDetection.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="FaceDetection.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="DetectionSqlFile" Type="System.String" Scope="Application">
       <Value Profile="(Default)">FaceDatabase.sqlite</Value>
+    </Setting>
+    <Setting Name="SelectedCam" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">-1</Value>
     </Setting>
   </Settings>
 </SettingsFile>
