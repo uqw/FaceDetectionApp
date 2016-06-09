@@ -105,7 +105,6 @@ namespace FaceDetection.ViewModel
         {
             SelectedCam = Properties.Settings.Default.SelectedCam;
             Fps = 0;
-            ProgressBarShown = true;
 
             _cameraHandler = new CameraHandler();
             _dataManager = new DataManager();

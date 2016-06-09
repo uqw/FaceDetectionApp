@@ -1,5 +1,7 @@
-﻿using System.Data.SQLite;
+﻿using System;
+using System.Data.SQLite;
 using System.Diagnostics;
+using System.IO;
 
 namespace FaceDetection.Model.Recognition
 {
@@ -9,10 +11,23 @@ namespace FaceDetection.Model.Recognition
 
         public DataManager()
         {
-            SQLiteConnection.CreateFile(Properties.Settings.Default.DetectionSqlFile);
+            try
+            {
+                if (!File.Exists(Properties.Settings.Default.DetectionSqlFile))
+                    SQLiteConnection.CreateFile(Properties.Settings.Default.DetectionSqlFile);
 
-            _dbConnection = new SQLiteConnection($"Data Source={Properties.Settings.Default.DetectionSqlFile};Version=3");
-            _dbConnection.Open();
+                _dbConnection =
+                    new SQLiteConnection($"Data Source={Properties.Settings.Default.DetectionSqlFile};Version=3");
+                _dbConnection.Open();
+            }
+            catch (SQLiteException ex)
+            {
+                Debug.WriteLine("Could not initialize db connection: " + ex);
+            }
+            catch (IOException ex)
+            {
+                Debug.WriteLine("Could not create db file: " + ex);
+            }
 
             InitializeDatabase();
         }
