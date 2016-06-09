@@ -12,7 +12,6 @@ namespace FaceDetection.Model.Recognition
         public DataManager()
         {
             InitializeDatabase();
-            InitializeConnection();
         }
 
         private bool InitializeConnection()
@@ -54,6 +53,10 @@ namespace FaceDetection.Model.Recognition
             {
                 if (!File.Exists(Properties.Settings.Default.DetectionSqlFile))
                     SQLiteConnection.CreateFile(Properties.Settings.Default.DetectionSqlFile);
+
+                if (!InitializeConnection())
+                    return false;
+
                 const string sql = "SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'faces'";
                 var command = new SQLiteCommand(sql, _dbConnection);
                 if (command.ExecuteScalar() == null)
@@ -91,7 +94,7 @@ namespace FaceDetection.Model.Recognition
         /// <returns>true if successfull otherwise false.</returns>
         public bool ResetDatabase()
         {
-            return CloseConnection() && DeleteDatabase() && InitializeDatabase() && !InitializeConnection();
+            return CloseConnection() && DeleteDatabase() && InitializeDatabase();
         }
 
         private void CreateTables()
