@@ -4,18 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Threading;
-using Emgu.CV.Structure;
 using FaceDetection.Model;
 using FaceDetection.Model.Recognition;
 using GalaSoft.MvvmLight.Command;
-using PostSharp.Patterns.Threading;
-using Size = System.Drawing.Size;
 
 namespace FaceDetection.ViewModel
 {
-    class MainViewModel: ViewModelBase
+    internal sealed class MainViewModel: ViewModelBase, IDisposable
     {
         #region Fields
         private Bitmap _image;
@@ -23,11 +19,10 @@ namespace FaceDetection.ViewModel
         private List<Camera> _availableCameras;
         private readonly CameraHandler _cameraHandler;
         private int _fps;
-        private bool _progressBarShown;
-        // private CascadeClassifier _cascadeFrontAltTree;
-        // private CascadeClassifier _cascadeFrontAlt;
-        private CascadeClassifier _cascadeFrontDefault;
         private readonly DataManager _dataManager;
+        private CameraHandler.ProcessType _processType;
+        private bool _detectionEnabled;
+        private Thread _detectionThread;
 
         #endregion
 
@@ -87,13 +82,27 @@ namespace FaceDetection.ViewModel
             }
         }
 
-        public bool ProgressBarShown
+        public CameraHandler.ProcessType ProcessType
         {
-            get { return _progressBarShown; }
+            get { return _processType; }
+
             set
             {
-                _progressBarShown = value;
-                RaisePropertyChanged(nameof(ProgressBarShown));
+                _processType = value;
+                RaisePropertyChanged(nameof(ProcessType));
+            }
+        }
+
+        public bool DetectionEnabled
+        {
+            get { return _detectionEnabled; }
+
+            set
+            {
+                _detectionEnabled = value;
+                RaisePropertyChanged(nameof(DetectionEnabled));
+                Properties.Settings.Default.DetectionEnabled = value;
+                Properties.Settings.Default.Save();
             }
         }
 
@@ -104,139 +113,101 @@ namespace FaceDetection.ViewModel
         public MainViewModel()
         {
             SelectedCam = Properties.Settings.Default.SelectedCam;
+            DetectionEnabled = Properties.Settings.Default.DetectionEnabled;
+
             Fps = 0;
+            ProcessType = CameraHandler.ProcessType.Front;
 
             _cameraHandler = new CameraHandler();
             _dataManager = new DataManager();
-
-            InitializeFaceDetection();
+            
             RefreshCameras();
-
-            new Thread(RunCamViewer).Start();
+            StartDetection();
         }
         #endregion
 
         #region Methods
-        private void InitializeFaceDetection()
+
+        private void StartDetection()
         {
-            try
+            if (!IsInDesignMode)
             {
-                var cascadeFile = Path.GetTempFileName();
-
-                /*
-                File.WriteAllText(cascadeFile, Properties.Resources.haarcascade_frontalface_alt_tree);
-                _cascadeFrontAltTree = new CascadeClassifier(cascadeFile);
-                
-                File.WriteAllText(cascadeFile, Properties.Resources.haarcascade_frontalface_alt);
-                _cascadeFrontAlt = new CascadeClassifier(cascadeFile);
-                */
-
-                File.WriteAllText(cascadeFile, Properties.Resources.haarcascade_frontalface_default);
-                _cascadeFrontDefault = new CascadeClassifier(cascadeFile);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Could not write temp cascade file: " + ex);
+                _detectionThread = new Thread(RunCamViewer);
+                _detectionThread.Start();
             }
         }
 
         private void RunCamViewer()
         {
-            while (true)
+            try
             {
-                var cam = SelectedCam;
-                var frames = 0;
-                var timestamp = DateTime.Now;
-
-                Capture capture = null;
-                Image = null;
-                Fps = 0;
-
-                if (cam != -1)
+                while (true)
                 {
-                    ProgressBarShown = true;
-                    try
+                    var cam = SelectedCam;
+                    var frames = 0;
+                    var timestamp = DateTime.Now;
+
+                    Capture capture = null;
+                    Image = null;
+                    Fps = 0;
+
+                    if (cam != -1)
                     {
-                        capture = new Capture(SelectedCam);
+                        capture = CreateCapture(cam);
                     }
-                    catch (Exception)
+
+                    while (cam == SelectedCam)
                     {
-                        Debug.WriteLine("Couldn't read from camera input: " + SelectedCam);
-                    }
-                }
-                
-                while (cam == SelectedCam)
-                {
-                    if(cam != -1)
-                    {
-                        try
+                        if (cam != -1)
                         {
-                            ProgressBarShown = false;
-                            
-                            Image = ProcessImage(capture);
-
-                            frames++;
-
-                            if ((DateTime.Now.Subtract(timestamp).Ticks / TimeSpan.TicksPerMillisecond) > 1000)
+                            try
                             {
-                                Fps = frames;
-                                frames = 0;
-                                timestamp = DateTime.Now;
+                                Image = DetectionEnabled ? _cameraHandler.ProcessImage(capture, ProcessType) : capture?.QueryFrame().Bitmap;
+
+                                frames++;
+
+                                if (DateTime.Now.Subtract(timestamp).Ticks / TimeSpan.TicksPerMillisecond > 1000)
+                                {
+                                    Fps = frames;
+                                    frames = 0;
+                                    timestamp = DateTime.Now;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.WriteLine("Error reading frame: " + ex);
                             }
                         }
-                        catch (Exception ex)
-                        {
-                            Debug.WriteLine("Error reading frame: " + ex);
-                        }
+
+                        Thread.Sleep(50);
                     }
 
-                    Thread.Sleep(50);
+                    capture?.Dispose();
+
+                    Debug.WriteLine("Camera selection changed: " + SelectedCam);
                 }
-
-                capture?.Dispose();
-
-                Debug.WriteLine("Camera selection changed: " + SelectedCam);
+            }
+            catch (ThreadInterruptedException)
+            {
+                // ignored
             }
         }
 
-        private Bitmap ProcessImage(Capture capture)
+        private Capture CreateCapture(int selection)
         {
-            if (capture == null || _cascadeFrontDefault == null)
-                return null;
-
-            var imageFrame = capture.QueryFrame().ToImage<Bgr, byte>();
-
-            if (imageFrame == null)
-                return null;
-
-            var grayframe = imageFrame.Convert<Gray, byte>();
-
-            // Detect the face
-            // var facesAltTree = _cascadeFrontAltTree.DetectMultiScale(grayframe, 1.4, 10, Size.Empty);
-            
-            // var facesAlt = _cascadeFrontAlt.DetectMultiScale(grayframe, 1.4, 10, Size.Empty);
-
-            var facesDefault = _cascadeFrontDefault.DetectMultiScale(grayframe, 1.25, 10, Size.Empty);
-
-            /*
-            foreach (var face in facesAltTree)
+            if (selection > -1)
             {
-                // Draw box around the face
-                imageFrame.Draw(face, new Bgr(Color.BurlyWood));
+                try
+                {
+                    return new Capture(SelectedCam);
+                }
+                catch (Exception)
+                {
+                    Debug.WriteLine("Couldn't read from camera input: " + SelectedCam);
+                }
             }
 
-            foreach (var face in facesAlt)
-            {
-                imageFrame.Draw(face, new Bgr(Color.Aqua));
-            }
-            */
-
-            foreach (var face in facesDefault)
-            {
-                imageFrame.Draw(face, new Bgr(Color.BlueViolet), 4);
-            }
-
-            return imageFrame.Bitmap;
+            return null;
         }
 
         private void RefreshCameras()
@@ -244,6 +215,15 @@ namespace FaceDetection.ViewModel
             AvailableCameras = _cameraHandler.GetAllCameras();
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
+        public void Dispose()
+        {
+            _cameraHandler.Dispose();
+            _dataManager.Dispose();
+        }
         #endregion
     }
 }

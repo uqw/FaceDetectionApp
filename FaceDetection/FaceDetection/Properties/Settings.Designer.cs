@@ -43,5 +43,17 @@ namespace FaceDetection.Properties {
                 this["SelectedCam"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DetectionEnabled {
+            get {
+                return ((bool)(this["DetectionEnabled"]));
+            }
+            set {
+                this["DetectionEnabled"] = value;
+            }
+        }
     }
 }

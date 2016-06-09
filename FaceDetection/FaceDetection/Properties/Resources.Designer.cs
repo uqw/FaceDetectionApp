@@ -63,75 +63,6 @@ namespace FaceDetection.Properties {
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
         ///&lt;!--
-        ///    Stump-based 20x20 gentle adaboost frontal face detector.
-        ///    Created by Rainer Lienhart.
-        ///
-        ///////////////////////////////////////////////////////////////////////////////////////////
-        ///
-        ///  IMPORTANT: READ BEFORE DOWNLOADING, COPYING, INSTALLING OR USING.
-        ///
-        ///  By downloading, copying, installing or using the software you agree to this license.
-        ///  If you do not agree to this license, do not download, install,
-        ///  copy or use the software.
-        ///
-        ///
-        ///                        Intel License Agreement
-        ///   [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string haarcascade_frontalface_alt {
-            get {
-                return ResourceManager.GetString("haarcascade_frontalface_alt", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
-        ///&lt;!--
-        ///    Stump-based 20x20 gentle adaboost frontal face detector.
-        ///    This detector uses tree of stage classifiers instead of a cascade
-        ///    Created by Rainer Lienhart.
-        ///
-        ///////////////////////////////////////////////////////////////////////////////////////////
-        ///
-        ///  IMPORTANT: READ BEFORE DOWNLOADING, COPYING, INSTALLING OR USING.
-        ///
-        ///  By downloading, copying, installing or using the software you agree to this license.
-        ///  If you do not agree to this license, do not download, install,
-        ///  copy or  [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string haarcascade_frontalface_alt_tree {
-            get {
-                return ResourceManager.GetString("haarcascade_frontalface_alt_tree", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
-        ///&lt;!--
-        ///    Tree-based 20x20 gentle adaboost frontal face detector.
-        ///    Created by Rainer Lienhart.
-        ///
-        ///////////////////////////////////////////////////////////////////////////////////////////
-        ///
-        ///  IMPORTANT: READ BEFORE DOWNLOADING, COPYING, INSTALLING OR USING.
-        ///
-        ///  By downloading, copying, installing or using the software you agree to this license.
-        ///  If you do not agree to this license, do not download, install,
-        ///  copy or use the software.
-        ///
-        ///
-        ///                        Intel License Agreement
-        ///    [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string haarcascade_frontalface_alt2 {
-            get {
-                return ResourceManager.GetString("haarcascade_frontalface_alt2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
-        ///&lt;!--
         ///    Stump-based 24x24 discrete(?) adaboost frontal face detector.
         ///    Created by Rainer Lienhart.
         ///
@@ -144,11 +75,34 @@ namespace FaceDetection.Properties {
         ///  copy or use the software.
         ///
         ///
-        ///                        Intel License Agreeme [rest of string was truncated]&quot;;.
+        ///                        Intel L [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string haarcascade_frontalface_default {
             get {
                 return ResourceManager.GetString("haarcascade_frontalface_default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///&lt;!--
+        ///    20x20 profile face detector.
+        ///    Contributed by David Bradley from Princeton University.
+        ///
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        ///
+        ///  IMPORTANT: READ BEFORE DOWNLOADING, COPYING, INSTALLING OR USING.
+        ///
+        ///  By downloading, copying, installing or using the software you agree to this license.
+        ///  If you do not agree to this license, do not download, install,
+        ///  copy or use the software.
+        ///
+        ///
+        ///                        Intel Licens [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string haarcascade_profileface {
+            get {
+                return ResourceManager.GetString("haarcascade_profileface", resourceCulture);
             }
         }
     }
