@@ -8,7 +8,7 @@
         xmlns:vm="clr-namespace:FaceDetection.ViewModel"
         xmlns:conv="clr-namespace:FaceDetection.Views.Converters"
         mc:Ignorable="d"
-        Title="Face Detection App" Height="600" Width="750" SaveWindowPosition="True">
+        Title="Face Detection App" Height="800" Width="850" SaveWindowPosition="True">
 
     <Window.Resources>
         <conv:BitmapConverter x:Key="BitmapConverter" />
@@ -26,11 +26,11 @@
                 <ColumnDefinition Width="5*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="35*"/>
-                <RowDefinition Height="316*"/>
-                <RowDefinition Height="6*"/>
-                <RowDefinition Height="108*"/>
-                <RowDefinition Height="4*"/>
+                <RowDefinition Height="58*"/>
+                <RowDefinition Height="453*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="249*"/>
+                <RowDefinition Height="7*"/>
             </Grid.RowDefinitions>
 
             <Image HorizontalAlignment="Center" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Source="{Binding Path=Image, Converter={StaticResource BitmapConverter}}" Stretch="None"/>
@@ -39,22 +39,26 @@
 
             <Grid Grid.Row="3" Grid.Column="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="13*"/>
-                    <RowDefinition Height="14*"/>
-                    <RowDefinition Height="9*"/>
+                    <RowDefinition Height="44*"/>
+                    <RowDefinition Height="45*"/>
+                    <RowDefinition Height="160*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="96*"/>
-                    <ColumnDefinition Width="357*"/>
-                    <ColumnDefinition Width="91*"/>
+                    <ColumnDefinition Width="37*"/>
+                    <ColumnDefinition Width="89*"/>
+                    <ColumnDefinition Width="469*"/>
+                    <ColumnDefinition Width="81*"/>
+                    <ColumnDefinition Width="38*"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Content="Camera:" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Height="36" VerticalAlignment="Center" Width="90" FontSize="18" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="1,0,1,3"/>
-                <ComboBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Height="30" VerticalAlignment="Center" SelectedIndex="{Binding Path=SelectedCam}" ItemsSource="{Binding Path=AvailableCameras}" Margin="0,4,0,5"/>
-                <Button Content="Refresh" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="70" Command="{Binding Path=RefreshCamerasCommand}" Margin="8,4,9,5"/>
+                <Label Content="Camera:" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Height="36" VerticalAlignment="Center" Width="90" FontSize="18" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,4"/>
+                <ComboBox Grid.Row="0" Grid.Column="2" HorizontalAlignment="Stretch" Height="30" VerticalAlignment="Center" SelectedIndex="{Binding Path=SelectedCam}" ItemsSource="{Binding Path=AvailableCameras}" Margin="0,7" />
+                <Button Content="Refresh" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="70" Command="{Binding Path=RefreshCamerasCommand}" Margin="5,7,0,7"/>
 
-                <ToggleButton Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Detection" IsChecked="{Binding Path=DetectionEnabled}" Width="85" Height="35"/>
-                <Button Grid.Column="2" Grid.Row="1" Width="70" Height="30" HorizontalAlignment="Left" Margin="8,4,9,5" Content="Add face" Command="{Binding Path=AddFaceCommand}"/>
+                <ToggleButton Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Detection" IsChecked="{Binding Path=DetectionEnabled}" Width="85" Height="36" Margin="0,4,0,5"/>
+                <Expander Header="Add face" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ExpandDirection="Right" IsExpanded="False">
+                    <Grid />
+                </Expander>
             </Grid>
         </Grid>
 

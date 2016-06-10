@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
@@ -10,14 +12,15 @@ namespace FaceDetection.Views.Converters
         public object Convert(object value, Type targetType, object parameter,
             System.Globalization.CultureInfo culture)
         {
-            if (value == null)
+            var bitmap = value as Bitmap;
+            if (bitmap == null)
                 return null;
 
             try
             {
-                MemoryStream ms = new MemoryStream();
-                ((System.Drawing.Bitmap)value).Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
-                BitmapImage image = new BitmapImage();
+                var ms = new MemoryStream();
+                bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+                var image = new BitmapImage();
                 image.BeginInit();
                 ms.Seek(0, SeekOrigin.Begin);
                 image.StreamSource = ms;

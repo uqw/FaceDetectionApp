@@ -2,9 +2,11 @@
 using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
+using System.Windows;
 using FaceDetection.Model;
 using FaceDetection.Model.Recognition;
 using GalaSoft.MvvmLight.Command;
@@ -17,14 +19,15 @@ namespace FaceDetection.ViewModel
         #region Fields
         private Bitmap _image;
         private int _selectedCam;
-        private List<Camera> _availableCameras;
+        private ObservableCollection<Camera> _availableCameras;
         private readonly CameraHandler _cameraHandler;
         private int _fps;
+        private readonly Stopwatch _fpsStopwatch;
         private CameraHandler.ProcessType _processType;
         private RecognitionData _recognitionData;
         private bool _detectionEnabled;
-        private Thread _camViewerThread;
         private bool _isAddFaceFlyoutOpen;
+        private Capture _capture;
 
         #endregion
 
@@ -52,14 +55,24 @@ namespace FaceDetection.ViewModel
 
             set
             {
-                _selectedCam = value;
-                RaisePropertyChanged(nameof(SelectedCam));
-                Properties.Settings.Default.SelectedCam = value;
-                Properties.Settings.Default.Save();
+                if (_selectedCam != value)
+                {
+                    _selectedCam = value;
+                    RaisePropertyChanged(nameof(SelectedCam));
+                    Properties.Settings.Default.SelectedCam = value;
+                    Properties.Settings.Default.Save();
+
+                    Image = null;
+                    _capture.Dispose();
+                    if (value != -1)
+                    {
+                        _capture = _cameraHandler?.CreateCapture(value);
+                    }
+                }
             }
         }
 
-        public List<Camera> AvailableCameras
+        public ObservableCollection<Camera> AvailableCameras
         {
             get
             {
@@ -137,87 +150,37 @@ namespace FaceDetection.ViewModel
 
             _cameraHandler = new CameraHandler();
             _recognitionData = new RecognitionData();
+            _capture = _cameraHandler.CreateCapture(SelectedCam);
+            _fpsStopwatch = Stopwatch.StartNew();
             
             RefreshCameras();
-            StartCamViewer();
         }
         #endregion
 
         #region Methods
-
-        private void StartCamViewer()
+        
+        /// <summary>
+        /// Reads a frame of the camera.
+        /// </summary>
+        public void ReadFrame()
         {
-            if (!IsInDesignMode)
+            if (SelectedCam != -1)
             {
-                _camViewerThread = new Thread(RunCamViewer);
-                _camViewerThread.Start();
-            }
-        }
+                Image = DetectionEnabled ? _cameraHandler.ProcessImage(_capture, ProcessType) : _capture?.QueryFrame().Bitmap;
+                _fps ++;
 
-        private void StopCamViewer()
-        {
-            _camViewerThread?.Interrupt();
-        }
-
-        private void RunCamViewer()
-        {
-            try
-            {
-                while (true)
+                if (_fpsStopwatch.ElapsedTicks / TimeSpan.TicksPerMillisecond > 250)
                 {
-                    var cam = SelectedCam;
-                    var frames = 0;
-                    var timestamp = DateTime.Now;
-
-                    Capture capture = null;
-                    Image = null;
-                    Fps = 0;
-
-                    if (cam != -1)
-                    {
-                        capture = _cameraHandler.CreateCapture(cam);
-                    }
-
-                    while (cam == SelectedCam)
-                    {
-                        if (cam != -1)
-                        {
-                            try
-                            {
-                                Image = DetectionEnabled ? _cameraHandler.ProcessImage(capture, ProcessType) : capture?.QueryFrame().Bitmap;
-
-                                frames++;
-
-                                if (DateTime.Now.Subtract(timestamp).Ticks / TimeSpan.TicksPerMillisecond > 1000)
-                                {
-                                    Fps = frames;
-                                    frames = 0;
-                                    timestamp = DateTime.Now;
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Debug.WriteLine("Error reading frame: " + ex);
-                            }
-                        }
-
-                        Thread.Sleep(50);
-                    }
-
-                    capture?.Dispose();
-
-                    Debug.WriteLine("Camera selection changed: " + SelectedCam);
+                    _fpsStopwatch.Restart();
+                    Fps = _fps * 4;
+                    _fps = 0;
                 }
-            }
-            catch (ThreadInterruptedException)
-            {
-                // ignored
             }
         }
 
         private void RefreshCameras()
         {
-            AvailableCameras = _cameraHandler.GetAllCameras();
+            AvailableCameras = new ObservableCollection<Camera>(_cameraHandler.GetAllCameras());
         }
 
         /// <summary>
@@ -227,6 +190,7 @@ namespace FaceDetection.ViewModel
         public void Dispose()
         {
             _cameraHandler.Dispose();
+            _capture.Dispose();
         }
 
         private void AddFace()

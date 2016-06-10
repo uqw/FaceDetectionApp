@@ -121,7 +121,7 @@ namespace FaceDetection.Model
                 var facesProfile = _cascadeProfileFace.DetectMultiScale(grayframe, 1.25, 10, Size.Empty);
                 foreach (var face in facesProfile)
                 {
-                    imageFrame.Draw(face, new Bgr(Color.Aqua));
+                    imageFrame.Draw(face, new Bgr(Color.Aqua), 4);
                 }
             }
 
