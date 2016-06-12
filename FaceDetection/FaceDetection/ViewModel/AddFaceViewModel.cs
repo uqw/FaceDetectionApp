@@ -112,7 +112,6 @@ namespace FaceDetection.ViewModel
 
             if (addedFaceData.FaceId != -1)
             {
-                // TODO: Implement user id grabbing
                 Messenger.Default.Send(new FaceAddedMessage(
                     new Face(selectedImage.Original.Bytes, selectedImage.Grayframe.Bytes, (int)addedFaceData.FaceId, UsernameText, (int)addedFaceData.UserId, selectedImage.Original.Width, selectedImage.Original.Height)
                     ));
