@@ -18,50 +18,106 @@
     <Window.DataContext>
         <vm:MainViewModel />
     </Window.DataContext>
+
     <Grid>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="5*"/>
-                <ColumnDefinition Width="252*"/>
-                <ColumnDefinition Width="5*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="58*"/>
-                <RowDefinition Height="453*"/>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="249*"/>
-                <RowDefinition Height="7*"/>
-            </Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="765*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="416*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
 
-            <Image HorizontalAlignment="Center" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Source="{Binding Path=Image, Converter={StaticResource BitmapConverter}}" Stretch="None"/>
+        <controls:MetroAnimatedTabControl SelectedIndex="{Binding Path=SelectedTab}" Grid.Column="1" Grid.Row="1">
+            <controls:MetroTabItem Header="Camera View">
+                <Grid x:Name="CameraTab">
+                    <Grid.DataContext>
+                        <vm:CameraViewModel />
+                    </Grid.DataContext>
 
-            <Label Content="{Binding Path=Fps}" ContentStringFormat="FPS: {0}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="70" Margin="0,5,0,0"/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="252*"/>
+                        <ColumnDefinition Width="5*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="55*"/>
+                        <RowDefinition Height="426*"/>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition Height="236*"/>
+                        <RowDefinition Height="6*"/>
+                    </Grid.RowDefinitions>
 
-            <Grid Grid.Row="3" Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="44*"/>
-                    <RowDefinition Height="45*"/>
-                    <RowDefinition Height="160*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="37*"/>
-                    <ColumnDefinition Width="89*"/>
-                    <ColumnDefinition Width="469*"/>
-                    <ColumnDefinition Width="81*"/>
-                    <ColumnDefinition Width="38*"/>
-                </Grid.ColumnDefinitions>
+                    <Image HorizontalAlignment="Center" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Source="{Binding Path=Image, Converter={StaticResource BitmapConverter}}" Stretch="None"/>
 
-                <Label Content="Camera:" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Height="36" VerticalAlignment="Center" Width="90" FontSize="18" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,4"/>
-                <ComboBox Grid.Row="0" Grid.Column="2" HorizontalAlignment="Stretch" Height="30" VerticalAlignment="Center" SelectedIndex="{Binding Path=SelectedCam}" ItemsSource="{Binding Path=AvailableCameras}" Margin="0,7" />
-                <Button Content="Refresh" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="70" Command="{Binding Path=RefreshCamerasCommand}" Margin="5,7,0,7"/>
+                    <Label Content="{Binding Path=Fps}" ContentStringFormat="FPS: {0}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="70" Margin="0,5,0,0"/>
+                    <Label Content="{Binding Path=Delay}" ContentStringFormat="Delay: {0}ms" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Height="24" Width="100" Margin="0,0,5,0" HorizontalContentAlignment="Right"/>
 
-                <ToggleButton Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Detection" IsChecked="{Binding Path=DetectionEnabled}" Width="85" Height="36" Margin="0,4,0,5"/>
-                <Expander Header="Add face" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ExpandDirection="Right" IsExpanded="False">
-                    <Grid />
-                </Expander>
-            </Grid>
-        </Grid>
+                    <Grid Grid.Row="3" Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="44*"/>
+                            <RowDefinition Height="45*"/>
+                            <RowDefinition Height="160*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="37*"/>
+                            <ColumnDefinition Width="89*"/>
+                            <ColumnDefinition Width="469*"/>
+                            <ColumnDefinition Width="81*"/>
+                            <ColumnDefinition Width="38*"/>
+                        </Grid.ColumnDefinitions>
 
+                        <Label Content="Camera:" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Height="36" VerticalAlignment="Center" Width="90" FontSize="18" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,4"/>
+                        <ComboBox Grid.Row="0" Grid.Column="2" HorizontalAlignment="Stretch" Height="30" VerticalAlignment="Center" SelectedIndex="{Binding Path=SelectedCam}" ItemsSource="{Binding Path=AvailableCameras}"/>
+                        <Button Content="Refresh" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" Height="30" VerticalAlignment="Center" Width="70" Command="{Binding Path=RefreshCamerasCommand}"/>
+
+                        <ToggleButton Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Detection" IsChecked="{Binding Path=DetectionEnabled}" Width="85" Height="36"/>
+                        <Expander Header="Add face" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ExpandDirection="Right" IsExpanded="{Binding Path=IsAddFacePanelOpen}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="122*"/>
+                                    <ColumnDefinition Width="132*"/>
+                                    <ColumnDefinition Width="166*"/>
+                                    <ColumnDefinition Width="223*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.DataContext>
+                                    <vm:AddFaceViewModel />
+                                </Grid.DataContext>
+
+                                <Label Grid.Column="1" Grid.Row="0" Content="Preview:" HorizontalAlignment="Right" Height="36" VerticalAlignment="Top" Width="82" FontSize="20" Visibility="{Binding Path=PreviewHeaderVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                <Button Grid.Column="0" Height="32" VerticalAlignment="Bottom" HorizontalAlignment="Center" Content="Take snapshot" Command="{Binding Path=TakeSnapshotCommand}" Margin="16,0" Width="90"/>
+
+                                <controls:FlipView ItemsSource="{Binding Path=PreviewImages}" Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsBannerEnabled="False" MouseHoverBorderEnabled="False" SelectedIndex="{Binding Path=SelectedImage}">
+                                    <controls:FlipView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Image Source="{Binding Path=Original.Bitmap, Converter={StaticResource BitmapConverter}}" />
+                                        </DataTemplate>
+                                    </controls:FlipView.ItemTemplate>
+                                </controls:FlipView>
+
+                                <TextBox Grid.Column="3" HorizontalAlignment="Stretch" Height="30" TextWrapping="NoWrap" VerticalAlignment="Top" controls:TextBoxHelper.Watermark="Enter name" controls:TextBoxHelper.ClearTextButton="True" Margin="32,5,0,0" Text="{Binding Path=UsernameText}" />
+                                <Button Grid.Row="0" Grid.Column="3" VerticalAlignment="Bottom" HorizontalAlignment="Center" Content="Save face" Height="32" Width="75" Margin="90,0,58,0" Command="{Binding Path=AddFaceCommand}"/>
+                                <Label Content="{Binding Path=ResultText}" Grid.Column="3" HorizontalAlignment="Left" Height="26" VerticalAlignment="Bottom" Width="85"/>
+                            </Grid>
+                        </Expander>
+                    </Grid>
+                </Grid>
+            </controls:MetroTabItem>
+
+            <controls:MetroTabItem Header="Database Mangement">
+                <Grid>
+                    <Grid.DataContext>
+                        <vm:DatabaseMangementViewModel />
+                    </Grid.DataContext>
+                </Grid>
+            </controls:MetroTabItem>
+        </controls:MetroAnimatedTabControl>
     </Grid>
 </controls:MetroWindow>
 

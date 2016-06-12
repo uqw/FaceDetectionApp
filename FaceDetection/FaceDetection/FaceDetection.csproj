@@ -168,9 +168,19 @@
     <Compile Include="Model\Camera.cs" />
     <Compile Include="Model\CameraHandler.cs" />
     <Compile Include="Model\Recognition\DatabaseHandler.cs" />
+    <Compile Include="Model\Recognition\Face.cs" />
+    <Compile Include="Model\Recognition\PreviewImage.cs" />
     <Compile Include="Model\Recognition\RecognitionData.cs" />
+    <Compile Include="ViewModel\AddFaceViewModel.cs" />
+    <Compile Include="ViewModel\CameraViewModel.cs" />
+    <Compile Include="ViewModel\Helpers\AsyncObservableCollection.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\DatabaseMangementViewModel.cs" />
+    <Compile Include="ViewModel\Messages\TabSelectionChangedMessage.cs" />
     <Compile Include="Views\Converters\BitmapConverter.cs" />
+    <Compile Include="Views\UserControls\FaceDatabaseEntry.xaml.cs">
+      <DependentUpon>FaceDatabaseEntry.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -183,6 +193,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\UserControls\FaceDatabaseEntry.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

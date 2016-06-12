@@ -6,6 +6,7 @@ using System.IO;
 using DirectShowLib;
 using Emgu.CV;
 using Emgu.CV.Structure;
+using FaceDetection.Model.Recognition;
 
 namespace FaceDetection.Model
 {
@@ -35,15 +36,17 @@ namespace FaceDetection.Model
         }
 
         #region Fields
-        private CascadeClassifier _cascadeProfileFace;
-        private CascadeClassifier _cascadeFrontDefault;
+        private static CascadeClassifier _cascadeProfileFace;
+        private static CascadeClassifier _cascadeFrontDefault;
+
+        private const int ImageSizeTolerance = 100;
         #endregion
 
-        #region Construction        
+        #region Construction                
         /// <summary>
-        /// Initializes a new instance of the <see cref="CameraHandler"/> class.
+        /// Initializes the <see cref="CameraHandler"/> class.
         /// </summary>
-        public CameraHandler()
+        static CameraHandler()
         {
             InitializeFaceDetection();
         }
@@ -70,7 +73,7 @@ namespace FaceDetection.Model
             return cameras;
         }
 
-        private void InitializeFaceDetection()
+        private static void InitializeFaceDetection()
         {
             try
             {
@@ -106,26 +109,93 @@ namespace FaceDetection.Model
 
             var grayframe = imageFrame.Convert<Gray, byte>();
 
-            // Detect the face
-            if (processType == ProcessType.Both || processType == ProcessType.Front)
+            try
             {
-                var facesDefault = _cascadeFrontDefault.DetectMultiScale(grayframe, 1.25, 10, Size.Empty);
-                foreach (var face in facesDefault)
+                // Detect the face
+                if (processType == ProcessType.Both || processType == ProcessType.Front)
                 {
-                    imageFrame.Draw(face, new Bgr(Color.BlueViolet), 4);
+                    var facesDefault = _cascadeFrontDefault.DetectMultiScale(grayframe, 1.25, 10, Size.Empty);
+                    foreach (var face in facesDefault)
+                    {
+                        imageFrame.Draw(face, new Bgr(Color.BlueViolet), 4);
+                    }
+                }
+
+                if (processType == ProcessType.Both || processType == ProcessType.Profile)
+                {
+                    var facesProfile = _cascadeProfileFace.DetectMultiScale(grayframe, 1.25, 10, Size.Empty);
+                    foreach (var face in facesProfile)
+                    {
+                        imageFrame.Draw(face, new Bgr(Color.Aqua), 4);
+                    }
                 }
             }
-
-            if (processType == ProcessType.Both || processType == ProcessType.Profile)
+            catch (Exception ex)
             {
-                var facesProfile = _cascadeProfileFace.DetectMultiScale(grayframe, 1.25, 10, Size.Empty);
-                foreach (var face in facesProfile)
-                {
-                    imageFrame.Draw(face, new Bgr(Color.Aqua), 4);
-                }
+                Debug.WriteLine("Could not process image: " + ex);
+                return null;
             }
 
             return imageFrame.Bitmap;
+        }
+
+        public List<PreviewImage> GetDetectedSnippets(Capture capture, ProcessType processType)
+        {
+            var mat = capture?.QueryFrame();
+
+            var imageList = new List<PreviewImage>();
+            if (mat == null)
+                return imageList;
+
+            var imageframe = mat.ToImage<Bgr, byte>();
+            var grayframe = imageframe.Convert<Gray, byte>();
+            
+            Rectangle[] faces = null;
+
+            try
+            {
+                switch (processType)
+                {
+                    case ProcessType.Front:
+                        {
+                            faces = _cascadeFrontDefault.DetectMultiScale(grayframe, 1.25, 10, Size.Empty);
+
+                        }
+                        break;
+
+                    case ProcessType.Profile:
+                        {
+                            faces = _cascadeProfileFace.DetectMultiScale(grayframe, 1.25, 10, Size.Empty);
+                        }
+                        break;
+
+                    default:
+                        {
+                            return imageList;
+                        }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Could not process snapshot: " + ex);
+                return imageList;
+            }
+
+
+            foreach (var face in faces)
+            {
+                grayframe.ROI = face;
+                var detectedGrayframe = grayframe.Copy();
+                grayframe.ROI = Rectangle.Empty;
+
+                imageframe.ROI = face;
+                var detectedImage = imageframe.Copy();
+                imageframe.ROI = Rectangle.Empty;
+
+                imageList.Add(new PreviewImage(detectedImage, detectedGrayframe));
+            }
+
+            return imageList;
         }
 
         /// <summary>
