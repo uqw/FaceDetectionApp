@@ -18,7 +18,7 @@ namespace FaceDetection.Views.UserControls
     /// <summary>
     /// Interaction logic for FaceDatabaseEntry.xaml
     /// </summary>
-    public partial class FaceDatabaseEntry : UserControl
+    public partial class FaceDatabaseEntry
     {
         public FaceDatabaseEntry()
         {

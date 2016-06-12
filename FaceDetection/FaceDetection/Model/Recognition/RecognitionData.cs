@@ -41,7 +41,7 @@ namespace FaceDetection.Model.Recognition
             return list;
         }
 
-        public async Task<long> InsertFace(byte[] original, byte[] grayframe, string username, int width, int height)
+        public async Task<AddedFaceData> InsertFace(byte[] original, byte[] grayframe, string username, int width, int height)
         {
             var userId = await DatabaseHandler.InsertAsync("INSERT INTO users (username) VALUES (@username)", new SQLiteParameter("@username", username));
 
@@ -59,7 +59,7 @@ namespace FaceDetection.Model.Recognition
                 new SQLiteParameter("@height", height)
             );
 
-            return faceId;
+            return new AddedFaceData(userId, faceId);
         }
     }
 }

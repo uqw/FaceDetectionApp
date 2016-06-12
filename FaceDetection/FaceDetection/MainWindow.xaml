@@ -9,12 +9,6 @@
         xmlns:conv="clr-namespace:FaceDetection.Views.Converters"
         mc:Ignorable="d"
         Title="Face Detection App" Height="800" Width="850" SaveWindowPosition="True">
-
-    <Window.Resources>
-        <conv:BitmapConverter x:Key="BitmapConverter" />
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    </Window.Resources>
-
     <Window.DataContext>
         <vm:MainViewModel />
     </Window.DataContext>
@@ -110,12 +104,43 @@
                 </Grid>
             </controls:MetroTabItem>
 
-            <controls:MetroTabItem Header="Database Mangement">
+            <controls:MetroTabItem Header="Face Mangement">
                 <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="15*"/>
+                        <RowDefinition Height="691*"/>
+                        <RowDefinition Height="15*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="212*"/>
+                        <ColumnDefinition Width="45*"/>
+                    </Grid.ColumnDefinitions>
                     <Grid.DataContext>
                         <vm:DatabaseMangementViewModel />
                     </Grid.DataContext>
+                    
+                    <DataGrid Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Path=Faces}" AutoGenerateColumns="False" SelectionMode="Extended">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Image" Width="150" IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding Path=Original.Bitmap, Converter={StaticResource BitmapConverter}}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Path=Id}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="UserID" Binding="{Binding Path=User.Id}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Username" Binding="{Binding Path=User.Username}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Width" Binding="{Binding Path=Original.Width}" IsReadOnly="True" />
+                            <DataGridTextColumn Header="Height" Binding="{Binding Path=Original.Height}" IsReadOnly="True"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </Grid>
+
+            </controls:MetroTabItem>
+            <controls:MetroTabItem Header="User Management">
+
             </controls:MetroTabItem>
         </controls:MetroAnimatedTabControl>
     </Grid>

@@ -1,9 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using FaceDetection.Model;
 using FaceDetection.Model.Recognition;
 using FaceDetection.ViewModel.Helpers;
+using FaceDetection.ViewModel.Messages;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace FaceDetection.ViewModel
 {
@@ -105,11 +108,16 @@ namespace FaceDetection.ViewModel
         {
             var selectedImage = PreviewImages[SelectedImage];
 
-            var id = await MainViewModel.RecognitionData.InsertFace(selectedImage.Original.Bytes, selectedImage.Grayframe.Bytes, UsernameText, selectedImage.Original.Width, selectedImage.Original.Height);
+            var addedFaceData = await MainViewModel.RecognitionData.InsertFace(selectedImage.Original.Bytes, selectedImage.Grayframe.Bytes, UsernameText, selectedImage.Original.Width, selectedImage.Original.Height);
 
-            if (id != -1)
+            if (addedFaceData.FaceId != -1)
             {
-                ResultText = $"Success: ID {id}";
+                // TODO: Implement user id grabbing
+                Messenger.Default.Send(new FaceAddedMessage(
+                    new Face(selectedImage.Original.Bytes, selectedImage.Grayframe.Bytes, (int)addedFaceData.FaceId, UsernameText, (int)addedFaceData.UserId, selectedImage.Original.Width, selectedImage.Original.Height)
+                    ));
+
+                ResultText = $"Success: ID {addedFaceData.FaceId}";
                 PreviewImages.Clear();
                 PreviewHeaderVisible = false;
                 UsernameText = "";

@@ -151,6 +151,9 @@ namespace FaceDetection.ViewModel
 
         public CameraViewModel()
         {
+            if(IsInDesignMode)
+                return;
+
             SelectedCam = Properties.Settings.Default.SelectedCam;
             DetectionEnabled = Properties.Settings.Default.DetectionEnabled;
 

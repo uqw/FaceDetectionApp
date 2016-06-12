@@ -1,6 +1,8 @@
 ﻿using FaceDetection.Model.Recognition;
 using FaceDetection.ViewModel.Helpers;
+using FaceDetection.ViewModel.Messages;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace FaceDetection.ViewModel
 {
@@ -25,12 +27,24 @@ namespace FaceDetection.ViewModel
         #region Construction
         public DatabaseMangementViewModel()
         {
-            RefreshData();
+            if(!IsInDesignMode)
+                RefreshData();
+
             Faces = new AsyncObservableCollection<Face>();
+            InitialzeMessageListeners();
         }
         #endregion
 
         #region Methods
+        private void InitialzeMessageListeners()
+        {
+            Messenger.Default.Register<FaceAddedMessage>(this,
+                (message) =>
+                {
+                   Faces.Add(message.Face); 
+                });
+        }
+
         private async void RefreshData()
         {
             var data = await MainViewModel.RecognitionData.GetAllFaces();

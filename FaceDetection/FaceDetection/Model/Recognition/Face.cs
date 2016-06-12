@@ -8,8 +8,7 @@ namespace FaceDetection.Model.Recognition
         public Image<Bgr, byte> Original { get; }
         public Image<Gray, byte> Grayframe { get; }
         public int Id { get; }
-        public string Username { get; }
-        public int UserId { get; }
+        public User User { get; }
 
         public Face(byte[] original, byte[] grayframe, int id, string username, int userId, int width, int height)
         {
@@ -24,8 +23,7 @@ namespace FaceDetection.Model.Recognition
             };
 
             Id = id;
-            Username = username;
-            UserId = userId;
+            User = new User(userId, username);
         }
     }
 }

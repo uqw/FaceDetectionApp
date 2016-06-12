@@ -167,15 +167,18 @@
     </ApplicationDefinition>
     <Compile Include="Model\Camera.cs" />
     <Compile Include="Model\CameraHandler.cs" />
+    <Compile Include="Model\Recognition\AddedFaceData.cs" />
     <Compile Include="Model\Recognition\DatabaseHandler.cs" />
     <Compile Include="Model\Recognition\Face.cs" />
     <Compile Include="Model\Recognition\PreviewImage.cs" />
     <Compile Include="Model\Recognition\RecognitionData.cs" />
+    <Compile Include="Model\Recognition\User.cs" />
     <Compile Include="ViewModel\AddFaceViewModel.cs" />
     <Compile Include="ViewModel\CameraViewModel.cs" />
     <Compile Include="ViewModel\Helpers\AsyncObservableCollection.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\DatabaseMangementViewModel.cs" />
+    <Compile Include="ViewModel\Messages\FaceAddedMessage.cs" />
     <Compile Include="ViewModel\Messages\TabSelectionChangedMessage.cs" />
     <Compile Include="Views\Converters\BitmapConverter.cs" />
     <Compile Include="Views\UserControls\FaceDatabaseEntry.xaml.cs">
