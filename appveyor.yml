@@ -35,3 +35,4 @@ configuration: Debug
 
 build:
     verbosity: normal
+    project: FaceDetection/FaceDetection/FaceDetection.csproj
