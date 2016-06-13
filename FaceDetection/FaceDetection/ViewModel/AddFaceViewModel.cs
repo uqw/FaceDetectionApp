@@ -106,6 +106,9 @@ namespace FaceDetection.ViewModel
 
         private async void AddFace()
         {
+            if(SelectedImage != -1)
+                return;
+
             var selectedImage = PreviewImages[SelectedImage];
 
             var addedFaceData = await MainViewModel.RecognitionData.InsertFace(selectedImage.Original.Bytes, selectedImage.Grayframe.Bytes, UsernameText, selectedImage.Original.Width, selectedImage.Original.Height);
