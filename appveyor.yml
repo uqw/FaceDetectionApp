@@ -32,4 +32,6 @@ assembly_info:
 platform: x86
 
 configuration: Debug
+
+build:
     verbosity: normal
