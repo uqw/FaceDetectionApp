@@ -63,7 +63,7 @@ namespace FaceDetection.ViewModel
                     Properties.Settings.Default.Save();
 
                     Image = null;
-                    Capture.Dispose();
+                    Capture?.Dispose();
                     if (value != -1)
                     {
                         Capture = _cameraHandler?.CreateCapture(value);
