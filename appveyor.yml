@@ -25,9 +25,6 @@ assembly_info:
   file: AssemblyInfo.*
   assembly_version: "{version}"
   
-before_build:
-  - nuget restore
-  
 #---------------------------------#
 #       build configuration       #
 #---------------------------------#
