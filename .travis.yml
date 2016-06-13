@@ -1,5 +1,0 @@
-language: csharp
-solution: FaceDetection/FaceDetection.sln
-
-script:
-    - xbuild /p:Configuration=Debug /p:Platform=x86 /p:TargetFrameworkVersion="v4.0" FaceDetection/FaceDetection.sln
