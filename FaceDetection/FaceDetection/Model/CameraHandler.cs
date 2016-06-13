@@ -139,6 +139,12 @@ namespace FaceDetection.Model
             return imageFrame.Bitmap;
         }
 
+        /// <summary>
+        /// Makes a snapshot and gets the snippets where a face was detected.
+        /// </summary>
+        /// <param name="capture">The capture.</param>
+        /// <param name="processType">Type of the process.</param>
+        /// <returns>A <see cref="List{PreviewImage}"/> containing all captured images.</returns>
         public List<PreviewImage> GetDetectedSnippets(Capture capture, ProcessType processType)
         {
             var mat = capture?.QueryFrame();
