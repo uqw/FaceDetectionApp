@@ -29,7 +29,7 @@ before_build:
   - nuget restore FaceDetection\FaceDetection.sln -SolutionDirectory FaceDetection\
   
 after_build:
-  - "C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\devenv.exe" /build Release /project FaceDetection\FaceDetectionInstaller\FaceDetectionInstaller.vdproj
+  - cmd: '"C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\devenv.exe" /build Release /project FaceDetection\FaceDetectionInstaller\FaceDetectionInstaller.vdproj'
   
 #---------------------------------#
 #       build configuration       #
