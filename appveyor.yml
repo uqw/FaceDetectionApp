@@ -8,6 +8,10 @@
 #      general configuration      #
 #---------------------------------#
 
+# Just for troubleshooting
+init:
+- ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
 # version format
 version: 0.1.{build}-alpha
 
@@ -27,6 +31,9 @@ assembly_info:
   
 before_build:
   - nuget restore FaceDetection\FaceDetection.sln -SolutionDirectory FaceDetection\
+  
+after_build:
+  - cmd: '"C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe" FaceDetection\FaceDetection.sln /Build Release /project FaceDetection\FaceDetectionInstaller\FaceDetectionInstaller.vdproj /projectconfig Release'
   
 #---------------------------------#
 #       build configuration       #
