@@ -14,7 +14,7 @@ version: 0.1.{build}-{branch}
 branches:
   # whitelist
   only:
-   - faceDetection
+  - faceDetection
 
 image: Visual Studio 2015
 
@@ -24,6 +24,9 @@ assembly_info:
   patch: true
   file: AssemblyInfo.*
   assembly_version: "{version}"
+  
+before_build:
+  - nuget restore
   
 #---------------------------------#
 #       build configuration       #
