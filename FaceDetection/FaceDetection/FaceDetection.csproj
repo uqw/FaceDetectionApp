@@ -172,6 +172,7 @@
     <Compile Include="Model\Recognition\Face.cs" />
     <Compile Include="Model\Recognition\PreviewImage.cs" />
     <Compile Include="Model\Recognition\RecognitionData.cs" />
+    <Compile Include="Model\Recognition\RecognitionEngine.cs" />
     <Compile Include="Model\Recognition\User.cs" />
     <Compile Include="ViewModel\AddFaceViewModel.cs" />
     <Compile Include="ViewModel\CameraViewModel.cs" />

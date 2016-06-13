@@ -50,18 +50,39 @@ namespace FaceDetection.Model.Recognition
         /// <param name="userId">The user identifier.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        public Face(byte[] original, byte[] grayframe, int id, string username, int userId, int width, int height)
-        {
-            Original = new Image<Bgr, byte>(width, height)
+        public Face(byte[] original, byte[] grayframe, int id, string username, int userId, int width, int height): this
+        (
+            new Image<Bgr, byte>(width, height)
             {
                 Bytes = original
-            };
+            },
 
-            Grayframe = new Image<Gray, byte>(width, height)
+            new Image<Gray, byte>(width, height)
             {
                 Bytes = grayframe
-            };
+            },
 
+            id,
+
+            username,
+
+            userId
+        )
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Face"/> class.
+        /// </summary>
+        /// <param name="original">The original picture.</param>
+        /// <param name="grayframe">The grayframe.</param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="username">The username.</param>
+        /// <param name="userId">The user identifier.</param>
+        public Face(Image<Bgr, byte> original, Image<Gray, byte> grayframe, int id, string username, int userId)
+        {
+            Original = original;
+            Grayframe = grayframe;
             Id = id;
             User = new User(userId, username);
         }

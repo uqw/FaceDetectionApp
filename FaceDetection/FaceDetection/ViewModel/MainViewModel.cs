@@ -31,6 +31,9 @@ namespace FaceDetection.ViewModel
         #region Construction
         public MainViewModel()
         {
+            if(IsInDesignMode)
+                return;
+
             RecognitionData = new RecognitionData();
         }
         #endregion

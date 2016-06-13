@@ -27,36 +27,28 @@ namespace FaceDetection.ViewModel
         #region Construction
         public DatabaseMangementViewModel()
         {
-            if(!IsInDesignMode)
-                RefreshData();
-
             Faces = new AsyncObservableCollection<Face>();
-            InitialzeMessageListeners();
+            InitializeMessageHandlers();
         }
         #endregion
 
         #region Methods
-        private void InitialzeMessageListeners()
+        private void InitializeMessageHandlers()
         {
-            Messenger.Default.Register<FaceAddedMessage>(this,
+            /*Messenger.Default.Register<FaceAddedMessage>(this,
                 (message) =>
                 {
                    Faces.Add(message.Face); 
                 });
-        }
-
-        private async void RefreshData()
-        {
-            var data = await MainViewModel.RecognitionData.GetAllFaces();
-
-            if(data == null)
-                return;
-
-            Faces.Clear();
-            foreach (var face in data)
+            */
+            Messenger.Default.Register<TabSelectionChangedMessage>(this,
+            (message) =>
             {
-                Faces.Add(face);
-            }
+                if (message.Index == 1)
+                {
+                    Faces = new AsyncObservableCollection<Face>(MainViewModel.RecognitionData.AllFaces);
+                }
+            });
         }
         #endregion
     }

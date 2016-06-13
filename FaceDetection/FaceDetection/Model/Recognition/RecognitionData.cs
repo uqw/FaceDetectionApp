@@ -3,15 +3,24 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Threading.Tasks;
+using Emgu.CV;
+using Emgu.CV.Structure;
 using FaceDetection.ViewModel;
 
 namespace FaceDetection.Model.Recognition
 {
     internal class RecognitionData
     {
+        public List<Face> AllFaces { get; private set; }
+
         public RecognitionData()
         {
-            
+            InitFaces();
+        }
+
+        public async void InitFaces()
+        {
+            AllFaces = await GetAllFaces();
         }
 
         public async Task<List<Face>> GetAllFaces()
@@ -41,23 +50,25 @@ namespace FaceDetection.Model.Recognition
             return list;
         }
 
-        public async Task<AddedFaceData> InsertFace(byte[] original, byte[] grayframe, string username, int width, int height)
+        public async Task<AddedFaceData> InsertFace(Image<Bgr, byte> original, Image<Gray, byte> grayframe, string username)
         {
             var userId = await DatabaseHandler.InsertAsync("INSERT INTO users (username) VALUES (@username)", new SQLiteParameter("@username", username));
 
             var faceId = await DatabaseHandler.InsertAsync("INSERT INTO faces (original, grayframe, userID, width, height) VALUES (@original, @grayframe, @userId, @width, @height)",
                 new SQLiteParameter("@original", DbType.Binary)
                 {
-                    Value = original
+                    Value = original.Bytes
                 },
                 new SQLiteParameter("@grayframe", DbType.Binary)
                 {
-                    Value = grayframe
+                    Value = grayframe.Bytes
                 },
                 new SQLiteParameter("@userId", userId),
-                new SQLiteParameter("@width", width),
-                new SQLiteParameter("@height", height)
+                new SQLiteParameter("@width", original.Width),
+                new SQLiteParameter("@height", original.Height)
             );
+
+            AllFaces.Add(new Face(original, grayframe, (int)faceId, username, (int)userId));
 
             return new AddedFaceData(userId, faceId);
         }
