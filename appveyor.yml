@@ -26,7 +26,7 @@ assembly_info:
   assembly_version: "{version}"
   
 before_build:
-  - nuget restore FaceDetection/FaceDetection
+  - nuget restore FaceDetection\FaceDetection
   
 #---------------------------------#
 #       build configuration       #
