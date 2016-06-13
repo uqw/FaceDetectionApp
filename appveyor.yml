@@ -12,19 +12,19 @@
 version: 0.1.{build}-{branch}
 
 branches:
-    # whitelist
-    only:
-     - faceDetection
-     
+  # whitelist
+  only:
+   - faceDetection
+
 image: Visual Studio 2015
 
 clone_depth: 10
 
 assembly_info:
-    patch: true
-    file: AssemblyInfo.*
-    assembly_version: "{version}"
-    
+  patch: true
+  file: AssemblyInfo.*
+  assembly_version: "{version}"
+  
 #---------------------------------#
 #       build configuration       #
 #---------------------------------#
@@ -34,5 +34,5 @@ platform: x86
 configuration: Debug
 
 build:
-    verbosity: normal
-    project: FaceDetection/FaceDetection/FaceDetection.csproj
+  verbosity: normal
+  project: FaceDetection/FaceDetection/FaceDetection.csproj
