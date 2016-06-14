@@ -51,6 +51,6 @@ build:
   project: FaceDetection/FaceDetection/FaceDetection.csproj
   
 artifacts:
-  - path: FaceDetection/FaceDetection/bin/$(platform)/$(configuration)
+  - path: FaceDetection\FaceDetection\bin\$(platform)\$(configuration)
     name: portable_x86
     type: zip
