@@ -141,10 +141,27 @@
 
             </controls:MetroTabItem>
             <controls:MetroTabItem Header="User Management">
-
+                
             </controls:MetroTabItem>
             <controls:MetroTabItem Header="Settings">
-
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150*"></ColumnDefinition>
+                        <ColumnDefinition Width="500*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                    <Grid.DataContext>
+                        <vm:CameraViewModel />
+                    </Grid.DataContext>
+                    <Slider x:Name="FrontScaleSlider" Height="30" Width="100" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" ValueChanged="FrontScaleSlider_ValueChanged" Value="25"/>
+                    <Slider x:Name="ProfileScaleSlider" Height="30" Width="100" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" ValueChanged="ProfileScaleSlider_ValueChanged" Value="25"/>
+                    <Label  x:Name="FrontScaleSliderLable" Grid.Column="0" Grid.Row="1" Content="Front Scale Factor: " HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                    <Label  x:Name="ProfileScaleSliderLable" Grid.Column="0" Grid.Row="2" Content="Profile Scale Factor: " HorizontalAlignment="Right" VerticalAlignment="Top"/>
+               </Grid>
             </controls:MetroTabItem>
         </controls:MetroAnimatedTabControl>
     </Grid>
