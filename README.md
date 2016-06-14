@@ -38,6 +38,6 @@ The ui was designed with [MahApps Metro](http://mahapps.com/) which enables much
 **For those who are more intereseted into images than words.**
 
 The main view:
-![sampleimage](https://cloud.githubusercontent.com/assets/6552521/16057185/29dec3aa-3279-11e6-8d64-4f59fc86e648.png)
+![The main view](https://cloud.githubusercontent.com/assets/6552521/16057258/8811b2ac-3279-11e6-8aae-31a71161afde.png)
 
 *More images coming soon*
