@@ -1,9 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows.Threading;
-using System.Windows.Controls;
 using FaceDetection.ViewModel;
-using FaceDetection.Model;
 
 namespace FaceDetection
 {
@@ -28,24 +26,6 @@ namespace FaceDetection
                 dispatchTimer.Interval = new TimeSpan(0,0,0,0,40);
                 dispatchTimer.Start();
             }
-        }
-
-        private void MetroAnimatedTabControl_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void ProfileScaleSlider_ValueChanged(object sender, System.Windows.RoutedPropertyChangedEventArgs<double> e)
-        {
-            var slider = sender as Slider;
-            Settings.ScaleFactorProfile = 1 + slider.Value / 100;
-            
-        }
-
-        private void FrontScaleSlider_ValueChanged(object sender, System.Windows.RoutedPropertyChangedEventArgs<double> e)
-        {
-            var slider = sender as Slider;
-            Settings.ScaleFactorFront = 1 + slider.Value / 100;
         }
     }
 }

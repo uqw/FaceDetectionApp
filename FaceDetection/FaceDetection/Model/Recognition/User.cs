@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FaceDetection.Model.Recognition
+﻿namespace FaceDetection.Model.Recognition
 {
     /// <summary>
     /// Represents a user saved in the database

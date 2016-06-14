@@ -1,12 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using FaceDetection.Model;
 using FaceDetection.Model.Recognition;
 using FaceDetection.ViewModel.Helpers;
-using FaceDetection.ViewModel.Messages;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
 
 namespace FaceDetection.ViewModel
 {

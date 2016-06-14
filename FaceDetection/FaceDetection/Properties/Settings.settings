@@ -11,5 +11,11 @@
     <Setting Name="DetectionEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="ScaleFactorFront" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1.25</Value>
+    </Setting>
+    <Setting Name="ScaleFactorProfile" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1.25</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

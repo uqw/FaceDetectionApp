@@ -55,5 +55,29 @@ namespace FaceDetection.Properties {
                 this["DetectionEnabled"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.25")]
+        public double ScaleFactorFront {
+            get {
+                return ((double)(this["ScaleFactorFront"]));
+            }
+            set {
+                this["ScaleFactorFront"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.25")]
+        public double ScaleFactorProfile {
+            get {
+                return ((double)(this["ScaleFactorProfile"]));
+            }
+            set {
+                this["ScaleFactorProfile"] = value;
+            }
+        }
     }
 }

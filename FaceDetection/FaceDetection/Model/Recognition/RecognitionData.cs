@@ -5,7 +5,6 @@ using System.Data.SQLite;
 using System.Threading.Tasks;
 using Emgu.CV;
 using Emgu.CV.Structure;
-using FaceDetection.ViewModel;
 
 namespace FaceDetection.Model.Recognition
 {
