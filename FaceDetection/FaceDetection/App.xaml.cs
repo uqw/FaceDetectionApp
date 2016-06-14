@@ -33,6 +33,7 @@ namespace FaceDetection
 
         private void App_OnExit(object sender, ExitEventArgs e)
         {
+            FaceDetection.Properties.Settings.Default.Save();
             Environment.Exit(0);
         }
     }

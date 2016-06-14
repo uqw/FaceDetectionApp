@@ -49,7 +49,7 @@ build:
   
 artifacts:
   - path: FaceDetection\FaceDetection\bin\$(platform)\$(configuration)
-    name: facedetection_portable_$(platform)_$(version)
+    name: facedetection_portable_x86
     type: zip
 
 
