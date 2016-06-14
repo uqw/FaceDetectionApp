@@ -25,7 +25,7 @@
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
-        <controls:MetroAnimatedTabControl SelectedIndex="{Binding Path=SelectedTab}" Grid.Column="1" Grid.Row="1">
+        <controls:MetroAnimatedTabControl SelectedIndex="{Binding Path=SelectedTab}" Grid.Column="1" Grid.Row="1" SelectionChanged="MetroAnimatedTabControl_SelectionChanged">
             <controls:MetroTabItem Header="Camera View">
                 <Grid x:Name="CameraTab">
                     <Grid.DataContext>
@@ -112,15 +112,16 @@
                         <RowDefinition Height="15*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="5*"/>
-                        <ColumnDefinition Width="212*"/>
-                        <ColumnDefinition Width="45*"/>
+                        <ColumnDefinition Width="16*"/>
+                        <ColumnDefinition Width="84*"/>
+                        <ColumnDefinition Width="591*"/>
+                        <ColumnDefinition Width="143*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.DataContext>
                         <vm:DatabaseMangementViewModel />
                     </Grid.DataContext>
-                    
-                    <DataGrid Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Path=Faces}" AutoGenerateColumns="False" SelectionMode="Extended">
+
+                    <DataGrid Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Path=Faces}" AutoGenerateColumns="False" SelectionMode="Extended" Grid.ColumnSpan="2">
                         <DataGrid.Columns>
                             <DataGridTemplateColumn Header="Image" Width="150" IsReadOnly="True">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -140,6 +141,9 @@
 
             </controls:MetroTabItem>
             <controls:MetroTabItem Header="User Management">
+
+            </controls:MetroTabItem>
+            <controls:MetroTabItem Header="Settings">
 
             </controls:MetroTabItem>
         </controls:MetroAnimatedTabControl>

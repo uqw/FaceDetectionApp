@@ -27,5 +27,10 @@ namespace FaceDetection
                 dispatchTimer.Start();
             }
         }
+
+        private void MetroAnimatedTabControl_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
