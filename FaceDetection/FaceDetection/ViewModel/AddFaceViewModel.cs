@@ -106,7 +106,7 @@ namespace FaceDetection.ViewModel
 
         private async void AddFace()
         {
-            if(SelectedImage != -1)
+            if(SelectedImage == -1)
                 return;
 
             var selectedImage = PreviewImages[SelectedImage];
