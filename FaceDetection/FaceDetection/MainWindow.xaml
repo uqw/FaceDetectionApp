@@ -155,13 +155,17 @@
                         <RowDefinition Height="30"/>
                         <RowDefinition Height="30"/>
                         <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
                     <Slider x:Name="FrontScaleSlider" Height="30" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Value="{Binding Path=ScaleFactorFront}" Minimum="1" Maximum="2"/>
                     <Slider x:Name="ProfileScaleSlider" Height="30" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" Value="{Binding Path=ScaleFactorProfile}" Minimum="1" Maximum="2"/>
+                    <Slider x:Name="MinNeighboursSlider" Height="30" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch" Value="{Binding Path=MinNeighbours}" Minimum="1" Maximum="20"/>
                     <Label x:Name="FrontScaleSliderLable" Grid.Column="0" Grid.Row="1" Content="Front Scale Factor: " HorizontalAlignment="Right" VerticalAlignment="Center" Height="30"/>
                     <Label x:Name="ProfileScaleSliderLable" Grid.Column="0" Grid.Row="2" Content="Profile Scale Factor: " HorizontalAlignment="Right" VerticalAlignment="Center" Height="30"/>
+                    <Label x:Name="MinNeighboursSliderLable" Grid.Column="0" Grid.Row="3" Content="Minimum Neighbours: " HorizontalAlignment="Right" VerticalAlignment="Center" Height="30"/>
                     <Label Grid.Column="2" Grid.Row="1" Content="{Binding Path=ScaleFactorFront, Converter={StaticResource DoubleRoundConverter}}" />
                     <Label Grid.Column="2" Grid.Row="2" Content="{Binding Path=ScaleFactorProfile, Converter={StaticResource DoubleRoundConverter}}" />
+                    <Label Grid.Column="2" Grid.Row="3" Content="{Binding Path=MinNeighbours, Converter={StaticResource DoubleRoundConverter}}" />
                 </Grid>
             </controls:MetroTabItem>
         </controls:MetroAnimatedTabControl>

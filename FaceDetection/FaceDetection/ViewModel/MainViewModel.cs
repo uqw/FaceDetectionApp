@@ -48,6 +48,16 @@ namespace FaceDetection.ViewModel
                 Properties.Settings.Default.ScaleFactorProfile = value;
             }
         }
+
+        public int MinNeighbours
+        {
+            get { return Properties.Settings.Default.MinNeighbours; }
+            set
+            {
+                RaisePropertyChanged(nameof(MinNeighbours));
+                Properties.Settings.Default.MinNeighbours = value;
+            }
+        }
         #endregion
 
         #region Construction

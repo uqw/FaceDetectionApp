@@ -114,7 +114,7 @@ namespace FaceDetection.Model
                 // Detect the face
                 if (processType == ProcessType.Both || processType == ProcessType.Front)
                 {
-                    var facesDefault = _cascadeFrontDefault.DetectMultiScale(grayframe, Properties.Settings.Default.ScaleFactorFront, 10, Size.Empty);
+                    var facesDefault = _cascadeFrontDefault.DetectMultiScale(grayframe, Properties.Settings.Default.ScaleFactorFront, Properties.Settings.Default.MinNeighbours, Size.Empty);
                     foreach (var face in facesDefault)
                     {
                         imageFrame.Draw(face, new Bgr(Color.BlueViolet), 4);
@@ -123,7 +123,7 @@ namespace FaceDetection.Model
 
                 if (processType == ProcessType.Both || processType == ProcessType.Profile)
                 {
-                    var facesProfile = _cascadeProfileFace.DetectMultiScale(grayframe, Properties.Settings.Default.ScaleFactorProfile, 10, Size.Empty);
+                    var facesProfile = _cascadeProfileFace.DetectMultiScale(grayframe, Properties.Settings.Default.ScaleFactorProfile, Properties.Settings.Default.MinNeighbours, Size.Empty);
                     foreach (var face in facesProfile)
                     {
                         imageFrame.Draw(face, new Bgr(Color.Aqua), 4);
