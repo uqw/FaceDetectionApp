@@ -21,9 +21,10 @@ This application is currently **work in progress** and was created by students i
 ## Requirements
 
 Windows 7 (32/64-bit) + Later
+
 .NET Framework 4.5 or later (Download [here](https://www.microsoft.com/de-de/download/details.aspx?id=30653)).
 
-Currently only the source is provided. You have to compile this application for your own. 
+Currently only the application itself is provided. Installer is WIP.
 
 ### How it was made
 
