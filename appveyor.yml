@@ -46,3 +46,8 @@ configuration: Debug
 build:
   verbosity: normal
   project: FaceDetection/FaceDetection/FaceDetection.csproj
+  
+artifacts:
+  - path: FaceDetection/FaceDetection/bin/$(platform)/$(configuration)
+    name: Portable application
+    type: zip
