@@ -32,6 +32,9 @@ assembly_info:
 before_build:
   - nuget restore FaceDetection\FaceDetection.sln -SolutionDirectory FaceDetection\
   
+before_package:
+  - del /F /Q FaceDetection\FaceDetection\bin\$(platform)\$(configuration)\*.xml
+  
 #after_build:
 #  - cmd: '"C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe" FaceDetection\FaceDetection.sln /Build Release /project FaceDetection\FaceDetectionInstaller\FaceDetectionInstaller.vdproj /projectconfig Release'
   
