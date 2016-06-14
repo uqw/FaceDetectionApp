@@ -39,7 +39,9 @@ namespace FaceDetection.Model
         private static CascadeClassifier _cascadeProfileFace;
         private static CascadeClassifier _cascadeFrontDefault;
 
-        private const int ImageSizeTolerance = 100;
+        private static int _processedFrames = 0;
+        private static List<Rectangle> _lastDetectedPositionsFront;
+        private static List<Rectangle> _lastDetectedPositionsProfile;
         #endregion
 
         #region Construction                
@@ -48,6 +50,8 @@ namespace FaceDetection.Model
         /// </summary>
         static CameraHandler()
         {
+            _lastDetectedPositionsFront = new List<Rectangle>();
+            _lastDetectedPositionsProfile = new List<Rectangle>();
             InitializeFaceDetection();
         }
         #endregion
@@ -108,25 +112,51 @@ namespace FaceDetection.Model
                 return null;
 
             var grayframe = imageFrame.Convert<Gray, byte>();
-
+            
             try
             {
                 // Detect the face
                 if (processType == ProcessType.Both || processType == ProcessType.Front)
                 {
-                    var facesDefault = _cascadeFrontDefault.DetectMultiScale(grayframe, Properties.Settings.Default.ScaleFactorFront, 10, Size.Empty);
-                    foreach (var face in facesDefault)
+                    if (_processedFrames == 0)
                     {
-                        imageFrame.Draw(face, new Bgr(Color.BlueViolet), 4);
+                        var facesDefault = _cascadeFrontDefault.DetectMultiScale(grayframe, Properties.Settings.Default.ScaleFactorFront, 10, Size.Empty);
+
+                        _lastDetectedPositionsFront.Clear();
+                        _lastDetectedPositionsFront.AddRange(facesDefault);
+                        foreach (var face in facesDefault)
+                        {
+                            imageFrame.Draw(face, new Bgr(Color.BlueViolet), 4);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var face in _lastDetectedPositionsFront)
+                        {
+                            imageFrame.Draw(face, new Bgr(Color.BlueViolet), 4);
+                        }
                     }
                 }
 
                 if (processType == ProcessType.Both || processType == ProcessType.Profile)
                 {
-                    var facesProfile = _cascadeProfileFace.DetectMultiScale(grayframe, Properties.Settings.Default.ScaleFactorProfile, 10, Size.Empty);
-                    foreach (var face in facesProfile)
+                    if (_processedFrames == 0)
                     {
-                        imageFrame.Draw(face, new Bgr(Color.Aqua), 4);
+                        var facesProfile = _cascadeProfileFace.DetectMultiScale(grayframe, Properties.Settings.Default.ScaleFactorProfile, 10, Size.Empty);
+
+                        _lastDetectedPositionsProfile.Clear();
+                        _lastDetectedPositionsProfile.AddRange(facesProfile);
+                        foreach (var face in facesProfile)
+                        {
+                            imageFrame.Draw(face, new Bgr(Color.Aqua), 4);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var face in _lastDetectedPositionsProfile)
+                        {
+                            imageFrame.Draw(face, new Bgr(Color.Aqua), 4);
+                        }
                     }
                 }
             }
@@ -135,6 +165,10 @@ namespace FaceDetection.Model
                 Debug.WriteLine("Could not process image: " + ex);
                 return null;
             }
+
+            _processedFrames ++;
+            if (_processedFrames > 1)
+                _processedFrames = 0;
 
             return imageFrame.Bitmap;
         }
