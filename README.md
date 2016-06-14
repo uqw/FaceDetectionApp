@@ -32,3 +32,12 @@ This is a WPF (Windows Presentation Framework) application written in pure C#.
 The wrapper for the cam processing is EmguCV which relies on OpenCV, a C++ library handling and processing camera input quite fast.
 
 The ui was designed with [MahApps Metro](http://mahapps.com/) which enables much possibilities for interface designing. 
+
+### Preview Images
+
+**For those who are more intereseted into images than words.**
+
+The main view:
+![sampleimage](https://cloud.githubusercontent.com/assets/6552521/16057185/29dec3aa-3279-11e6-8d64-4f59fc86e648.png)
+
+*More images coming soon*
