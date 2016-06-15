@@ -11,15 +11,45 @@ namespace FaceDetection.Model.Recognition
     internal class RecognitionData
     {
         public List<Face> AllFaces { get; private set; }
+        public List<User> AllUsers { get; private set; }
 
         public RecognitionData()
         {
             InitFaces();
+            InitUsers();
+        }
+
+        public async void InitUsers()
+        {
+            AllUsers = await GetAllUsers();
         }
 
         public async void InitFaces()
         {
             AllFaces = await GetAllFaces();
+        }
+
+        public async Task<List<User>> GetAllUsers()
+        {
+            var list = new List<User>();
+
+            using (var result = await DatabaseHandler.SelectAsync("SELECT id, username, firstname, lastname FROM users"))
+            {
+                if (result == null)
+                    return list;
+
+                while(result.Read())
+                {
+                    list.Add(new User(
+                        Convert.ToInt32(result["id"]),
+                        (string) result["username"],
+                        (string) result["firstname"],
+                        (string) result["lastname"]
+                        ));
+                }
+            }
+
+            return list;
         }
 
         public async Task<List<Face>> GetAllFaces()

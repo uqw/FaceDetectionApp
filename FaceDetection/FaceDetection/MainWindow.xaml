@@ -141,7 +141,22 @@
 
             </controls:MetroTabItem>
             <controls:MetroTabItem Header="User Management">
-
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="15*"/>
+                        <RowDefinition Height="691*"/>
+                        <RowDefinition Height="15*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="16*"/>
+                        <ColumnDefinition Width="84*"/>
+                        <ColumnDefinition Width="591*"/>
+                        <ColumnDefinition Width="143*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.DataContext>
+                        <vm:UserMangementViewModel/>
+                    </Grid.DataContext>
+                </Grid>
             </controls:MetroTabItem>
             <controls:MetroTabItem Header="Settings">
                 <Grid>
