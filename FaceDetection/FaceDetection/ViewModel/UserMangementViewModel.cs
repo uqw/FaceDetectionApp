@@ -32,10 +32,11 @@ namespace FaceDetection.ViewModel
         #region Construction
         public UserMangementViewModel()
         {
-            Users = new AsyncObservableCollection<User>();
 
             if (IsInDesignMode)
                 return;
+            Users = new AsyncObservableCollection<User>();
+            InitializeMessageHandlers();
         }
         #endregion
 

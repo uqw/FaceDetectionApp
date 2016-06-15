@@ -156,6 +156,16 @@
                     <Grid.DataContext>
                         <vm:UserMangementViewModel/>
                     </Grid.DataContext>
+
+                    <DataGrid Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Path=Users}" AutoGenerateColumns="False" SelectionMode="Extended" Grid.ColumnSpan="2">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Path=Id}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Username" Binding="{Binding Path=Username}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="First Name" Binding="{Binding Path=FirstName}" IsReadOnly="True" />
+                            <DataGridTextColumn Header="Last Name" Binding="{Binding Path=LastName}" IsReadOnly="True"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
                 </Grid>
             </controls:MetroTabItem>
             <controls:MetroTabItem Header="Settings">
