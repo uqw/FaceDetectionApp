@@ -35,6 +35,14 @@ The wrapper for the cam processing is EmguCV which relies on OpenCV, a C++ libra
 
 The ui was designed with [MahApps Metro](http://mahapps.com/) which enables much possibilities for interface designing. 
 
+#### Used libraries
+- [EmguCV](http://www.emgu.com/)
+- [MahApps Metro](http://mahapps.com/)
+- [MvvmLight](http://www.mvvmlight.net/)
+- [PostSharp](https://www.postsharp.net/)
+
+
+
 ### Preview Images
 
 **For those who are more intereseted into images than words.**
