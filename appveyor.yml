@@ -24,6 +24,8 @@ image: Visual Studio 2015
 
 clone_depth: 10
 
+skip_tags: true
+
 assembly_info:
   patch: true
   file: AssemblyInfo.*
