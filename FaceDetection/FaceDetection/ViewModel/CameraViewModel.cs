@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Emgu.CV;
-using FaceDetection.Model.Recognition;
 using FaceDetection.ViewModel.Messages;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;

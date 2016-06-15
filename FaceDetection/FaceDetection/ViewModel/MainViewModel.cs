@@ -10,6 +10,8 @@ namespace FaceDetection.ViewModel
         #region Fields
         private int _selectedTab;
         public static RecognitionData RecognitionData;
+        private int _scaleFactorFront;
+        private int _scaleFactorProfile;
         #endregion
 
         #region Properties
@@ -24,6 +26,36 @@ namespace FaceDetection.ViewModel
                     RaisePropertyChanged(nameof(SelectedTab));
                     Messenger.Default.Send(new TabSelectionChangedMessage(value));
                 }
+            }
+        }
+
+        public double ScaleFactorFront
+        {
+            get { return Properties.Settings.Default.ScaleFactorFront; }
+            set
+            {
+                RaisePropertyChanged(nameof(ScaleFactorFront));
+                Properties.Settings.Default.ScaleFactorFront = value;
+            }
+        }
+
+        public double ScaleFactorProfile
+        {
+            get { return Properties.Settings.Default.ScaleFactorProfile; }
+            set
+            {
+                RaisePropertyChanged(nameof(ScaleFactorProfile));
+                Properties.Settings.Default.ScaleFactorProfile = value;
+            }
+        }
+
+        public int MinNeighbours
+        {
+            get { return Properties.Settings.Default.MinNeighbours; }
+            set
+            {
+                RaisePropertyChanged(nameof(MinNeighbours));
+                Properties.Settings.Default.MinNeighbours = value;
             }
         }
         #endregion

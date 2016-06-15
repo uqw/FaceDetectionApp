@@ -24,6 +24,8 @@ image: Visual Studio 2015
 
 clone_depth: 10
 
+skip_tags: true
+
 assembly_info:
   patch: true
   file: AssemblyInfo.*
@@ -49,7 +51,7 @@ build:
   
 artifacts:
   - path: FaceDetection\FaceDetection\bin\$(platform)\$(configuration)
-    name: portable_x86
+    name: facedetection_portable_x86
     type: zip
 
 
