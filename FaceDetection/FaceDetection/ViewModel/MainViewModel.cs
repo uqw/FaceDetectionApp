@@ -10,8 +10,6 @@ namespace FaceDetection.ViewModel
         #region Fields
         private int _selectedTab;
         public static RecognitionData RecognitionData;
-        private int _scaleFactorFront;
-        private int _scaleFactorProfile;
         #endregion
 
         #region Properties
