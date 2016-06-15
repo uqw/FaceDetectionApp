@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="DetectionSqlFile" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">FaceDatabase.sqlite</Value>
+      <Value Profile="(Default)">data\FaceDatabase.sqlite</Value>
     </Setting>
     <Setting Name="SelectedCam" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">-1</Value>
@@ -19,6 +19,9 @@
     </Setting>
     <Setting Name="MinNeighbours" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="RecognitionTrainFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)">data\RecognitionData.xml</Value>
     </Setting>
   </Settings>
 </SettingsFile>

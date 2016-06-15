@@ -4,16 +4,24 @@ using System.Data;
 using System.Data.SQLite;
 using System.Threading.Tasks;
 using Emgu.CV;
+using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 
 namespace FaceDetection.Model.Recognition
 {
     internal class RecognitionData
     {
+        #region Fields
+        private RecognitionEngine _recognitionEngine; 
+        #endregion
+
+        #region Properties
         public List<Face> AllFaces { get; private set; }
+        #endregion
 
         public RecognitionData()
         {
+            _recognitionEngine = new RecognitionEngine();
             InitFaces();
         }
 
@@ -51,6 +59,9 @@ namespace FaceDetection.Model.Recognition
 
         public async Task<AddedFaceData> InsertFace(Image<Bgr, byte> original, Image<Gray, byte> grayframe, string username)
         {
+            original = original.Resize(100, 100, Inter.Cubic);
+            grayframe = grayframe.Resize(100, 100, Inter.Cubic);
+
             var userId = await DatabaseHandler.InsertAsync("INSERT INTO users (username) VALUES (@username)", new SQLiteParameter("@username", username));
 
             var faceId = await DatabaseHandler.InsertAsync("INSERT INTO faces (original, grayframe, userID, width, height) VALUES (@original, @grayframe, @userId, @width, @height)",

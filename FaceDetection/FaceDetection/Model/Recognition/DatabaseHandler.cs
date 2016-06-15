@@ -22,7 +22,6 @@ namespace FaceDetection.Model.Recognition
                 _dbConnection =
                     new SQLiteConnection($"Data Source={Properties.Settings.Default.DetectionSqlFile};Version=3");
 
-                _dbConnection.Open();
                 return true;
             }
             catch (SQLiteException ex)
@@ -31,6 +30,18 @@ namespace FaceDetection.Model.Recognition
             }
 
             return false;
+        }
+
+        private static void OpenConnection()
+        {
+            try
+            {
+                _dbConnection?.Open();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Could not open connection: " + ex);
+            }
         }
 
         private static bool CloseConnection()
@@ -92,13 +103,15 @@ namespace FaceDetection.Model.Recognition
         {
             try
             {
+                OpenConnection();
                 var sql =
                     "CREATE TABLE IF NOT EXISTS faces (id INTEGER PRIMARY KEY AUTOINCREMENT, grayframe BLOB NOT NULL, original BLOB NOT NULL, userID INTEGER NOT NULL, width INTEGER NOT NULL, height INTEGER NOT NULL)";
 
                 using (var command = new SQLiteCommand(sql, _dbConnection))
                     command.ExecuteNonQuery();
 
-                sql = "CREATE TABLE IF NOT EXISTS users (id INTEGER NOT NULL, username TEXT(50) NOT NULL, PRIMARY KEY(id ASC))";
+                sql =
+                    "CREATE TABLE IF NOT EXISTS users (id INTEGER NOT NULL, username TEXT(50) NOT NULL, PRIMARY KEY(id ASC))";
                 using (var command = new SQLiteCommand(sql, _dbConnection))
                     command.ExecuteNonQuery();
 
@@ -107,6 +120,10 @@ namespace FaceDetection.Model.Recognition
             catch (SQLiteException ex)
             {
                 Debug.WriteLine("Could not create table in db: " + ex);
+            }
+            finally
+            {
+                CloseConnection();
             }
 
             return false;
@@ -122,6 +139,7 @@ namespace FaceDetection.Model.Recognition
         {
             try
             {
+                OpenConnection();
                 using (var command = new SQLiteCommand(statement, _dbConnection))
                 {
                     command.Parameters.AddRange(parameters);
@@ -134,6 +152,10 @@ namespace FaceDetection.Model.Recognition
             catch (SQLiteException ex)
             {
                 Debug.WriteLine($"Could not execute update statement: {statement} - Exception: {ex}");
+            }
+            finally
+            {
+                CloseConnection();
             }
 
             return false;
@@ -160,6 +182,8 @@ namespace FaceDetection.Model.Recognition
         {
             try
             {
+                OpenConnection();
+
                 using (var command = new SQLiteCommand(statement, _dbConnection))
                 {
                     command.Parameters.AddRange(parameters);
@@ -172,6 +196,10 @@ namespace FaceDetection.Model.Recognition
             catch (SQLiteException ex)
             {
                 Debug.WriteLine($"Could not execute select statement: {statement} - Exception: {ex}");
+            }
+            finally
+            {
+                CloseConnection();
             }
 
             return null;
@@ -198,7 +226,7 @@ namespace FaceDetection.Model.Recognition
         {
             try
             {
-                
+                OpenConnection();
                 using (var command = new SQLiteCommand(statement, _dbConnection))
                 {
                     command.Parameters.AddRange(parameters);
@@ -211,6 +239,10 @@ namespace FaceDetection.Model.Recognition
             catch (SQLiteException ex)
             {
                 Debug.WriteLine($"Could not execute select statement: {statement} - Exception: {ex}");
+            }
+            finally
+            {
+                CloseConnection();
             }
 
             return null;
