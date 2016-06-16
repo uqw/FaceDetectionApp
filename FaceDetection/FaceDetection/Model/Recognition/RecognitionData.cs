@@ -99,6 +99,8 @@ namespace FaceDetection.Model.Recognition
 
             AllFaces.Add(new Face(original, grayframe, (int)faceId, username, (int)userId));
 
+            AllUsers.Add(new User((int)userId, username));
+
             return new AddedFaceData(userId, faceId);
         }
     }
