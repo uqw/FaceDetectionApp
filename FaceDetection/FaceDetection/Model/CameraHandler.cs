@@ -5,7 +5,9 @@ using System.Drawing;
 using System.IO;
 using DirectShowLib;
 using Emgu.CV;
+using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using Emgu.CV.Util;
 using FaceDetection.Model.Recognition;
 
 namespace FaceDetection.Model
@@ -40,6 +42,15 @@ namespace FaceDetection.Model
         private static CascadeClassifier _cascadeFrontDefault;
         #endregion
 
+        #region Properties        
+        /// <summary>
+        /// Gets the recognition engine.
+        /// </summary>
+        /// <value>
+        /// The recognition engine.
+        /// </value>
+        #endregion
+
         #region Construction                
         /// <summary>
         /// Initializes the <see cref="CameraHandler"/> class.
@@ -55,7 +66,7 @@ namespace FaceDetection.Model
         /// Gets all connected webcams.
         /// </summary>
         /// <returns>A <see cref="List{Camera}"/> of all webcams.</returns>
-        public List<Camera> GetAllCameras()
+        public static List<Camera> GetAllCameras()
         {
             var cameras = new List<Camera>();
 
@@ -117,6 +128,21 @@ namespace FaceDetection.Model
                     foreach (var face in facesDefault)
                     {
                         imageFrame.Draw(face, new Bgr(Color.BlueViolet), 4);
+
+                        grayframe.ROI = face;
+
+                        try
+                        {
+                            var id = RecognitionEngine.RecognizeUser(grayframe.Copy().Resize(100, 100, Inter.Cubic));
+                            if (id > -1)
+                                Debug.WriteLine("Recognized user: " + id);
+                        }
+                        catch (CvException)
+                        {
+                            // ignored
+                        }
+
+                        grayframe.ROI = Rectangle.Empty;
                     }
                 }
 
@@ -128,7 +154,6 @@ namespace FaceDetection.Model
                     {
                         imageFrame.Draw(face, new Bgr(Color.Aqua), 4);
                     }
-                    
                 }
             }
             catch (Exception ex)
