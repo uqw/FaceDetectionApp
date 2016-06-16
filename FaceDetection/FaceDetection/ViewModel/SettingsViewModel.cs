@@ -10,7 +10,8 @@ namespace FaceDetection.ViewModel
     public class SettingsViewModel: ViewModelBase
     {
         #region Fields
-        private bool _restartButtonShown;
+        private bool _restartAppButtonShown;
+        private readonly int _defaultExecutionDelay;
         #endregion
 
         #region Properties
@@ -75,7 +76,8 @@ namespace FaceDetection.ViewModel
             {
                 Properties.Settings.Default.ExecutionDelay = value;
                 RaisePropertyChanged(nameof(ExecutionDelay));
-                RestartButtonShown = true;
+
+                RestartAppButtonShown = value != _defaultExecutionDelay;
             }
         }
 
@@ -85,13 +87,13 @@ namespace FaceDetection.ViewModel
         /// <value>
         ///   <c>true</c> if the restart button is shown otherwise, <c>false</c>.
         /// </value>
-        public bool RestartButtonShown
+        public bool RestartAppButtonShown
         {
-            get { return _restartButtonShown; }
+            get { return _restartAppButtonShown; }
             set
             {
-                _restartButtonShown = value;
-                RaisePropertyChanged(nameof(RestartButtonShown));
+                _restartAppButtonShown = value;
+                RaisePropertyChanged(nameof(RestartAppButtonShown));
             }
         }
 
@@ -103,6 +105,14 @@ namespace FaceDetection.ViewModel
         /// </value>
         public RelayCommand RestartCommand => new RelayCommand(Restart);
         #endregion
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SettingsViewModel"/> class.
+        /// </summary>
+        public SettingsViewModel()
+        {
+            _defaultExecutionDelay = Properties.Settings.Default.ExecutionDelay;
+        }
 
         private void Restart()
         {

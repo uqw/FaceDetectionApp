@@ -23,7 +23,7 @@ namespace FaceDetection
 
                 var dispatchTimer = new DispatcherTimer(DispatcherPriority.ApplicationIdle);
                 dispatchTimer.Tick += (s, e) => { cameraViewModel.ReadFrame(); };
-                dispatchTimer.Interval = new TimeSpan(0,0,0,0,40);
+                dispatchTimer.Interval = new TimeSpan(0,0,0,0,Properties.Settings.Default.ExecutionDelay);
                 dispatchTimer.Start();
             }
         }
