@@ -103,5 +103,17 @@ namespace FaceDetection.Properties {
                 this["RecognitionTrainFile"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("40")]
+        public int ExecutionDelay {
+            get {
+                return ((int)(this["ExecutionDelay"]));
+            }
+            set {
+                this["ExecutionDelay"] = value;
+            }
+        }
     }
 }
