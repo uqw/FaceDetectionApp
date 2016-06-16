@@ -187,6 +187,7 @@
     <Compile Include="ViewModel\DatabaseMangementViewModel.cs" />
     <Compile Include="ViewModel\Messages\FaceAddedMessage.cs" />
     <Compile Include="ViewModel\Messages\TabSelectionChangedMessage.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\UserMangementViewModel.cs" />
     <Compile Include="Views\Converters\BitmapConverter.cs" />
     <Compile Include="Views\Converters\DoubleRoundConverter.cs" />

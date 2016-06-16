@@ -26,36 +26,6 @@ namespace FaceDetection.ViewModel
                 }
             }
         }
-
-        public double ScaleFactorFront
-        {
-            get { return Properties.Settings.Default.ScaleFactorFront; }
-            set
-            {
-                RaisePropertyChanged(nameof(ScaleFactorFront));
-                Properties.Settings.Default.ScaleFactorFront = value;
-            }
-        }
-
-        public double ScaleFactorProfile
-        {
-            get { return Properties.Settings.Default.ScaleFactorProfile; }
-            set
-            {
-                RaisePropertyChanged(nameof(ScaleFactorProfile));
-                Properties.Settings.Default.ScaleFactorProfile = value;
-            }
-        }
-
-        public int MinNeighbours
-        {
-            get { return Properties.Settings.Default.MinNeighbours; }
-            set
-            {
-                RaisePropertyChanged(nameof(MinNeighbours));
-                Properties.Settings.Default.MinNeighbours = value;
-            }
-        }
         #endregion
 
         #region Construction

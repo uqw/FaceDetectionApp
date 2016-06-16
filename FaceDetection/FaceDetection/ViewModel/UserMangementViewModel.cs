@@ -46,7 +46,7 @@ namespace FaceDetection.ViewModel
             Messenger.Default.Register<TabSelectionChangedMessage>(this,
             (message) =>
             {
-                if (message.Index == 1)
+                if (message.Index == 2)
                 {
                     Users = new AsyncObservableCollection<User>(MainViewModel.RecognitionData.AllUsers);
                 }

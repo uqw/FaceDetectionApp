@@ -19,7 +19,7 @@
         /// <value>
         /// The username.
         /// </value>
-        public string Username { get; }
+        public string Username { get; set; }
 
         /// <summary>
         /// Gets the first name
