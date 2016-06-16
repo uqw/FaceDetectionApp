@@ -174,12 +174,13 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="193*"></ColumnDefinition>
                         <ColumnDefinition Width="10*"/>
-                        <ColumnDefinition Width="287*"></ColumnDefinition>
-                        <ColumnDefinition Width="64*"/>
-                        <ColumnDefinition Width="280*"/>
+                        <ColumnDefinition Width="512*"></ColumnDefinition>
+                        <ColumnDefinition Width="54*"/>
+                        <ColumnDefinition Width="65*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="9*"/>
+                        <RowDefinition Height="45*"/>
                         <RowDefinition Height="30*"/>
                         <RowDefinition Height="30*"/>
                         <RowDefinition Height="30*"/>
@@ -190,29 +191,29 @@
                         <vm:SettingsViewModel />
                     </Grid.DataContext>
 
-                    <Label x:Name="FrontScaleSliderLable" Grid.Column="0" Grid.Row="1" Content="Front Scale Factor: " HorizontalAlignment="Right" VerticalAlignment="Center" Height="30" Margin="0,1" Width="110"/>
-                    <Slider x:Name="FrontScaleSlider" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" Value="{Binding Path=ScaleFactorFront}" Minimum="1" Maximum="2" VerticalAlignment="Center" Height="16" Margin="0,8"/>
-                    <Label Grid.Column="3" Grid.Row="1" Content="{Binding Path=ScaleFactorFront, Converter={StaticResource DoubleRoundConverter}}" />
+                    <Label x:Name="FrontScaleSliderLable" Grid.Column="0" Grid.Row="2" Content="Front Scale Factor: " HorizontalAlignment="Right" VerticalAlignment="Center" Height="30" Margin="0,1,0,0" Width="110"/>
+                    <Slider x:Name="FrontScaleSlider" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Stretch" Value="{Binding Path=ScaleFactorFront}" Minimum="1" Maximum="2" VerticalAlignment="Center" Height="16" Margin="0,7,0,8"/>
+                    <Label Grid.Column="3" Grid.Row="2" Content="{Binding Path=ScaleFactorFront, Converter={StaticResource DoubleRoundConverter}}" />
 
-                    <Label x:Name="ProfileScaleSliderLable" Grid.Column="0" Grid.Row="2" Content="Profile Scale Factor: " HorizontalAlignment="Right" VerticalAlignment="Center" Height="30" Margin="0,1" Width="116"/>
-                    <Slider x:Name="ProfileScaleSlider" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Stretch" Value="{Binding Path=ScaleFactorProfile}" Minimum="1" Maximum="2" VerticalAlignment="Center" Height="16" Margin="0,8"/>
-                    <Label Grid.Column="3" Grid.Row="2" Content="{Binding Path=ScaleFactorProfile, Converter={StaticResource DoubleRoundConverter}}" />
+                    <Label x:Name="ProfileScaleSliderLable" Grid.Column="0" Grid.Row="3" Content="Profile Scale Factor: " HorizontalAlignment="Right" VerticalAlignment="Center" Height="30" Margin="0,0,0,1" Width="116"/>
+                    <Slider x:Name="ProfileScaleSlider" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Stretch" Value="{Binding Path=ScaleFactorProfile}" Minimum="1" Maximum="2" VerticalAlignment="Center" Height="16" Margin="0,8,0,7"/>
+                    <Label Grid.Column="3" Grid.Row="3" Content="{Binding Path=ScaleFactorProfile, Converter={StaticResource DoubleRoundConverter}}" />
 
-                    <Label x:Name="MinNeighboursSliderLable" Grid.Column="0" Grid.Row="3" Content="Minimum Neighbours: " HorizontalAlignment="Right" VerticalAlignment="Center" Height="30" Margin="0,1" Width="132"/>
-                    <Slider x:Name="MinNeighboursSlider" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Stretch" Value="{Binding Path=MinNeighbours}" Minimum="1" Maximum="20" VerticalAlignment="Center" Height="16" Margin="0,8"/>
-                    <Label Grid.Column="3" Grid.Row="3" Content="{Binding Path=MinNeighbours}" />
+                    <Label x:Name="MinNeighboursSliderLable" Grid.Column="0" Grid.Row="4" Content="Minimum Neighbours: " HorizontalAlignment="Right" VerticalAlignment="Center" Height="30" Margin="0,1,0,0" Width="132"/>
+                    <Slider x:Name="MinNeighboursSlider" Grid.Column="2" Grid.Row="4" HorizontalAlignment="Stretch" Value="{Binding Path=MinNeighbours}" Minimum="1" Maximum="20" VerticalAlignment="Center" Height="16" Margin="0,7,0,8"/>
+                    <Label Grid.Column="3" Grid.Row="4" Content="{Binding Path=MinNeighbours}" />
 
-                    <Label Grid.Column="0" Grid.Row="4" Content="Loop delay time (ms): " HorizontalAlignment="Right" VerticalAlignment="Center" Height="30" Width="132" Margin="0,1" />
-                    <Slider Grid.Column="2" Grid.Row="4" HorizontalAlignment="Stretch" Value="{Binding Path=ExecutionDelay}" Minimum="20" Maximum="60" VerticalAlignment="Center" Height="16" Margin="0,8"/>
-                    <Label Grid.Column="3" Grid.Row="4" Content="{Binding Path=ExecutionDelay}" ContentStringFormat="{}{0} ms"/>
+                    <Label Grid.Column="0" Grid.Row="5" Content="Loop delay time (ms): " HorizontalAlignment="Right" VerticalAlignment="Center" Height="30" Width="132" Margin="0,0,0,1" />
+                    <Slider Grid.Column="2" Grid.Row="5" HorizontalAlignment="Stretch" Value="{Binding Path=ExecutionDelay}" Minimum="20" Maximum="60" VerticalAlignment="Center" Height="16" Margin="0,8,0,7"/>
+                    <Label Grid.Column="3" Grid.Row="5" Content="{Binding Path=ExecutionDelay}" ContentStringFormat="{}{0} ms"/>
 
-                    <Grid Grid.Column="4" Grid.Row="4" Visibility="{Binding Path=RestartAppButtonShown, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Visibility="{Binding Path=RestartNeeded, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="27*"/>
                             <ColumnDefinition Width="43*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Restart required!" VerticalAlignment="Center" Height="26" Margin="0,3"/>
-                        <Button Grid.Column="1" Content="Restart app" HorizontalAlignment="Left" Height="24" VerticalAlignment="Center" Width="110" Command="{Binding Path=RestartCommand}" Margin="0,4"/>
+                        <Label Grid.Column="0" Content="Restart required!" VerticalAlignment="Center" Height="26" Margin="0,3" Foreground="Red" FontWeight="Bold"/>
+                        <Button Grid.Column="1" Content="Restart app" HorizontalAlignment="Right" Height="24" VerticalAlignment="Center" Width="110" Command="{Binding Path=RestartCommand}" Margin="0,4"/>
                     </Grid>
                 </Grid>
             </controls:MetroTabItem>
