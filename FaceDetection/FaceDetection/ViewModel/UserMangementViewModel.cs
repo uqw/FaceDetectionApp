@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace FaceDetection.ViewModel 
 {
-    class UserMangementViewModel: ViewModelBase
+    class UserMangementViewModel : ViewModelBase
     {
         #region Fields
         private AsyncObservableCollection<User> _users;
@@ -20,7 +20,7 @@ namespace FaceDetection.ViewModel
         #region Properties
         public AsyncObservableCollection<User> Users
         {
-            get { return _users;  }
+            get { return _users; }
             set
             {
                 _users = value;
@@ -30,11 +30,13 @@ namespace FaceDetection.ViewModel
         #endregion
 
         #region Construction
-        public UserMangementViewModel() {
-            Users = new AsyncObservableCollection<User>();
+        public UserMangementViewModel()
+        {
 
             if (IsInDesignMode)
                 return;
+            Users = new AsyncObservableCollection<User>();
+            InitializeMessageHandlers();
         }
         #endregion
 
