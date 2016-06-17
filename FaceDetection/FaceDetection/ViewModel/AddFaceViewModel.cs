@@ -111,15 +111,10 @@ namespace FaceDetection.ViewModel
 
             var selectedImage = PreviewImages[SelectedImage];
 
-            var addedFaceData = await MainViewModel.RecognitionData.InsertFace(selectedImage.Original, selectedImage.Grayframe, UsernameText);
+            var addedFaceData = await RecognitionData.InsertFace(selectedImage.Original, selectedImage.Grayframe, UsernameText);
 
             if (addedFaceData.FaceId != -1)
             {
-                /* Messenger.Default.Send(new FaceAddedMessage(
-                    new Face(selectedImage.Original.Bytes, selectedImage.Grayframe.Bytes, (int)addedFaceData.FaceId, UsernameText, (int)addedFaceData.UserId, selectedImage.Original.Width, selectedImage.Original.Height)
-                    ));
-                */
-
                 ResultText = $"Success: ID {addedFaceData.FaceId}";
                 PreviewImages.Clear();
                 PreviewHeaderVisible = false;

@@ -12,34 +12,39 @@ using Emgu.CV.Structure;
 
 namespace FaceDetection.Model.Recognition
 {
-    internal class RecognitionData
+    internal static class RecognitionData
     {
-        public ObservableCollection<Face> AllFaces { get; private set; }
-        public List<User> AllUsers { get; private set; }
+        public static ObservableCollection<Face> AllFaces { get; private set; }
+        public static List<User> AllUsers { get; private set; }
 
-        public RecognitionData()
+        static RecognitionData()
         {
             InitFaces();
             InitUsers();
         }
 
-        private void AllFacesOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        private static void AllFacesOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
             RecognitionEngine.TrainRecognizer(AllFaces.ToList());
         }
 
-        public async void InitUsers()
+        public static async void InitUsers()
         {
             AllUsers = await GetAllUsers();
         }
 
-        public async void InitFaces()
+        public static async void InitFaces()
         {
             AllFaces = new ObservableCollection<Face>(await GetAllFaces());
             AllFaces.CollectionChanged += AllFacesOnCollectionChanged;
         }
 
-        public async Task<List<User>> GetAllUsers()
+        public static User GetUser(int id)
+        {
+            return AllUsers.Find(user => user.Id == id);
+        }
+
+        public static async Task<List<User>> GetAllUsers()
         {
             var list = new List<User>();
 
@@ -62,7 +67,7 @@ namespace FaceDetection.Model.Recognition
             return list;
         }
 
-        public async Task<List<Face>> GetAllFaces()
+        public static async Task<List<Face>> GetAllFaces()
         {
             var list = new List<Face>();
 
@@ -89,7 +94,7 @@ namespace FaceDetection.Model.Recognition
             return list;
         }
 
-        public async Task<AddedFaceData> InsertFace(Image<Bgr, byte> original, Image<Gray, byte> grayframe, string username)
+        public static async Task<AddedFaceData> InsertFace(Image<Bgr, byte> original, Image<Gray, byte> grayframe, string username)
         {
             original = original.Resize(100, 100, Inter.Cubic);
             grayframe = grayframe.Resize(100, 100, Inter.Cubic);

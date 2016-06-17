@@ -48,7 +48,7 @@ namespace FaceDetection.ViewModel
             {
                 if (message.Index == 2)
                 {
-                    Users = new AsyncObservableCollection<User>(MainViewModel.RecognitionData.AllUsers);
+                    Users = new AsyncObservableCollection<User>(RecognitionData.AllUsers);
                 }
             });
         }

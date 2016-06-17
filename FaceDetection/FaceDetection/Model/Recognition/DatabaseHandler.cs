@@ -22,15 +22,20 @@ namespace FaceDetection.Model.Recognition
                 _dbConnection =
                     new SQLiteConnection($"Data Source={Properties.Settings.Default.DetectionSqlFile};Version=3");
 
-                _dbConnection.Open();
+                OpenConnection();
                 return true;
             }
-            catch (SQLiteException ex)
+            catch (Exception ex)
             {
                 Debug.WriteLine("Could not initialize db connection: " + ex);
             }
 
             return false;
+        }
+
+        private static void OpenConnection()
+        {
+            _dbConnection?.Open();
         }
 
         private static bool CloseConnection()
@@ -53,8 +58,11 @@ namespace FaceDetection.Model.Recognition
             try
             {
                 if (!File.Exists(Properties.Settings.Default.DetectionSqlFile))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(Properties.Settings.Default.DetectionSqlFile));
                     SQLiteConnection.CreateFile(Properties.Settings.Default.DetectionSqlFile);
-
+                }
+                    
                 return InitializeConnection() && CreateTables();
             }
             catch (Exception ex)
@@ -98,7 +106,8 @@ namespace FaceDetection.Model.Recognition
                 using (var command = new SQLiteCommand(sql, _dbConnection))
                     command.ExecuteNonQuery();
 
-                sql = "CREATE TABLE IF NOT EXISTS users (id INTEGER NOT NULL, username TEXT(50) NOT NULL, firstname TEXT(50) DEFAULT 'Unset', lastname TEXT(50) DEFAULT 'Unset', PRIMARY KEY(id ASC))";
+                sql =
+                    "CREATE TABLE IF NOT EXISTS users (id INTEGER NOT NULL, username TEXT(50) NOT NULL, firstname TEXT(50) DEFAULT 'Unset', lastname TEXT(50) DEFAULT 'Unset', PRIMARY KEY(id ASC))";
                 using (var command = new SQLiteCommand(sql, _dbConnection))
                     command.ExecuteNonQuery();
 
@@ -198,7 +207,6 @@ namespace FaceDetection.Model.Recognition
         {
             try
             {
-                
                 using (var command = new SQLiteCommand(statement, _dbConnection))
                 {
                     command.Parameters.AddRange(parameters);

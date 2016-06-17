@@ -40,7 +40,7 @@ namespace FaceDetection.ViewModel
             {
                 if (message.Index == 1)
                 {
-                    Faces = new AsyncObservableCollection<Face>(MainViewModel.RecognitionData.AllFaces);
+                    Faces = new AsyncObservableCollection<Face>(RecognitionData.AllFaces);
                 }
             });
         }

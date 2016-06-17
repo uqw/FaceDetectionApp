@@ -135,7 +135,11 @@ namespace FaceDetection.Model
                         {
                             var id = RecognitionEngine.RecognizeUser(grayframe.Copy().Resize(100, 100, Inter.Cubic));
                             if (id > -1)
-                                Debug.WriteLine("Recognized user: " + id);
+                            {
+                                var user = RecognitionData.GetUser(id);
+                                if(user != null)
+                                    imageFrame.Draw(user.Username , new Point(face.Left, face.Top), FontFace.HersheyPlain, 2, new Bgr(Color.BlanchedAlmond));
+                            }
                         }
                         catch (CvException)
                         {

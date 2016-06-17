@@ -9,7 +9,6 @@ namespace FaceDetection.ViewModel
     {
         #region Fields
         private int _selectedTab;
-        public static RecognitionData RecognitionData;
         #endregion
 
         #region Properties
@@ -31,10 +30,7 @@ namespace FaceDetection.ViewModel
         #region Construction
         public MainViewModel()
         {
-            if(IsInDesignMode)
-                return;
-
-            RecognitionData = new RecognitionData();
+            
         }
         #endregion
 
