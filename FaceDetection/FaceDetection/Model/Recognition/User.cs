@@ -42,6 +42,8 @@
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="username">The username.</param>
+        /// <param name="firstname">The first name.</param>
+        /// <param name="lastname">The last name.</param>
         public User(int id, string username, string firstname, string lastname)
         {
             Id = id;
@@ -50,7 +52,12 @@
             LastName = lastname;
         }
 
-        public User(int id, string username): this(id, username, "Unset", "Unset")
+        /// <summary>
+        /// Initializes a new instance of the <see cref="User"/> class.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="username">The username.</param>
+        public User(int id, string username): this(id, username, "", "")
         {
 
         }
