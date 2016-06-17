@@ -20,7 +20,6 @@ namespace FaceDetection.ViewModel
         private ObservableCollection<Camera> _availableCameras;
         private Bitmap _image;
         private int _selectedCam;
-        private readonly CameraHandler _cameraHandler;
         private int _fps;
         private readonly Stopwatch _fpsStopwatch;
         private readonly Stopwatch _delayStopwatch;
@@ -65,7 +64,7 @@ namespace FaceDetection.ViewModel
                     Capture?.Dispose();
                     if (value != -1)
                     {
-                        Capture = _cameraHandler?.CreateCapture(value);
+                        Capture = CameraHandler?.CreateCapture(value);
                     }
                 }
             }
@@ -144,6 +143,8 @@ namespace FaceDetection.ViewModel
             }
         }
 
+        public static CameraHandler CameraHandler { get; private set; }
+
         public RelayCommand RefreshCamerasCommand => new RelayCommand(RefreshCameras);
         public RelayCommand AddFaceCommand => new RelayCommand(AddFace);
         #endregion
@@ -159,8 +160,8 @@ namespace FaceDetection.ViewModel
             Fps = 0;
             ProcessType = CameraHandler.ProcessType.Front;
 
-            _cameraHandler = new CameraHandler();
-            Capture = _cameraHandler.CreateCapture(SelectedCam);
+            CameraHandler = new CameraHandler();
+            Capture = CameraHandler.CreateCapture(SelectedCam);
             _fpsStopwatch = Stopwatch.StartNew();
             _delayStopwatch = new Stopwatch();
 
@@ -187,7 +188,7 @@ namespace FaceDetection.ViewModel
             if (SelectedCam != -1 && _tabActive)
             {
                 _delayStopwatch.Restart();
-                Image = DetectionEnabled ? _cameraHandler.ProcessImage(Capture, ProcessType) : Capture?.QueryFrame().Bitmap;
+                Image = DetectionEnabled ? CameraHandler.ProcessImage(Capture, ProcessType) : Capture?.QueryFrame().Bitmap;
                 _fps++;
 
                 if (_fpsStopwatch.ElapsedTicks / TimeSpan.TicksPerMillisecond > 250)
@@ -202,7 +203,7 @@ namespace FaceDetection.ViewModel
 
         private void RefreshCameras()
         {
-            AvailableCameras = new ObservableCollection<Camera>(_cameraHandler.GetAllCameras());
+            AvailableCameras = new ObservableCollection<Camera>(CameraHandler.GetAllCameras());
         }
 
         /// <summary>
@@ -211,7 +212,7 @@ namespace FaceDetection.ViewModel
         /// <exception cref="NotImplementedException"></exception>
         public void Dispose()
         {
-            _cameraHandler?.Dispose();
+            CameraHandler?.Dispose();
             Capture?.Dispose();
         }
 

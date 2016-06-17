@@ -5,7 +5,9 @@ using System.Drawing;
 using System.IO;
 using DirectShowLib;
 using Emgu.CV;
+using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using Emgu.CV.Util;
 using FaceDetection.Model.Recognition;
 
 namespace FaceDetection.Model
@@ -38,10 +40,15 @@ namespace FaceDetection.Model
         #region Fields
         private static CascadeClassifier _cascadeProfileFace;
         private static CascadeClassifier _cascadeFrontDefault;
+        #endregion
 
-        private static int _processedFrames = 0;
-        private static List<Rectangle> _lastDetectedPositionsFront;
-        private static List<Rectangle> _lastDetectedPositionsProfile;
+        #region Properties        
+        /// <summary>
+        /// Gets the recognition engine.
+        /// </summary>
+        /// <value>
+        /// The recognition engine.
+        /// </value>
         #endregion
 
         #region Construction                
@@ -50,8 +57,6 @@ namespace FaceDetection.Model
         /// </summary>
         static CameraHandler()
         {
-            _lastDetectedPositionsFront = new List<Rectangle>();
-            _lastDetectedPositionsProfile = new List<Rectangle>();
             InitializeFaceDetection();
         }
         #endregion
@@ -61,7 +66,7 @@ namespace FaceDetection.Model
         /// Gets all connected webcams.
         /// </summary>
         /// <returns>A <see cref="List{Camera}"/> of all webcams.</returns>
-        public List<Camera> GetAllCameras()
+        public static List<Camera> GetAllCameras()
         {
             var cameras = new List<Camera>();
 
@@ -118,45 +123,36 @@ namespace FaceDetection.Model
                 // Detect the face
                 if (processType == ProcessType.Both || processType == ProcessType.Front)
                 {
-                    if (_processedFrames == 0)
-                    {
-                        var facesDefault = _cascadeFrontDefault.DetectMultiScale(grayframe, Properties.Settings.Default.ScaleFactorFront, 10, Size.Empty);
+                    var facesDefault = _cascadeFrontDefault.DetectMultiScale(grayframe, Properties.Settings.Default.ScaleFactorFront, 10, Size.Empty);
 
-                        _lastDetectedPositionsFront.Clear();
-                        _lastDetectedPositionsFront.AddRange(facesDefault);
-                        foreach (var face in facesDefault)
-                        {
-                            imageFrame.Draw(face, new Bgr(Color.BlueViolet), 4);
-                        }
-                    }
-                    else
+                    foreach (var face in facesDefault)
                     {
-                        foreach (var face in _lastDetectedPositionsFront)
+                        imageFrame.Draw(face, new Bgr(Color.BlueViolet), 4);
+
+                        grayframe.ROI = face;
+
+                        try
                         {
-                            imageFrame.Draw(face, new Bgr(Color.BlueViolet), 4);
+                            var id = RecognitionEngine.RecognizeUser(grayframe.Copy().Resize(100, 100, Inter.Cubic));
+                            if (id > -1)
+                                Debug.WriteLine("Recognized user: " + id);
                         }
+                        catch (CvException)
+                        {
+                            // ignored
+                        }
+
+                        grayframe.ROI = Rectangle.Empty;
                     }
                 }
 
                 if (processType == ProcessType.Both || processType == ProcessType.Profile)
                 {
-                    if (_processedFrames == 0)
-                    {
-                        var facesProfile = _cascadeProfileFace.DetectMultiScale(grayframe, Properties.Settings.Default.ScaleFactorProfile, 10, Size.Empty);
+                    var facesProfile = _cascadeProfileFace.DetectMultiScale(grayframe, Properties.Settings.Default.ScaleFactorProfile, 10, Size.Empty);
 
-                        _lastDetectedPositionsProfile.Clear();
-                        _lastDetectedPositionsProfile.AddRange(facesProfile);
-                        foreach (var face in facesProfile)
-                        {
-                            imageFrame.Draw(face, new Bgr(Color.Aqua), 4);
-                        }
-                    }
-                    else
+                    foreach (var face in facesProfile)
                     {
-                        foreach (var face in _lastDetectedPositionsProfile)
-                        {
-                            imageFrame.Draw(face, new Bgr(Color.Aqua), 4);
-                        }
+                        imageFrame.Draw(face, new Bgr(Color.Aqua), 4);
                     }
                 }
             }
@@ -165,10 +161,6 @@ namespace FaceDetection.Model
                 Debug.WriteLine("Could not process image: " + ex);
                 return null;
             }
-
-            _processedFrames ++;
-            if (_processedFrames > 1)
-                _processedFrames = 0;
 
             return imageFrame.Bitmap;
         }

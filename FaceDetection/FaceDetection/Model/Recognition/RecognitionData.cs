@@ -1,22 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Data;
 using System.Data.SQLite;
+using System.Linq;
 using System.Threading.Tasks;
 using Emgu.CV;
+using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 
 namespace FaceDetection.Model.Recognition
 {
     internal class RecognitionData
     {
-        public List<Face> AllFaces { get; private set; }
+        public ObservableCollection<Face> AllFaces { get; private set; }
         public List<User> AllUsers { get; private set; }
 
         public RecognitionData()
         {
             InitFaces();
             InitUsers();
+        }
+
+        private void AllFacesOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        {
+            RecognitionEngine.TrainRecognizer(AllFaces.ToList());
         }
 
         public async void InitUsers()
@@ -26,7 +35,8 @@ namespace FaceDetection.Model.Recognition
 
         public async void InitFaces()
         {
-            AllFaces = await GetAllFaces();
+            AllFaces = new ObservableCollection<Face>(await GetAllFaces());
+            AllFaces.CollectionChanged += AllFacesOnCollectionChanged;
         }
 
         public async Task<List<User>> GetAllUsers()
@@ -81,6 +91,8 @@ namespace FaceDetection.Model.Recognition
 
         public async Task<AddedFaceData> InsertFace(Image<Bgr, byte> original, Image<Gray, byte> grayframe, string username)
         {
+            original = original.Resize(100, 100, Inter.Cubic);
+
             var userId = await DatabaseHandler.InsertAsync("INSERT INTO users (username) VALUES (@username)", new SQLiteParameter("@username", username));
 
             var faceId = await DatabaseHandler.InsertAsync("INSERT INTO faces (original, grayframe, userID, width, height) VALUES (@original, @grayframe, @userId, @width, @height)",
@@ -98,6 +110,8 @@ namespace FaceDetection.Model.Recognition
             );
 
             AllFaces.Add(new Face(original, grayframe, (int)faceId, username, (int)userId));
+
+            AllUsers.Add(new User((int)userId, username));
 
             return new AddedFaceData(userId, faceId);
         }

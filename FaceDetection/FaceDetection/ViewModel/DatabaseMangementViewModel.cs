@@ -35,12 +35,6 @@ namespace FaceDetection.ViewModel
         #region Methods
         private void InitializeMessageHandlers()
         {
-            /*Messenger.Default.Register<FaceAddedMessage>(this,
-                (message) =>
-                {
-                   Faces.Add(message.Face); 
-                });
-            */
             Messenger.Default.Register<TabSelectionChangedMessage>(this,
             (message) =>
             {

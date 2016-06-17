@@ -8,14 +8,20 @@ using Emgu.CV.Structure;
 
 namespace FaceDetection.Model.Recognition
 {
-    internal class RecognitionEngine
+    /// <summary>
+    /// The engine for face recognition
+    /// </summary>
+    public static class RecognitionEngine
     {
         #region Fields
-        private FaceRecognizer _faceRecognizer;
+        private static FaceRecognizer _faceRecognizer;
         #endregion
 
-        #region Construction
-        public RecognitionEngine()
+        #region Construction        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RecognitionEngine"/> class.
+        /// </summary>
+        static RecognitionEngine()
         {
             InitializeFaceRecognizer();
         }
@@ -23,7 +29,7 @@ namespace FaceDetection.Model.Recognition
 
         #region Methods
 
-        private void InitializeFaceRecognizer()
+        private static void InitializeFaceRecognizer()
         {
             _faceRecognizer = new EigenFaceRecognizer(256, double.PositiveInfinity);
             if (!File.Exists(Properties.Settings.Default.RecognitionTrainFile))
@@ -50,7 +56,11 @@ namespace FaceDetection.Model.Recognition
             }
         }
 
-        public void TrainRecognizer(List<Face> faces)
+        /// <summary>
+        /// Trains the recognizer.
+        /// </summary>
+        /// <param name="faces">The faces.</param>
+        public static void TrainRecognizer(List<Face> faces)
         {
             var images = new Image<Gray, byte>[faces.Count];
             var labels = new int[faces.Count];
@@ -67,7 +77,12 @@ namespace FaceDetection.Model.Recognition
             _faceRecognizer.Save(Properties.Settings.Default.RecognitionTrainFile);
         }
 
-        public int RecognizeUser(Image<Gray, byte> grayframe)
+        /// <summary>
+        /// Recognizes the user.
+        /// </summary>
+        /// <param name="grayframe">The grayframe.</param>
+        /// <returns></returns>
+        public static int RecognizeUser(Image<Gray, byte> grayframe)
         {
             var result = _faceRecognizer.Predict(grayframe);
 

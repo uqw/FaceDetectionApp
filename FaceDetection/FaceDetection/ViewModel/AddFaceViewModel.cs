@@ -106,6 +106,9 @@ namespace FaceDetection.ViewModel
             if(SelectedImage == -1)
                 return;
 
+            if (string.IsNullOrWhiteSpace(UsernameText))
+                return;
+
             var selectedImage = PreviewImages[SelectedImage];
 
             var addedFaceData = await MainViewModel.RecognitionData.InsertFace(selectedImage.Original, selectedImage.Grayframe, UsernameText);
