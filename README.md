@@ -12,9 +12,9 @@ This application is currently **work in progress** and was created by students i
 - Detect faces within this live feed (front, profile or both possible)
 - Save faces into a sqlite database for recognition
 - Manage all saved faces
+- Recognition for saved faces
 
 ## Planned Features
-- Recognition for saved faces
 - Auto learning processs saving faces automatically into the database and process them
 - Performance optimizations
 
