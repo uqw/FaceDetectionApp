@@ -43,12 +43,7 @@ namespace FaceDetection.Model
         #endregion
 
         #region Properties        
-        /// <summary>
-        /// Gets the recognition engine.
-        /// </summary>
-        /// <value>
-        /// The recognition engine.
-        /// </value>
+        
         #endregion
 
         #region Construction                
