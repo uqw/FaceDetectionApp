@@ -154,5 +154,17 @@ namespace FaceDetection.Properties {
                 return ((string)(this["RepoName"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("facedetection_portable_x86")]
+        public string AssetName {
+            get {
+                return ((string)(this["AssetName"]));
+            }
+            set {
+                this["AssetName"] = value;
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -19,13 +20,61 @@ namespace FaceDetection.Model.Updater
     /// </summary>
     public class UpdateHandler
     {
+        #region Events
+        #region UpdateDownloadCompleted
+        public event UpdateDownloadCompletedEventHandler UpdateDownloadCompleted;
+        public delegate void UpdateDownloadCompletedEventHandler(object sender, UpdateDownloadCompletedArgs e);
+        public class UpdateDownloadCompletedArgs : EventArgs
+        {
+            public bool Aborted { get; }
+            public Exception Exception { get; }
+
+            public UpdateDownloadCompletedArgs(bool aborted, Exception exception)
+            {
+                Aborted = aborted;
+                Exception = exception;
+            }
+        }
+
+        protected virtual void OnUpdateDownloadCompleted(UpdateDownloadCompletedArgs e)
+        {
+            UpdateDownloadCompleted?.Invoke(this, e);
+        }
+        #endregion
+
+        #region UpdateDownloadProgressChanged
+        public event UpdateDownloadProgressChangedEventhandler UpdateDownloadProgressChanged;
+        public delegate void UpdateDownloadProgressChangedEventhandler(object sender, UpdateDownloadProgressChangedArgs e);
+        public class UpdateDownloadProgressChangedArgs : EventArgs
+        {
+            public double MegabytesToReceive { get; }
+            public double MegabytesReceived { get; }
+            public int ProgressPercentage { get; }
+
+            public UpdateDownloadProgressChangedArgs(long bytesToReceive, long bytesReceived, int progressPercentage)
+            {
+                MegabytesToReceive = Math.Round(bytesToReceive/1000000.0, 2, MidpointRounding.ToEven);
+                MegabytesReceived = Math.Round(bytesReceived/1000000.0, 2, MidpointRounding.ToEven);
+                ProgressPercentage = progressPercentage;
+            }
+        }
+
+        protected virtual void OnUpdateDownloadProgressChanged(UpdateDownloadProgressChangedArgs e)
+        {
+            UpdateDownloadProgressChanged?.Invoke(this, e);
+        }
+        #endregion
+        #endregion
+
         #region Locals
+        private string _downloadUrl;
+        private WebClient _downloader;
         #endregion
 
         #region Properties
         public Version LocaVersion { get; }
         public Version RemoteVersion { get; private set; }
-        #endregion        
+        #endregion
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateHandler"/> class.
         /// </summary>
@@ -61,6 +110,14 @@ namespace FaceDetection.Model.Updater
 
                 var json = JObject.Parse(result.Content);
                 RemoteVersion = ParseVersion(json["tag_name"].ToString());
+                foreach (var child in json["assets"].Children())
+                {
+                    if (child["name"].ToString().Contains(Properties.Settings.Default.AssetName))
+                    {
+                        _downloadUrl = child["browser_download_url"].ToString();
+                        break;
+                    }
+                }
                 return LocaVersion.CompareTo(RemoteVersion) > 0;
             }
             catch (Exception ex)
@@ -69,6 +126,48 @@ namespace FaceDetection.Model.Updater
             }
 
             return false;
+        }
+
+        public void CancelDownload()
+        {
+            _downloader?.CancelAsync();
+        }
+
+        public async Task DownloadUpdate()
+        {
+            try
+            {
+                using (_downloader = new WebClient())
+                {
+                    _downloader.DownloadDataCompleted += (sender, args) =>
+                    {
+                        try
+                        {
+                            var file = Path.GetTempFileName();
+                            File.WriteAllBytes(file, args.Result);
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine("Error saving download result: " + ex);
+                        }
+
+                        OnUpdateDownloadCompleted(new UpdateDownloadCompletedArgs(args.Cancelled, args.Error));
+                    };
+
+                    _downloader.DownloadProgressChanged += (sender, args) =>
+                    {
+                        OnUpdateDownloadProgressChanged(new UpdateDownloadProgressChangedArgs(args.TotalBytesToReceive, args.BytesReceived, args.ProgressPercentage));
+                    };
+
+                    await _downloader.DownloadDataTaskAsync(new Uri(_downloadUrl));
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Failed to download update: " + ex);
+                OnUpdateDownloadCompleted(new UpdateDownloadCompletedArgs(true, ex));
+            }
+            
         }
 
         private Version ParseVersion(string versionText)

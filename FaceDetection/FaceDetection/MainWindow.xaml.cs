@@ -19,11 +19,12 @@ namespace FaceDetection
             InitializeComponent();
 
             ((MainViewModel) DataContext).DialogCoordinator = DialogCoordinator.Instance;
+            ((MainViewModel)DataContext).DialogCoordinatorRegistered = true;
 
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 var cameraViewModel = (CameraViewModel)CameraTab.DataContext;
-
+                
                 var dispatchTimer = new DispatcherTimer(DispatcherPriority.ApplicationIdle);
                 dispatchTimer.Tick += (s, e) => { cameraViewModel.ReadFrame(); };
                 dispatchTimer.Interval = new TimeSpan(0,0,0,0,Properties.Settings.Default.ExecutionDelay);
