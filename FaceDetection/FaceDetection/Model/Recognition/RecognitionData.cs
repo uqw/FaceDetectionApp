@@ -96,8 +96,10 @@ namespace FaceDetection.Model.Recognition
 
         public static async Task<AddedFaceData> InsertFace(Image<Bgr, byte> original, Image<Gray, byte> grayframe, string username)
         {
-            original = original.Resize(100, 100, Inter.Cubic);
-            grayframe = grayframe.Resize(100, 100, Inter.Cubic);
+            var size = Properties.Settings.Default.RecognitionImageSize;
+
+            original = original.Resize(size, size, Inter.Cubic);
+            grayframe = grayframe.Resize(size, size, Inter.Cubic);
 
             var userId = await DatabaseHandler.InsertAsync("INSERT INTO users (username) VALUES (@username)", new SQLiteParameter("@username", username));
 

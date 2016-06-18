@@ -124,24 +124,7 @@ namespace FaceDetection.Model
                     {
                         imageFrame.Draw(face, new Bgr(Color.BlueViolet), 4);
 
-                        grayframe.ROI = face;
-
-                        try
-                        {
-                            var id = RecognitionEngine.RecognizeUser(grayframe.Copy().Resize(100, 100, Inter.Cubic));
-                            if (id > -1)
-                            {
-                                var user = RecognitionData.GetUser(id);
-                                if(user != null)
-                                    imageFrame.Draw(user.Username , new Point(face.Left, face.Top), FontFace.HersheyPlain, 2, new Bgr(Color.BlanchedAlmond));
-                            }
-                        }
-                        catch (CvException)
-                        {
-                            // ignored
-                        }
-
-                        grayframe.ROI = Rectangle.Empty;
+                        RecognizeUser(ref imageFrame, grayframe, face);
                     }
                 }
 
@@ -152,6 +135,8 @@ namespace FaceDetection.Model
                     foreach (var face in facesProfile)
                     {
                         imageFrame.Draw(face, new Bgr(Color.Aqua), 4);
+
+                        RecognizeUser(ref imageFrame, grayframe, face);
                     }
                 }
             }
@@ -162,6 +147,27 @@ namespace FaceDetection.Model
             }
 
             return imageFrame.Bitmap;
+        }
+
+        private void RecognizeUser(ref Image<Bgr, byte> original, Image<Gray, byte> grayframe, Rectangle rectangle)
+        {
+            grayframe.ROI = rectangle;
+            var size = Properties.Settings.Default.RecognitionImageSize;
+
+            try
+            {
+                var id = RecognitionEngine.RecognizeUser(grayframe.Copy().Resize(size, size, Inter.Cubic));
+                if (id > 0)
+                {
+                    var user = RecognitionData.GetUser(id);
+                    if (user != null)
+                        original.Draw(user.Username, new Point(rectangle.Left, rectangle.Top - 10), FontFace.HersheyPlain, 2, new Bgr(Color.DarkTurquoise));
+                }
+            }
+            catch (CvException)
+            {
+                // ignored
+            }
         }
 
         /// <summary>
@@ -181,7 +187,7 @@ namespace FaceDetection.Model
             var imageframe = mat.ToImage<Bgr, byte>();
             var grayframe = imageframe.Convert<Gray, byte>();
             
-            Rectangle[] faces = null;
+            Rectangle[] faces;
 
             try
             {

@@ -115,5 +115,17 @@ namespace FaceDetection.Properties {
                 this["ExecutionDelay"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public int RecognitionImageSize {
+            get {
+                return ((int)(this["RecognitionImageSize"]));
+            }
+            set {
+                this["RecognitionImageSize"] = value;
+            }
+        }
     }
 }

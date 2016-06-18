@@ -15,6 +15,7 @@ namespace FaceDetection.Model.Recognition
     {
         #region Fields
         private static FaceRecognizer _faceRecognizer;
+        private static bool _trained;
         #endregion
 
         #region Construction        
@@ -31,7 +32,7 @@ namespace FaceDetection.Model.Recognition
 
         private static void InitializeFaceRecognizer()
         {
-            _faceRecognizer = new EigenFaceRecognizer(256, double.PositiveInfinity);
+            _faceRecognizer = new LBPHFaceRecognizer(4, 8, 8, 8, 110);
             if (!File.Exists(Properties.Settings.Default.RecognitionTrainFile))
             {
                 try
@@ -48,6 +49,7 @@ namespace FaceDetection.Model.Recognition
                 try
                 {
                     _faceRecognizer.Load(Properties.Settings.Default.RecognitionTrainFile);
+                    _trained = true;
                 }
                 catch (Exception ex)
                 {
@@ -74,6 +76,7 @@ namespace FaceDetection.Model.Recognition
             }
 
             _faceRecognizer.Train(images, labels);
+            _trained = true;
             _faceRecognizer.Save(Properties.Settings.Default.RecognitionTrainFile);
         }
 
@@ -84,6 +87,9 @@ namespace FaceDetection.Model.Recognition
         /// <returns></returns>
         public static int RecognizeUser(Image<Gray, byte> grayframe)
         {
+            if (!_trained)
+                return -1;
+
             var result = _faceRecognizer.Predict(grayframe);
 
             return result.Label;
