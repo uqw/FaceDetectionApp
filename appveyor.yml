@@ -34,10 +34,6 @@ assembly_info:
 before_build:
   - nuget restore FaceDetection\FaceDetection.sln -SolutionDirectory FaceDetection\
   
-only_commits:
-  files:
-  - FaceDetection/
-  
 #after_build:
 #  - cmd: '"C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe" FaceDetection\FaceDetection.sln /Build Release /project FaceDetection\FaceDetectionInstaller\FaceDetectionInstaller.vdproj /projectconfig Release'
   
