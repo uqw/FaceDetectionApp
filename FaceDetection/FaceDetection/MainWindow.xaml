@@ -8,7 +8,7 @@
         xmlns:vm="clr-namespace:FaceDetection.ViewModel"
         xmlns:conv="clr-namespace:FaceDetection.Views.Converters"
         mc:Ignorable="d"
-        Title="Face Detection App" Height="800" Width="850" SaveWindowPosition="True" GlowBrush="DeepSkyBlue" NonActiveGlowBrush="DarkGray">
+        Title="Face Detection App" Height="800" Width="850" SaveWindowPosition="True" GlowBrush="DeepSkyBlue" NonActiveGlowBrush="DarkGray" ShowIconOnTitleBar="True" Icon="Resources/icon.ico">
     <Window.DataContext>
         <vm:MainViewModel />
     </Window.DataContext>

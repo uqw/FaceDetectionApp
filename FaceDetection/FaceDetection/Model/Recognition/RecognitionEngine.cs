@@ -32,7 +32,7 @@ namespace FaceDetection.Model.Recognition
 
         private static void InitializeFaceRecognizer()
         {
-            _faceRecognizer = new LBPHFaceRecognizer(4, 8, 8, 8, 110);
+            _faceRecognizer = new LBPHFaceRecognizer(4, 8, 8, 8, 115);
             if (!File.Exists(Properties.Settings.Default.RecognitionTrainFile))
             {
                 try
