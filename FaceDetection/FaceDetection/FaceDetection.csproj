@@ -108,6 +108,10 @@
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.1.1.2349.61993\lib\NET40\OpenTK.dll</HintPath>
       <Private>True</Private>
@@ -184,6 +188,7 @@
     <Compile Include="Model\Recognition\RecognitionData.cs" />
     <Compile Include="Model\Recognition\RecognitionEngine.cs" />
     <Compile Include="Model\Recognition\User.cs" />
+    <Compile Include="Model\Updater\UpdateHandler.cs" />
     <Compile Include="ViewModel\AddFaceViewModel.cs" />
     <Compile Include="ViewModel\CameraViewModel.cs" />
     <Compile Include="ViewModel\Helpers\AsyncObservableCollection.cs" />

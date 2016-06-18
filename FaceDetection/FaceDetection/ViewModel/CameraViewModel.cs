@@ -185,7 +185,7 @@ namespace FaceDetection.ViewModel
         /// </summary>
         public void ReadFrame()
         {
-            if (SelectedCam != -1 && _tabActive)
+            if (SelectedCam != -1 && _tabActive && !MainViewModel.IsUpdating)
             {
                 _delayStopwatch.Restart();
                 Image = DetectionEnabled ? CameraHandler.ProcessImage(Capture, ProcessType) : Capture?.QueryFrame().Bitmap;
@@ -198,6 +198,11 @@ namespace FaceDetection.ViewModel
                     Fps = _fps * 4;
                     _fps = 0;
                 }
+            }
+            else
+            {
+                Fps = 0;
+                Delay = 0;
             }
         }
 

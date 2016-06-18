@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Threading;
 using FaceDetection.ViewModel;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace FaceDetection
 {
@@ -16,6 +17,8 @@ namespace FaceDetection
         public MainWindow()
         {
             InitializeComponent();
+
+            ((MainViewModel) DataContext).DialogCoordinator = DialogCoordinator.Instance;
 
             if (!DesignerProperties.GetIsInDesignMode(this))
             {

@@ -127,5 +127,32 @@ namespace FaceDetection.Properties {
                 this["RecognitionImageSize"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://api.github.com")]
+        public string APIUrl {
+            get {
+                return ((string)(this["APIUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("PkInfRemi")]
+        public string RepoOwner {
+            get {
+                return ((string)(this["RepoOwner"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("FaceDetectionApp")]
+        public string RepoName {
+            get {
+                return ((string)(this["RepoName"]));
+            }
+        }
     }
 }

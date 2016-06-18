@@ -1,7 +1,11 @@
-﻿using FaceDetection.Model.Recognition;
+﻿using System;
+using System.Threading.Tasks;
+using FaceDetection.Model.Recognition;
+using FaceDetection.Model.Updater;
 using GalaSoft.MvvmLight;
 using FaceDetection.ViewModel.Messages;
 using GalaSoft.MvvmLight.Messaging;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace FaceDetection.ViewModel
 {
@@ -9,6 +13,8 @@ namespace FaceDetection.ViewModel
     {
         #region Fields
         private int _selectedTab;
+        private readonly UpdateHandler _updateHandler;
+        private ProgressDialogController _progressController;
         #endregion
 
         #region Properties
@@ -25,17 +31,49 @@ namespace FaceDetection.ViewModel
                 }
             }
         }
+
+        public IDialogCoordinator DialogCoordinator { get; set; }
+
+        public static bool IsUpdating { get; private set; }
         #endregion
 
         #region Construction
         public MainViewModel()
         {
-            
+            _updateHandler = new UpdateHandler();
+            CheckForUpdates();
         }
         #endregion
 
         #region Methods
-        
+
+        private async void CheckForUpdates()
+        {
+            await Task.Delay(3000);
+
+            while (DialogCoordinator == null)
+            {
+                await Task.Delay(25);
+            }
+
+            if (await _updateHandler.IsUpdateAvailable()) 
+            {
+                var result = await
+                    DialogCoordinator.ShowMessageAsync(this, "Update available", $"An update is available.{Environment.NewLine}{Environment.NewLine}Current installed version: {_updateHandler.LocaVersion}.{Environment.NewLine}Available version: {_updateHandler.RemoteVersion}{Environment.NewLine}{Environment.NewLine}Do you want to install this update now?",
+                        MessageDialogStyle.AffirmativeAndNegative);
+
+                if (result == MessageDialogResult.Affirmative)
+                {
+                    // Todo: implement downloader
+
+                    _progressController = await DialogCoordinator.ShowProgressAsync(this, "Test", "test", true);
+                    _progressController.Canceled += (sender, args) =>
+                    {
+                        _progressController.CloseAsync();
+                    };
+                }
+            }
+        }
         #endregion
     }
 }

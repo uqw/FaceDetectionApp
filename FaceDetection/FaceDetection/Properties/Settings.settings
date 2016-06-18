@@ -29,5 +29,14 @@
     <Setting Name="RecognitionImageSize" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">200</Value>
     </Setting>
+    <Setting Name="APIUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://api.github.com</Value>
+    </Setting>
+    <Setting Name="RepoOwner" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">PkInfRemi</Value>
+    </Setting>
+    <Setting Name="RepoName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">FaceDetectionApp</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
