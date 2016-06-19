@@ -118,7 +118,7 @@ namespace FaceDetection.Model.Updater
                         break;
                     }
                 }
-                return LocaVersion.CompareTo(RemoteVersion) > 0;
+                return LocaVersion.CompareTo(RemoteVersion) < 0;
             }
             catch (Exception ex)
             {

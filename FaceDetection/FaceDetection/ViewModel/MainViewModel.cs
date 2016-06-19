@@ -57,9 +57,7 @@ namespace FaceDetection.ViewModel
                 await Task.Delay(25);
             }
 
-            await _updateHandler.IsUpdateAvailable();
-
-            if (true/*await _updateHandler.IsUpdateAvailable()*/)
+            if (await _updateHandler.IsUpdateAvailable())
             {
                 IsUpdating = true;
                 var result = await

@@ -1,20 +1,27 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Windows;
 using System.Windows.Data;
+using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
 namespace FaceDetection.Views.Converters
 {
-    class BitmapConverter: IValueConverter
+    internal class BitmapConverter: IValueConverter
     {
+        [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool DeleteObject([In] IntPtr hObject);
+
         public object Convert(object value, Type targetType, object parameter,
             System.Globalization.CultureInfo culture)
         {
             var bitmap = value as Bitmap;
             if (bitmap == null)
                 return null;
-
+            
             try
             {
                 var ms = new MemoryStream();
@@ -24,7 +31,6 @@ namespace FaceDetection.Views.Converters
                 ms.Seek(0, SeekOrigin.Begin);
                 image.StreamSource = ms;
                 image.EndInit();
-
                 return image;
             }
             catch (Exception)
