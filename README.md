@@ -25,7 +25,7 @@ Windows 7 (32/64-bit) and later
 
 .NET Framework 4.5 and later (Download [here](https://www.microsoft.com/de-de/download/details.aspx?id=30653)).
 
-Currently only the application itself is provided as a portable installation. You have to unpack this package somewhere to be able to run the application. 
+Currently only the application itself is provided as a portable installation. You have to unpack this package somewhere to be able to run the application. The application is self updating and updates into this folder directly.
 
 *Installer is WIP.*
 
@@ -41,8 +41,7 @@ The ui was designed with [MahApps Metro](http://mahapps.com/) which enables much
 - [MahApps Metro](http://mahapps.com/)
 - [MvvmLight](http://www.mvvmlight.net/)
 - [PostSharp](https://www.postsharp.net/)
-
-
+- [Newtonsoft.Json](http://www.newtonsoft.com/json)
 
 ### Preview Images
 
