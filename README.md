@@ -13,6 +13,7 @@ This application is currently **work in progress** and was created by students i
 - Save faces into a sqlite database for recognition
 - Manage all saved faces
 - Recognition for saved faces
+- Auto updater
 
 ## Planned Features
 - Auto learning processs saving faces automatically into the database and process them
@@ -49,5 +50,8 @@ The ui was designed with [MahApps Metro](http://mahapps.com/) which enables much
 
 The main view:
 ![The main view](https://cloud.githubusercontent.com/assets/6552521/16057258/8811b2ac-3279-11e6-8aae-31a71161afde.png)
+
+The auto updating process:
+![sampleimage_autoupdater](https://cloud.githubusercontent.com/assets/6552521/16179012/230c7ad4-3659-11e6-866e-47a04bba8b2b.png)
 
 *More images coming soon*
