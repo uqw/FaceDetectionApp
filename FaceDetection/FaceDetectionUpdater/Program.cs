@@ -29,7 +29,27 @@ namespace FaceDetectionUpdater
                 return;
             }
 
+            Thread.Sleep(1000);
+
+            try
+            {
+                Mutex mutex;
+
+                while (Mutex.TryOpenExisting("FaceDetectionApp", out mutex))
+                {
+                    Thread.Sleep(25);
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteToConsole("Error encountered while waiting for application close: " + ex);
+                HoldConsole();
+                return;
+            }
+
             StartUpdate(args[0], args[1]);
+
+            HoldConsole();
         }
 
         private static void WriteToConsole(string message)
@@ -46,25 +66,39 @@ namespace FaceDetectionUpdater
 #endif
         }
 
-        private static async void StartUpdate(string applicationPath, string zipPath)
+        private static void StartUpdate(string applicationPath, string zipPath)
         {
             if(applicationPath == null || zipPath == null)
                 return;
 
-            try
-            {
-                Mutex mutex;
+            var applicationDir = Path.GetDirectoryName(applicationPath);
 
-                while (Mutex.TryOpenExisting("FaceDetectionApp", out mutex))
+            var di = new DirectoryInfo(applicationDir);
+
+            foreach (var file in di.GetFiles())
+            {
+                try
                 {
-                    await Task.Delay(25);
+                    WriteToConsole("Deleting " + file);
+                    file.Delete();
+                }
+                catch (Exception)
+                {
+                    WriteToConsole("Failed to delete " + file);
                 }
             }
-            catch (Exception ex)
+
+            foreach (var dir in di.GetDirectories())
             {
-                WriteToConsole("Error encountered while waiting for application close: " + ex);
-                HoldConsole();
-                return;
+                try
+                {
+                    WriteToConsole("Deleting " + dir);
+                    dir.Delete(true);
+                }
+                catch (Exception ex)
+                {
+                    WriteToConsole("Failed to delete " + ex);
+                }
             }
 
             try
@@ -74,9 +108,20 @@ namespace FaceDetectionUpdater
                     double i = 1;
                     foreach (var entry in archive.Entries)
                     {
-                        WriteToConsole($"Processing... {Math.Round(i / archive.Entries.Count * 100)}%{Environment.NewLine}{entry.FullName}");
+                        if (!entry.Name.ToLower().EndsWith("xml") && !entry.Name.ToLower().EndsWith("pdb"))
+                        {
+                            WriteToConsole($"Processing... {Math.Round(i / archive.Entries.Count * 100)}%{Environment.NewLine}{entry.FullName}");
 
-                        entry.ExtractToFile(Path.Combine(Path.GetDirectoryName(applicationPath), entry.FullName), true);
+                            var directory = Path.GetDirectoryName(entry.FullName);
+                            if(!string.IsNullOrWhiteSpace(directory))
+                                Directory.CreateDirectory(directory);
+
+                            entry.ExtractToFile(Path.Combine(Path.GetDirectoryName(applicationPath), entry.FullName), true);
+                        }
+                        else
+                        {
+                            WriteToConsole("Skipping file " + entry.FullName);
+                        }
 
                         i++;
                     }
@@ -85,7 +130,7 @@ namespace FaceDetectionUpdater
             catch (Exception ex)
             {
                 WriteToConsole("Couldn't extract zip: " + ex);
-                HoldConsole();
+                return;
             }
 
             try
@@ -95,11 +140,7 @@ namespace FaceDetectionUpdater
             catch (Exception ex)
             {
                 WriteToConsole("Couldn't start app: " + ex);
-                throw;
             }
-
-            HoldConsole();
-            
         }
     }
 }
