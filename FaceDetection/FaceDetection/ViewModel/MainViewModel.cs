@@ -81,6 +81,7 @@ namespace FaceDetection.ViewModel
                         else
                         {
                             _progressController?.SetMessage("Completed!");
+                            _progressController?.SetIndeterminate();
                         }
 
                         await Task.Delay(3000);

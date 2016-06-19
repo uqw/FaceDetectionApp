@@ -8,10 +8,13 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
+using FaceDetection.Model.Recognition;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using RestSharp.Deserializers;
+using DataFormat = RestSharp.DataFormat;
 
 namespace FaceDetection.Model.Updater
 {
@@ -69,6 +72,7 @@ namespace FaceDetection.Model.Updater
         #region Locals
         private string _downloadUrl;
         private WebClient _downloader;
+        private string _updatePackagePath;
         #endregion
 
         #region Properties
@@ -143,15 +147,17 @@ namespace FaceDetection.Model.Updater
                     {
                         try
                         {
-                            var file = Path.GetTempFileName();
-                            File.WriteAllBytes(file, args.Result);
+                            _updatePackagePath = Path.GetTempFileName();
+                            File.WriteAllBytes(_updatePackagePath, args.Result);
+
+                            OnUpdateDownloadCompleted(new UpdateDownloadCompletedArgs(args.Cancelled, args.Error));
+
+                            StartUpdate();
                         }
                         catch (Exception ex)
                         {
                             Debug.WriteLine("Error saving download result: " + ex);
                         }
-
-                        OnUpdateDownloadCompleted(new UpdateDownloadCompletedArgs(args.Cancelled, args.Error));
                     };
 
                     _downloader.DownloadProgressChanged += (sender, args) =>
@@ -203,6 +209,37 @@ namespace FaceDetection.Model.Updater
         private Version GetAssemblyVersion()
         {
             return Assembly.GetExecutingAssembly().GetName().Version;
+        }
+
+        private void StartUpdate()
+        {
+            if(string.IsNullOrEmpty(_updatePackagePath))
+                return;
+
+            var updaterName = typeof(FaceDetectionUpdater.Program).Assembly.GetName().Name + ".exe";
+            var tempPath = Path.Combine(Path.GetTempPath(), updaterName);
+
+            try
+            {
+                File.Copy(updaterName, tempPath, true);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Could not copy updater: " + ex);
+                return;
+            }
+
+            try
+            {
+                Process.Start(tempPath, $"{Assembly.GetEntryAssembly().Location} {_updatePackagePath}");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Could not start updater " + ex);
+                return;
+            }
+
+            Environment.Exit(0);
         }
         #endregion
     }
