@@ -10,7 +10,7 @@
         xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
         dialog:DialogParticipation.Register="{Binding}"
         mc:Ignorable="d"
-        Title="Face Detection App" Height="800" Width="850" SaveWindowPosition="True" GlowBrush="DeepSkyBlue" NonActiveGlowBrush="DarkGray" ShowIconOnTitleBar="True" Icon="Resources/icon.ico">
+        Title="Face Detection App" Height="800" Width="850" SaveWindowPosition="True" GlowBrush="DeepSkyBlue" NonActiveGlowBrush="DarkGray" ShowIconOnTitleBar="True" Icon="Resources/icon_white.ico">
     <controls:MetroWindow.DataContext>
         <vm:MainViewModel />
     </controls:MetroWindow.DataContext>

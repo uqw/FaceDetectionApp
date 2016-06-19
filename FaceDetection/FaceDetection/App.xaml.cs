@@ -17,6 +17,16 @@ namespace FaceDetection
         {
             try
             {
+                new Mutex(false, "FaceDetectionApp");
+
+            }
+            catch (Exception)
+            {
+                System.Diagnostics.Debug.WriteLine("Could not register mutex");
+            }
+
+            try
+            {
                 FaceDetection.Properties.Settings.Default.Upgrade();
             }
             catch (Exception)
