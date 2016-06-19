@@ -47,7 +47,7 @@ configuration: Debug
 
 build:
   verbosity: normal
-  project: FaceDetection/FaceDetection/FaceDetection.csproj
+  project: FaceDetection\FaceDetection.sln
   
 artifacts:
   - path: FaceDetection\FaceDetection\bin\$(platform)\$(configuration)
