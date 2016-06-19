@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 
 namespace FaceDetection.ViewModel
