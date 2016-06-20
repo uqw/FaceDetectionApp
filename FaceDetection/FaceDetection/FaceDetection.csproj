@@ -67,6 +67,26 @@
   <PropertyGroup>
     <ApplicationIcon>Resources\icon_black.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DirectShowLib, Version=2.1.0.1599, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DirectShowLib.1.0.0\lib\DirectShowLib.dll</HintPath>
@@ -249,9 +269,7 @@
   <ItemGroup>
     <Resource Include="Resources\icon_black.ico" />
     <Resource Include="Resources\icon_white.ico" />
-    <Content Include="lib\opencv\cvextern.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="lib\opencv\cvextern.dll" />
     <Resource Include="lib\opencv\haarcascade_eye.xml" />
     <Resource Include="lib\opencv\haarcascade_frontalface_alt.xml" />
     <Resource Include="lib\opencv\haarcascade_frontalface_alt2.xml" />
@@ -281,10 +299,16 @@
   </Target>
   <PropertyGroup>
     <PostBuildEvent>:: Move all emgu related dlls to lib\opencv 
-MOVE $(ProjectDir)$(OutDir)Emgu*.dll $(ProjectDir)$(OutDir)lib\opencv
+MOVE $(TargetDir)Emgu*.dll $(TargetDir)lib\opencv
 
 :: Move all other dlls to lib\
-MOVE $(ProjectDir)$(OutDir)*.dll $(ProjectDir)$(OutDir)lib\</PostBuildEvent>
+MOVE $(TargetDir)*.dll $(TargetDir)lib\
+
+IF $(PlatformName) == x64 (
+    MOVE $(TargetDir)x64\*.dll $(TargetDir)lib\opencv
+) ELSE (
+    MOVE $(TargetDir)x86\*.dll $(TargetDir)lib\opencv
+)</PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
