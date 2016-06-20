@@ -1,19 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Windows;
-using FaceDetection.Model.Recognition;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
-using RestSharp.Deserializers;
 using DataFormat = RestSharp.DataFormat;
 
 namespace FaceDetection.Model.Updater
@@ -24,36 +17,109 @@ namespace FaceDetection.Model.Updater
     public class UpdateHandler
     {
         #region Events
-        #region UpdateDownloadCompleted
+        #region UpdateDownloadCompleted        
+        /// <summary>
+        /// Occurs when the update download is completed.
+        /// </summary>
         public event UpdateDownloadCompletedEventHandler UpdateDownloadCompleted;
+        /// <summary>
+        /// The delegate for the <see cref="UpdateHandler.UpdateDownloadCompleted"/> event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The args.</param>
         public delegate void UpdateDownloadCompletedEventHandler(object sender, UpdateDownloadCompletedArgs e);
+
+        /// <summary>
+        /// The event args for the <see cref="UpdateHandler.UpdateDownloadCompleted"/> event.
+        /// </summary>
+        /// <seealso cref="System.EventArgs" />
         public class UpdateDownloadCompletedArgs : EventArgs
         {
+            /// <summary>
+            /// Gets a value indicating whether the operation was aborted.
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if aborted; otherwise, <c>false</c>.
+            /// </value>
             public bool Aborted { get; }
+            /// <summary>
+            /// Gets the exception.
+            /// </summary>
+            /// <value>
+            /// The exception.
+            /// </value>
             public Exception Exception { get; }
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="UpdateDownloadCompletedArgs"/> class.
+            /// </summary>
+            /// <param name="aborted">if set to <c>true</c> [aborted].</param>
+            /// <param name="exception">The exception.</param>
             public UpdateDownloadCompletedArgs(bool aborted, Exception exception)
             {
                 Aborted = aborted;
                 Exception = exception;
             }
         }
-
+        /// <summary>
+        /// Called when the update download was completed.
+        /// </summary>
+        /// <param name="e">The args.</param>
         protected virtual void OnUpdateDownloadCompleted(UpdateDownloadCompletedArgs e)
         {
             UpdateDownloadCompleted?.Invoke(this, e);
         }
         #endregion
 
-        #region UpdateDownloadProgressChanged
+        #region UpdateDownloadProgressChanged        
+        /// <summary>
+        /// Occurs when the update download progress changed.
+        /// </summary>
         public event UpdateDownloadProgressChangedEventhandler UpdateDownloadProgressChanged;
+
+        /// <summary>
+        /// The delegate for the <see cref="UpdateHandler.UpdateDownloadProgressChanged"/> event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The args.</param>
         public delegate void UpdateDownloadProgressChangedEventhandler(object sender, UpdateDownloadProgressChangedArgs e);
+
+        /// <summary>
+        /// The event args fpr the <see cref="UpdateHandler.UpdateDownloadProgressChanged"/> event.
+        /// </summary>
+        /// <seealso cref="System.EventArgs" />
         public class UpdateDownloadProgressChangedArgs : EventArgs
         {
+            /// <summary>
+            /// Gets the megabytes to receive.
+            /// </summary>
+            /// <value>
+            /// The megabytes to receive.
+            /// </value>
             public double MegabytesToReceive { get; }
+
+            /// <summary>
+            /// Gets the received megabytes.
+            /// </summary>
+            /// <value>
+            /// The received megabytes.
+            /// </value>
             public double MegabytesReceived { get; }
+
+            /// <summary>
+            /// Gets the progress percentage.
+            /// </summary>
+            /// <value>
+            /// The progress percentage.
+            /// </value>
             public int ProgressPercentage { get; }
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="UpdateDownloadProgressChangedArgs"/> class.
+            /// </summary>
+            /// <param name="bytesToReceive">The bytes to receive.</param>
+            /// <param name="bytesReceived">The bytes received.</param>
+            /// <param name="progressPercentage">The progress percentage.</param>
             public UpdateDownloadProgressChangedArgs(long bytesToReceive, long bytesReceived, int progressPercentage)
             {
                 MegabytesToReceive = Math.Round(bytesToReceive/1000000.0, 2, MidpointRounding.ToEven);
@@ -62,6 +128,10 @@ namespace FaceDetection.Model.Updater
             }
         }
 
+        /// <summary>
+        /// Called when the update download progress changed.
+        /// </summary>
+        /// <param name="e">The args.</param>
         protected virtual void OnUpdateDownloadProgressChanged(UpdateDownloadProgressChangedArgs e)
         {
             UpdateDownloadProgressChanged?.Invoke(this, e);
@@ -75,16 +145,30 @@ namespace FaceDetection.Model.Updater
         private string _updatePackagePath;
         #endregion
 
-        #region Properties
-        public Version LocaVersion { get; }
+        #region Properties        
+        /// <summary>
+        /// Gets the local version.
+        /// </summary>
+        /// <value>
+        /// The local version.
+        /// </value>
+        public Version LocalVersion { get; }
+
+        /// <summary>
+        /// Gets the remote version.
+        /// </summary>
+        /// <value>
+        /// The remote version.
+        /// </value>
         public Version RemoteVersion { get; private set; }
         #endregion
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateHandler"/> class.
         /// </summary>
         public UpdateHandler()
         {
-            LocaVersion = GetAssemblyVersion();
+            LocalVersion = GetAssemblyVersion();
         }
 
         #region Methods        
@@ -122,7 +206,7 @@ namespace FaceDetection.Model.Updater
                         break;
                     }
                 }
-                return LocaVersion.CompareTo(RemoteVersion) < 0;
+                return LocalVersion.CompareTo(RemoteVersion) < 0;
             }
             catch (Exception ex)
             {
@@ -132,11 +216,18 @@ namespace FaceDetection.Model.Updater
             return false;
         }
 
+        /// <summary>
+        /// Cancels the download.
+        /// </summary>
         public void CancelDownload()
         {
             _downloader?.CancelAsync();
         }
 
+        /// <summary>
+        /// Downloads the update.
+        /// </summary>
+        /// <returns></returns>
         public async Task DownloadUpdate()
         {
             try

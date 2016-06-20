@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using FaceDetection.Model.Recognition;
 using FaceDetection.Model.Updater;
 using GalaSoft.MvvmLight;
 using FaceDetection.ViewModel.Messages;
@@ -61,7 +60,7 @@ namespace FaceDetection.ViewModel
             {
                 IsUpdating = true;
                 var result = await
-                    DialogCoordinator.ShowMessageAsync(this, "Update available", $"An update is available.{Environment.NewLine}{Environment.NewLine}Current installed version: {_updateHandler.LocaVersion}.{Environment.NewLine}Available version: {_updateHandler.RemoteVersion}{Environment.NewLine}{Environment.NewLine}Do you want to install this update now?",
+                    DialogCoordinator.ShowMessageAsync(this, "Update available", $"An update is available.{Environment.NewLine}{Environment.NewLine}Current installed version: {_updateHandler.LocalVersion}.{Environment.NewLine}Available version: {_updateHandler.RemoteVersion}{Environment.NewLine}{Environment.NewLine}Do you want to install this update now?",
                         MessageDialogStyle.AffirmativeAndNegative);
 
                 if (result == MessageDialogResult.Affirmative)
