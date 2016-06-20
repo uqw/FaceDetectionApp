@@ -39,7 +39,7 @@
       <Value Profile="(Default)">FaceDetectionApp</Value>
     </Setting>
     <Setting Name="AssetName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">facedetection_portable_x86</Value>
+      <Value Profile="(Default)">facedetection_portable_</Value>
     </Setting>
   </Settings>
 </SettingsFile>

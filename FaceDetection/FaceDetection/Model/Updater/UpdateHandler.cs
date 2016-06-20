@@ -198,9 +198,10 @@ namespace FaceDetection.Model.Updater
 
                 var json = JObject.Parse(result.Content);
                 RemoteVersion = ParseVersion(json["tag_name"].ToString());
+                var config = Environment.Is64BitOperatingSystem ? "x64" : "x86";
                 foreach (var child in json["assets"].Children())
                 {
-                    if (child["name"].ToString().Contains(Properties.Settings.Default.AssetName))
+                    if (child["name"].ToString().Contains(Properties.Settings.Default.AssetName + config))
                     {
                         _downloadUrl = child["browser_download_url"].ToString();
                         break;
