@@ -40,7 +40,7 @@ The ui was designed with [MahApps Metro](http://mahapps.com/) which enables much
 - [EmguCV](http://www.emgu.com/)
 - [MahApps Metro](http://mahapps.com/)
 - [MvvmLight](http://www.mvvmlight.net/)
-- [PostSharp](https://www.postsharp.net/)
+- [RestSharp](http://restsharp.org/)
 - [Newtonsoft.Json](http://www.newtonsoft.com/json)
 
 ### Preview Images
