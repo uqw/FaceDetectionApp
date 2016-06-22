@@ -192,6 +192,7 @@
     </ApplicationDefinition>
     <Compile Include="Model\Camera.cs" />
     <Compile Include="Model\CameraHandler.cs" />
+    <Compile Include="Model\Logger.cs" />
     <Compile Include="Model\Recognition\AddedFaceData.cs" />
     <Compile Include="Model\Recognition\DatabaseHandler.cs" />
     <Compile Include="Model\Recognition\Face.cs" />

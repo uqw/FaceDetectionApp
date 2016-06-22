@@ -30,11 +30,13 @@ namespace FaceDetection.Model.Recognition
 
         public static async void InitUsers()
         {
-            AllUsers = await GetAllUsers();
+            AllUsers = new List<User>();
+            AllUsers.AddRange(await GetAllUsers());
         }
 
         public static async void InitFaces()
         {
+            AllFaces = new ObservableCollection<Face>();
             AllFaces = new ObservableCollection<Face>(await GetAllFaces());
             AllFaces.CollectionChanged += AllFacesOnCollectionChanged;
         }

@@ -39,8 +39,11 @@ namespace FaceDetection.ViewModel
 
             set
             {
-                _image = value;
-                RaisePropertyChanged(nameof(System.Drawing.Image));
+                if (_image != value)
+                {
+                    _image = value;
+                    RaisePropertyChanged(nameof(Image));
+                }
             }
         }
 
@@ -187,10 +190,12 @@ namespace FaceDetection.ViewModel
         {
             if (SelectedCam != -1 && _tabActive && !MainViewModel.IsUpdating)
             {
-                _delayStopwatch.Restart();
+                // _delayStopwatch.Restart();
                 Image = DetectionEnabled ? CameraHandler.ProcessImage(Capture, ProcessType) : Capture?.QueryFrame().Bitmap;
+                /*
                 _fps++;
 
+                
                 if (_fpsStopwatch.ElapsedTicks / TimeSpan.TicksPerMillisecond > 250)
                 {
                     Delay = _delayStopwatch.ElapsedMilliseconds;
@@ -198,11 +203,13 @@ namespace FaceDetection.ViewModel
                     Fps = _fps * 4;
                     _fps = 0;
                 }
+                */
             }
             else
             {
                 Fps = 0;
                 Delay = 0;
+                Image = null;
             }
         }
 

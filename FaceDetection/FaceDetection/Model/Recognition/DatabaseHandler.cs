@@ -27,7 +27,7 @@ namespace FaceDetection.Model.Recognition
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Could not initialize db connection: " + ex);
+                Logger.Error("Could not initialize db connection: " + ex);
             }
 
             return false;
@@ -47,7 +47,7 @@ namespace FaceDetection.Model.Recognition
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Couldn't disconnect from database: " + ex);
+                Logger.Error("Couldn't disconnect from database: " + ex);
             }
 
             return false;
@@ -67,7 +67,7 @@ namespace FaceDetection.Model.Recognition
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Could not initialize db: " + ex);
+                Logger.Error("Could not initialize db: " + ex);
             }
 
             return false;
@@ -82,7 +82,7 @@ namespace FaceDetection.Model.Recognition
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Couldn't delete database: " + ex);
+                Logger.Error("Couldn't delete database: " + ex);
             }
             return false;
         }
@@ -113,9 +113,9 @@ namespace FaceDetection.Model.Recognition
 
                 return true;
             }
-            catch (SQLiteException ex)
+            catch (Exception ex)
             {
-                Debug.WriteLine("Could not create table in db: " + ex);
+                Logger.Error("Could not create table in db: " + ex);
             }
 
             return false;
@@ -140,9 +140,9 @@ namespace FaceDetection.Model.Recognition
 
                 return true;
             }
-            catch (SQLiteException ex)
+            catch (Exception ex)
             {
-                Debug.WriteLine($"Could not execute update statement: {statement} - Exception: {ex}");
+                Logger.Error($"Could not execute update statement: {statement} - Exception: {ex}");
             }
 
             return false;
@@ -178,9 +178,9 @@ namespace FaceDetection.Model.Recognition
                     return reader;
                 }
             }
-            catch (SQLiteException ex)
+            catch (Exception ex)
             {
-                Debug.WriteLine($"Could not execute select statement: {statement} - Exception: {ex}");
+                Logger.Error($"Could not execute select statement: {statement} - Exception: {ex}");
             }
 
             return null;
@@ -216,9 +216,9 @@ namespace FaceDetection.Model.Recognition
                     return result;
                 }
             }
-            catch (SQLiteException ex)
+            catch (Exception ex)
             {
-                Debug.WriteLine($"Could not execute select statement: {statement} - Exception: {ex}");
+                Logger.Error($"Could not execute select statement: {statement} - Exception: {ex}");
             }
 
             return null;
