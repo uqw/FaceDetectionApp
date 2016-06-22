@@ -49,6 +49,7 @@ namespace FaceDetection
         {
             try
             {
+                FaceDetection.Properties.Settings.Default.Save();
                 System.Diagnostics.Process.Start(ResourceAssembly.Location);
                 Current.Shutdown(0);
             }
