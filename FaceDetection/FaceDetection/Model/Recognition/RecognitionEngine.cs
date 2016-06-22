@@ -37,7 +37,7 @@ namespace FaceDetection.Model.Recognition
             {
                 try
                 {
-                    File.Create(Properties.Settings.Default.RecognitionTrainFile);
+                    File.Create(Properties.Settings.Default.RecognitionTrainFile).Close();
                 }
                 catch (Exception ex)
                 {
