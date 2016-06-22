@@ -41,7 +41,10 @@ namespace FaceDetection.ViewModel
         public MainViewModel()
         {
             _updateHandler = new UpdateHandler();
+
+#if !DEBUG
             CheckForUpdates();
+#endif
         }
         #endregion
 
@@ -113,6 +116,6 @@ namespace FaceDetection.ViewModel
 
             }
         }
-        #endregion
+#endregion
     }
 }

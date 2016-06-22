@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 using DirectShowLib;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
@@ -194,22 +195,21 @@ namespace FaceDetection.Model
                 switch (processType)
                 {
                     case ProcessType.Front:
-                        {
-                            faces = _cascadeFrontDefault.DetectMultiScale(grayframe, 1.25, 10, Size.Empty);
-
-                        }
-                        break;
+                    {
+                        faces = _cascadeFrontDefault.DetectMultiScale(grayframe, 1.2, 10, Size.Empty);
+                    }
+                    break;
 
                     case ProcessType.Profile:
-                        {
-                            faces = _cascadeProfileFace.DetectMultiScale(grayframe, 1.25, 10, Size.Empty);
-                        }
-                        break;
+                    {
+                        faces = _cascadeProfileFace.DetectMultiScale(grayframe, 1.2, 10, Size.Empty);
+                    }
+                    break;
 
                     default:
-                        {
-                            return imageList;
-                        }
+                    {
+                        return imageList;
+                    }
                 }
             }
             catch (Exception ex)
