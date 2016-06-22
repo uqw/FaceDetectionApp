@@ -292,9 +292,11 @@ MOVE $(TargetDir)Emgu*.dll $(TargetDir)lib\opencv
 MOVE $(TargetDir)*.dll $(TargetDir)lib\
 
 IF $(PlatformName) == x64 (
-    MOVE $(TargetDir)x64\*.dll $(TargetDir)lib\opencv
+    MOVE $(TargetDir)x64\cvextern.dll $(TargetDir)lib\opencv
+    MOVE $(TargetDir)x64\opencv_ffmpeg310_64.dll $(TargetDir)lib\opencv
 ) ELSE (
-    MOVE $(TargetDir)x86\*.dll $(TargetDir)lib\opencv
+    MOVE $(TargetDir)x86\cvextern.dll $(TargetDir)lib\opencv
+    MOVE $(TargetDir)x86\opencv_ffmpeg310.dll $(TargetDir)lib\opencv
 )</PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
