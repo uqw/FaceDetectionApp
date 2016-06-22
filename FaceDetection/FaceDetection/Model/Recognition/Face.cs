@@ -85,7 +85,6 @@ namespace FaceDetection.Model.Recognition
             Grayframe = grayframe;
             Id = id;
             User = new User(userId, username);
-            // TODO:  
         }
     }
 }
