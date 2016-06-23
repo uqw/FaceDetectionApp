@@ -42,9 +42,7 @@ namespace FaceDetection.ViewModel
         {
             _updateHandler = new UpdateHandler();
 
-#if !DEBUG
             CheckForUpdates();
-#endif
         }
         #endregion
 
