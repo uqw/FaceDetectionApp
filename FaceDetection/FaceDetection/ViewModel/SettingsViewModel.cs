@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using FaceDetection.Model.Recognition;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 
 namespace FaceDetection.ViewModel
@@ -103,6 +104,58 @@ namespace FaceDetection.ViewModel
         /// The restart command.
         /// </value>
         public RelayCommand RestartCommand => new RelayCommand(Restart);
+
+        /// <summary>
+        /// Gets the radius.
+        /// </summary>
+        /// <value>
+        /// The radius.
+        /// </value>
+        public int Radius
+        {
+            get { return Properties.Settings.Default.RecognitionRadius; }
+            set
+            {
+                Properties.Settings.Default.RecognitionRadius = value;
+                RaisePropertyChanged(nameof(Radius));
+                ReinitializeRecognition();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the neighbours.
+        /// </summary>
+        /// <value>
+        /// The neighbours.
+        /// </value>
+        public int Neighbours
+        {
+            get { return Properties.Settings.Default.RecognitionNeighbours; }
+            set
+            {
+                Properties.Settings.Default.RecognitionNeighbours = value;
+                RaisePropertyChanged(nameof(Neighbours));
+                ReinitializeRecognition();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the threshold.
+        /// </summary>
+        /// <value>
+        /// The threshold.
+        /// </value>
+        public double Threshold
+        {
+            get { return Properties.Settings.Default.RecognitionThreshold; }
+            set
+            {
+                Properties.Settings.Default.RecognitionThreshold = value;
+                RaisePropertyChanged(nameof(Threshold));
+                ReinitializeRecognition();
+            }
+        }
+
         #endregion
 
         /// <summary>
@@ -121,6 +174,11 @@ namespace FaceDetection.ViewModel
         private void UpdateRestartRequirement()
         {
             RestartNeeded = (ExecutionDelay != _defaultExecutionDelay);
+        }
+
+        private void ReinitializeRecognition()
+        {
+            RecognitionEngine.InitializeFaceRecognizer();
         }
     }
 }

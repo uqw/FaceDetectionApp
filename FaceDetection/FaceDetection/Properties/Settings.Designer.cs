@@ -166,5 +166,41 @@ namespace FaceDetection.Properties {
                 this["AssetName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int RecognitionRadius {
+            get {
+                return ((int)(this["RecognitionRadius"]));
+            }
+            set {
+                this["RecognitionRadius"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("15")]
+        public int RecognitionNeighbours {
+            get {
+                return ((int)(this["RecognitionNeighbours"]));
+            }
+            set {
+                this["RecognitionNeighbours"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("87")]
+        public double RecognitionThreshold {
+            get {
+                return ((double)(this["RecognitionThreshold"]));
+            }
+            set {
+                this["RecognitionThreshold"] = value;
+            }
+        }
     }
 }

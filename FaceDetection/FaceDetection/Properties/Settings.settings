@@ -41,5 +41,14 @@
     <Setting Name="AssetName" Type="System.String" Scope="User">
       <Value Profile="(Default)">facedetection_portable_</Value>
     </Setting>
+    <Setting Name="RecognitionRadius" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="RecognitionNeighbours" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">15</Value>
+    </Setting>
+    <Setting Name="RecognitionThreshold" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">87</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
