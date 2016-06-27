@@ -30,9 +30,10 @@ namespace FaceDetection.Model.Recognition
 
         #region Methods
 
-        private static void InitializeFaceRecognizer()
+        public static void InitializeFaceRecognizer()
         {
-            _faceRecognizer = new LBPHFaceRecognizer(2, 8, 8, 8, 100);
+            _faceRecognizer?.Dispose();
+            _faceRecognizer = new LBPHFaceRecognizer(Properties.Settings.Default.RecognitionRadius, Properties.Settings.Default.RecognitionNeighbours, 8, 8, Properties.Settings.Default.RecognitionThreshold);
             if (!File.Exists(Properties.Settings.Default.RecognitionTrainFile))
             {
                 try
@@ -75,9 +76,9 @@ namespace FaceDetection.Model.Recognition
                 i++;
             }
 
-            _faceRecognizer.Train(images, labels);
+            _faceRecognizer?.Train(images, labels);
             _trained = true;
-            _faceRecognizer.Save(Properties.Settings.Default.RecognitionTrainFile);
+            _faceRecognizer?.Save(Properties.Settings.Default.RecognitionTrainFile);
         }
 
         /// <summary>
@@ -87,7 +88,7 @@ namespace FaceDetection.Model.Recognition
         /// <returns></returns>
         public static int RecognizeUser(Image<Gray, byte> grayframe)
         {
-            if (!_trained)
+            if (!_trained || _faceRecognizer == null)
                 return -1;
 
             var result = _faceRecognizer.Predict(grayframe);
