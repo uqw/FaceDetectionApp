@@ -3,6 +3,7 @@ using FaceDetection.Model;
 using System.Drawing;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Windows.Threading;
 using Emgu.CV;
 using FaceDetection.ViewModel.Messages;
 using GalaSoft.MvvmLight;
@@ -25,6 +26,7 @@ namespace FaceDetection.ViewModel
         private readonly Stopwatch _delayStopwatch;
         private bool _tabActive = true;
         private long _delay;
+        private DispatcherTimer _dispatcherTimer;
 
         public static Capture Capture;
         #endregion
@@ -168,19 +170,42 @@ namespace FaceDetection.ViewModel
             _fpsStopwatch = Stopwatch.StartNew();
             _delayStopwatch = new Stopwatch();
 
-            InitializeMessageHandlers();
+            InitializeMessageHandler();
+            InitializeDispatchTimer();
             RefreshCameras();
         }
 
         #region Methods
 
-        private void InitializeMessageHandlers()
+        private void InitializeDispatchTimer()
+        {
+            _dispatcherTimer = new DispatcherTimer(DispatcherPriority.ApplicationIdle);
+            _dispatcherTimer.Tick += (s, e) => { ReadFrame(); };
+            UpdateDispatchTimerInterval();
+        }
+
+        private void InitializeMessageHandler()
         {
             Messenger.Default.Register<TabSelectionChangedMessage>(this,
             (message) =>
             {
                 _tabActive = message.Index == 0;
             });
+
+            Messenger.Default.Register<ExecutionDelayValueChangedMessage>(this, (message) =>
+            {
+                UpdateDispatchTimerInterval();
+            });
+        }
+
+        private void UpdateDispatchTimerInterval()
+        {
+            if(_dispatcherTimer == null)
+                return;
+
+            _dispatcherTimer.Stop();
+            _dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, Properties.Settings.Default.ExecutionDelay);
+            _dispatcherTimer.Start();
         }
 
         /// <summary>

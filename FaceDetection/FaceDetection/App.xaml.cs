@@ -42,24 +42,6 @@ namespace FaceDetection
             FaceDetection.Properties.Settings.Default.Save();
         }
 
-        /// <summary>
-        /// Restarts the application.
-        /// </summary>
-        public static void RestartApp()
-        {
-            try
-            {
-                FaceDetection.Properties.Settings.Default.Save();
-                System.Diagnostics.Process.Start(ResourceAssembly.Location);
-                Current.Shutdown(0);
-            }
-            catch (Exception)
-            {
-                System.Diagnostics.Debug.WriteLine("Could not restart app");
-            }
-            
-        }
-
         private void App_OnExit(object sender, ExitEventArgs e)
         {
             FaceDetection.Properties.Settings.Default.Save();

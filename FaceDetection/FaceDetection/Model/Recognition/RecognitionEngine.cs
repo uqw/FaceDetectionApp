@@ -90,9 +90,8 @@ namespace FaceDetection.Model.Recognition
         {
             if (!_trained || _faceRecognizer == null)
                 return -1;
-
+            
             var result = _faceRecognizer.Predict(grayframe);
-
             return result.Label;
         }
         #endregion
