@@ -57,15 +57,23 @@ namespace FaceDetection.Model.Recognition
 
                 while(result.Read())
                 {
-                    list.Add(new User(
+                    try
+                    {
+                        list.Add(new User(
                         Convert.ToInt32(result["id"]),
-                        (string) result["username"],
-                        (string) result["firstname"],
-                        (string) result["lastname"]
+                        (string)result["username"],
+                        (string)result["firstname"],
+                        (string)result["lastname"]
                         ));
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Error reading user data: " + ex);
+                    }
+                    
                 }
             }
-
+            
             return list;
         }
 
@@ -80,16 +88,24 @@ namespace FaceDetection.Model.Recognition
 
                 while (result.Read())
                 {
-                    list.Add(new Face
-                    (
-                        (byte[])result["original"],
-                        (byte[]) result["grayframe"],
-                        Convert.ToInt32(result["id"]),
-                        (string)result["username"],
-                        Convert.ToInt32(result["userID"]),
-                        Convert.ToInt32(result["width"]),
-                        Convert.ToInt32(result["height"])
-                    ));
+                    try
+                    {
+                        list.Add(new Face
+                        (
+                            (byte[])result["original"],
+                            (byte[])result["grayframe"],
+                            Convert.ToInt32(result["id"]),
+                            (string)result["username"],
+                            Convert.ToInt32(result["userID"]),
+                            Convert.ToInt32(result["width"]),
+                            Convert.ToInt32(result["height"])
+                        ));
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Error reading fae data: " + ex);
+                    }
+                    
                 }
             }
 
