@@ -234,6 +234,7 @@ namespace FaceDetection.ViewModel
                 Fps = 0;
                 Delay = 0;
                 Image = null;
+                Logger.Warning($"Resetting picture: SelectedCam: {SelectedCam} - TabActive: {_tabActive} - IsUpdating: {MainViewModel.IsUpdating}");
             }
         }
 

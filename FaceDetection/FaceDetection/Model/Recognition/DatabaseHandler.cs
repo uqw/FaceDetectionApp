@@ -107,7 +107,7 @@ namespace FaceDetection.Model.Recognition
                     command.ExecuteNonQuery();
 
                 sql =
-                    "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT(50) NOT NULL, firstname TEXT(50), lastname TEXT(50))";
+                    "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT(50) NOT NULL, firstname TEXT(50) DEFAULT '', lastname TEXT(50) DEFAULT '')";
                 using (var command = new SQLiteCommand(sql, _dbConnection))
                     command.ExecuteNonQuery();
 

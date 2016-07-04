@@ -20,7 +20,6 @@ namespace FaceDetection
             try
             {
                 new Mutex(false, "FaceDetectionApp");
-
             }
             catch (Exception)
             {
@@ -53,6 +52,7 @@ namespace FaceDetection
         private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             e.Handled = true;
+            MainWindow.Hide();
             Logger.CriticalError("App crashed: " + e.Exception);
             var result = MessageBox.Show("An error occured.\n\nDo you want to restart the app?", "Critical error", MessageBoxButton.YesNo,
                 MessageBoxImage.Error);
