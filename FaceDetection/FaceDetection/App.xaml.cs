@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.Threading;
 using System.Windows;
+using System.Windows.Threading;
+using FaceDetection.Model;
 
 namespace FaceDetection
 {
@@ -45,6 +47,25 @@ namespace FaceDetection
         private void App_OnExit(object sender, ExitEventArgs e)
         {
             FaceDetection.Properties.Settings.Default.Save();
+            Environment.Exit(0);
+        }
+
+        private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+            Logger.CriticalError("App crashed: " + e.Exception);
+            var result = MessageBox.Show("An error occured.\n\nDo you want to restart the app?", "Critical error", MessageBoxButton.YesNo,
+                MessageBoxImage.Error);
+
+            if(result == MessageBoxResult.Yes)
+                RestartApp();
+
+            Environment.Exit(0);
+        }
+
+        private void RestartApp()
+        {
+            System.Diagnostics.Process.Start(System.Reflection.Assembly.GetEntryAssembly().Location);
             Environment.Exit(0);
         }
     }

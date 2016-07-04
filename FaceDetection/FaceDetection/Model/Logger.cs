@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 
 namespace FaceDetection.Model
 {
@@ -26,8 +27,14 @@ namespace FaceDetection.Model
                 // Adds a prefix at the beggining and a new line at the end to the message that should be logged
                 // Output would be: 
                 // [27.03.2016 20:16:43:234]: Example message
-                var text = "[" + DateTime.Today.ToString("dd.MM.yyyy ") +  DateTime.Now.ToString("HH:mm:ss:fff") + "]: " + content + Environment.NewLine;
-                File.AppendAllText(CurrentLog, text);
+
+                var text = new StringBuilder(content);
+                if (content != Environment.NewLine)
+                {
+                    text.Insert(0, "[" + DateTime.Today.ToString("dd.MM.yyyy ") + DateTime.Now.ToString("HH:mm:ss:fff") + "]: ");
+                    text.Append(Environment.NewLine);
+                }
+                File.AppendAllText(CurrentLog, text.ToString());
             }
             catch (Exception)
             {
@@ -62,6 +69,18 @@ namespace FaceDetection.Model
         {
             Log("[Error] " + content);
             Debug.WriteLine("Logged error: " + content);
+        }
+
+        /// <summary>
+        /// Logs critical errors
+        /// </summary>
+        /// <param name="content"></param>
+        public static void CriticalError(string content)
+        {
+            Log(Environment.NewLine);
+            Log(Environment.NewLine);
+            Log("[Critical] " + content);
+            Debug.WriteLine("Logged critical error: " + content);
         }
     }
 }
