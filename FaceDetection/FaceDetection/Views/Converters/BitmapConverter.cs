@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Runtime;
+using System.Runtime.CompilerServices;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using FaceDetection.Model;
@@ -21,9 +23,15 @@ namespace FaceDetection.Views.Converters
 #endif
                 return null;
             }
-                
+
+#if !DEBUG
+            RuntimeHelpers.PrepareConstrainedRegions();
+#endif
             try
             {
+#if !DEBUG
+                GCSettings.LatencyMode = GCLatencyMode.LowLatency;
+#endif
                 var ms = new MemoryStream();
                 bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
                 ms.Seek(0, SeekOrigin.Begin);
@@ -41,6 +49,12 @@ namespace FaceDetection.Views.Converters
 #endif
                 return null;
             }
+#if !DEBUG
+            finally
+            {
+                GCSettings.LatencyMode = GCLatencyMode.Interactive;
+            }
+#endif
         }
 
         public object ConvertBack(object value, Type targetType, object parameter,
