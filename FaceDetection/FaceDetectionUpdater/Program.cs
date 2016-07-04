@@ -104,21 +104,14 @@ namespace FaceDetectionUpdater
                     double i = 1;
                     foreach (var entry in archive.Entries)
                     {
-                        if (!entry.Name.ToLower().EndsWith("xml") && !entry.Name.ToLower().EndsWith("pdb"))
-                        {
-                            WriteToConsole($"Processing... {Math.Round(i / archive.Entries.Count * 100)}%{Environment.NewLine}{entry.FullName}");
+                        WriteToConsole($"Processing... {Math.Round(i / archive.Entries.Count * 100)}%{Environment.NewLine}{entry.FullName}");
 
-                            var directory = Path.GetDirectoryName(entry.FullName);
-                            if(!string.IsNullOrWhiteSpace(directory))
-                                Directory.CreateDirectory(directory);
+                        var directory = Path.GetDirectoryName(entry.FullName);
+                        if(!string.IsNullOrWhiteSpace(directory))
+                            Directory.CreateDirectory(directory);
 
-                            entry.ExtractToFile(Path.Combine(Path.GetDirectoryName(applicationPath), entry.FullName), true);
-                        }
-                        else
-                        {
-                            WriteToConsole("Skipping file " + entry.FullName);
-                        }
-
+                        entry.ExtractToFile(Path.Combine(Path.GetDirectoryName(applicationPath), entry.FullName), true);
+                        
                         i++;
                     }
                 }

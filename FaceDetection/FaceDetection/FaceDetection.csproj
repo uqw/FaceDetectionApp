@@ -256,7 +256,13 @@ IF $(PlatformName) == x64 (
 ) ELSE (
     MOVE $(TargetDir)x86\cvextern.dll $(TargetDir)lib\opencv
     MOVE $(TargetDir)x86\opencv_ffmpeg310.dll $(TargetDir)lib\opencv
-)</PostBuildEvent>
+)
+
+IF $(ConfigurationName) == Release (
+    DEL /F /Q $(TargetDir)*.xml
+    DEL /F /Q $(TargetDir)*.pdb
+)
+</PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

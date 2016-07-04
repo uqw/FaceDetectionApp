@@ -40,6 +40,9 @@ namespace FaceDetection.ViewModel
         #region Construction
         public MainViewModel()
         {
+            if(IsInDesignMode)
+                return;
+
             _updateHandler = new UpdateHandler();
 
             CheckForUpdates();
