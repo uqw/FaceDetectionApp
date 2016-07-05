@@ -170,7 +170,7 @@
                 </Grid>
             </controls:MetroTabItem>
             <controls:MetroTabItem Header="Settings">
-                <Grid>
+                <Grid x:Name="SettingsTab">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="193*"></ColumnDefinition>
                         <ColumnDefinition Width="10*"/>
@@ -223,15 +223,15 @@
                     <Label Content="Recognition Settings" HorizontalAlignment="Right" Grid.Row="6" Grid.Column="0" VerticalAlignment="Bottom" Width="177" Height="36" FontSize="18" />
 
                     <Label Content="Radius:" Grid.Column="0" Grid.Row="7" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
-                    <Slider Grid.Column="2" Grid.Row="7" HorizontalAlignment="Stretch" Value="{Binding Path=Radius}" Minimum="1" Maximum="30" VerticalAlignment="Center" Height="16" Margin="0,11"/>
+                    <Slider Grid.Column="2" Grid.Row="7" HorizontalAlignment="Stretch" Value="{Binding Path=Radius}" Minimum="1" Maximum="30" VerticalAlignment="Center" Height="16" Margin="0,11" Thumb.DragCompleted="RecognitionSliderOnManipulationCompleted"/>
                     <Label Grid.Column="3" Grid.Row="7" Content="{Binding Path=Radius}"/>
 
                     <Label Content="Neighbours:" Grid.Column="0" Grid.Row="8" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
-                    <Slider Grid.Column="2" Grid.Row="8" HorizontalAlignment="Stretch" Value="{Binding Path=Neighbours}" Minimum="1" Maximum="25" VerticalAlignment="Center" Height="16"/>
+                    <Slider Grid.Column="2" Grid.Row="8" HorizontalAlignment="Stretch" Value="{Binding Path=Neighbours}" Minimum="1" Maximum="25" VerticalAlignment="Center" Height="16" Thumb.DragCompleted="RecognitionSliderOnManipulationCompleted"/>
                     <Label Grid.Column="3" Grid.Row="8" Content="{Binding Path=Neighbours}" />
 
                     <Label Content="Threshold:" Grid.Column="0" Grid.Row="9" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
-                    <Slider Grid.Column="2" Grid.Row="9" HorizontalAlignment="Stretch" Value="{Binding Path=Threshold}" Minimum="0.5" Maximum="300" VerticalAlignment="Center" Height="16"/>
+                    <Slider Grid.Column="2" Grid.Row="9" HorizontalAlignment="Stretch" Value="{Binding Path=Threshold}" Minimum="70" Maximum="120" VerticalAlignment="Center" Height="16" IsMoveToPointEnabled="True" Thumb.DragCompleted="RecognitionSliderOnManipulationCompleted"/>
                     <Label Grid.Column="3" Grid.Row="9" Content="{Binding Path=Threshold, Converter={StaticResource DoubleRoundConverter}}"/>
                 </Grid>
             </controls:MetroTabItem>

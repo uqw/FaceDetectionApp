@@ -1,6 +1,6 @@
 ﻿namespace FaceDetection.Model.Recognition
 {
-    class AddedFaceData
+    internal class AddedFaceData
     {
         public long UserId { get; }
         public long FaceId { get; }

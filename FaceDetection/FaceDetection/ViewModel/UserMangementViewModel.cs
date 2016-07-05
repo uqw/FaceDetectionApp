@@ -6,7 +6,7 @@ using GalaSoft.MvvmLight.Messaging;
 
 namespace FaceDetection.ViewModel 
 {
-    class UserMangementViewModel : ViewModelBase
+    internal class UserMangementViewModel : ViewModelBase
     {
         #region Fields
         private AsyncObservableCollection<User> _users;

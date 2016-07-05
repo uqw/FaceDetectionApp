@@ -12,7 +12,7 @@ using GalaSoft.MvvmLight.Messaging;
 
 namespace FaceDetection.ViewModel
 {
-    class CameraViewModel: ViewModelBase, IDisposable
+    internal class CameraViewModel: ViewModelBase, IDisposable
     {
         #region Locals
         private bool _detectionEnabled;
@@ -219,15 +219,13 @@ namespace FaceDetection.ViewModel
                 Image = DetectionEnabled ? CameraHandler.ProcessImage(Capture, ProcessType) : Capture?.QueryFrame().Bitmap;
                 _fps++;
 
-                
-                if (_fpsStopwatch.ElapsedTicks / TimeSpan.TicksPerMillisecond > 250)
+                if (_fpsStopwatch.ElapsedTicks / TimeSpan.TicksPerMillisecond > 1000)
                 {
                     Delay = _delayStopwatch.ElapsedMilliseconds;
                     _fpsStopwatch.Restart();
-                    Fps = _fps * 4;
+                    Fps = _fps;
                     _fps = 0;
                 }
-                
             }
             else
             {

@@ -1,4 +1,5 @@
-﻿using FaceDetection.Model.Recognition;
+﻿using System.Threading.Tasks;
+using FaceDetection.Model.Recognition;
 using FaceDetection.ViewModel.Messages;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -97,7 +98,7 @@ namespace FaceDetection.ViewModel
             {
                 Properties.Settings.Default.RecognitionRadius = value;
                 RaisePropertyChanged(nameof(Radius));
-                ReinitializeRecognition();
+                // ReinitializeRecognition();
             }
         }
 
@@ -114,7 +115,7 @@ namespace FaceDetection.ViewModel
             {
                 Properties.Settings.Default.RecognitionNeighbours = value;
                 RaisePropertyChanged(nameof(Neighbours));
-                ReinitializeRecognition();
+                // ReinitializeRecognition();
             }
         }
 
@@ -131,13 +132,13 @@ namespace FaceDetection.ViewModel
             {
                 Properties.Settings.Default.RecognitionThreshold = value;
                 RaisePropertyChanged(nameof(Threshold));
-                ReinitializeRecognition();
+                // ReinitializeRecognition();
             }
         }
 
         #endregion
 
-        private void ReinitializeRecognition()
+        public void ReinitializeRecognition()
         {
             RecognitionEngine.InitializeFaceRecognizer();
         }

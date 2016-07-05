@@ -42,13 +42,13 @@
       <Value Profile="(Default)">facedetection_portable_</Value>
     </Setting>
     <Setting Name="RecognitionRadius" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1</Value>
+      <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="RecognitionNeighbours" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">15</Value>
+      <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="RecognitionThreshold" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">87</Value>
+      <Value Profile="(Default)">75</Value>
     </Setting>
   </Settings>
 </SettingsFile>

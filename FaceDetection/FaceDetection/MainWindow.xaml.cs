@@ -1,6 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Threading;
+using FaceDetection.Model.Recognition;
 using FaceDetection.ViewModel;
 using MahApps.Metro.Controls.Dialogs;
 
@@ -18,7 +21,7 @@ namespace FaceDetection
         {
             InitializeComponent();
 
-            ((MainViewModel) DataContext).DialogCoordinator = DialogCoordinator.Instance;
+            ((MainViewModel)DataContext).DialogCoordinator = DialogCoordinator.Instance;
             ((MainViewModel)DataContext).DialogCoordinatorRegistered = true;
 
             if (!DesignerProperties.GetIsInDesignMode(this))
@@ -30,6 +33,11 @@ namespace FaceDetection
                 dispatchTimer.Interval = new TimeSpan(0,0,0,0,Properties.Settings.Default.ExecutionDelay);
                 dispatchTimer.Start();
             }
+        }
+
+        private void RecognitionSliderOnManipulationCompleted(object sender, DragCompletedEventArgs e)
+        {
+            ((SettingsViewModel)SettingsTab.DataContext).ReinitializeRecognition();
         }
     }
 }

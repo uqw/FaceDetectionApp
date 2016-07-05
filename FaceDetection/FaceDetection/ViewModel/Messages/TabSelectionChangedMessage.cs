@@ -1,6 +1,6 @@
 ﻿namespace FaceDetection.ViewModel.Messages
 {
-    class TabSelectionChangedMessage
+    internal class TabSelectionChangedMessage
     {
         public int Index { get; }
         public TabSelectionChangedMessage(int index)
