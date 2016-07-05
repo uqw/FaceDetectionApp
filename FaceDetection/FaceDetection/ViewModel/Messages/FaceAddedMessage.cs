@@ -2,7 +2,7 @@
 
 namespace FaceDetection.ViewModel.Messages
 {
-    class FaceAddedMessage
+    internal class FaceAddedMessage
     {
         public Face Face { get; }
 

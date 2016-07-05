@@ -169,7 +169,7 @@ namespace FaceDetection.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public int RecognitionRadius {
             get {
                 return ((int)(this["RecognitionRadius"]));
@@ -181,7 +181,7 @@ namespace FaceDetection.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("15")]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
         public int RecognitionNeighbours {
             get {
                 return ((int)(this["RecognitionNeighbours"]));
@@ -193,7 +193,7 @@ namespace FaceDetection.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("87")]
+        [global::System.Configuration.DefaultSettingValueAttribute("75")]
         public double RecognitionThreshold {
             get {
                 return ((double)(this["RecognitionThreshold"]));
