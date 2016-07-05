@@ -204,7 +204,6 @@
     <Compile Include="ViewModel\Helpers\AsyncObservableCollection.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\DatabaseMangementViewModel.cs" />
-    <Compile Include="ViewModel\Messages\ExecutionDelayValueChangedMessage.cs" />
     <Compile Include="ViewModel\Messages\FaceAddedMessage.cs" />
     <Compile Include="ViewModel\Messages\TabSelectionChangedMessage.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />

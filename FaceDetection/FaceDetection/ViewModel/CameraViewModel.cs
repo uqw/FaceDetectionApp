@@ -26,9 +26,9 @@ namespace FaceDetection.ViewModel
         private readonly Stopwatch _delayStopwatch;
         private bool _tabActive = true;
         private long _delay;
-        private DispatcherTimer _dispatcherTimer;
 
         public static Capture Capture;
+        private bool _captureInProgress;
         #endregion
 
         #region Properties
@@ -167,22 +167,20 @@ namespace FaceDetection.ViewModel
 
             CameraHandler = new CameraHandler();
             Capture = CameraHandler.CreateCapture(SelectedCam);
+            Capture.ImageGrabbed += CaptureOnImageGrabbed;
             _fpsStopwatch = Stopwatch.StartNew();
             _delayStopwatch = new Stopwatch();
 
             InitializeMessageHandler();
-            InitializeDispatchTimer();
             RefreshCameras();
         }
 
-        #region Methods
-
-        private void InitializeDispatchTimer()
+        private void CaptureOnImageGrabbed(object sender, EventArgs eventArgs)
         {
-            _dispatcherTimer = new DispatcherTimer(DispatcherPriority.ApplicationIdle);
-            _dispatcherTimer.Tick += (s, e) => { ReadFrame(); };
-            UpdateDispatchTimerInterval();
+            ReadFrame();
         }
+
+        #region Methods
 
         private void InitializeMessageHandler()
         {
@@ -191,21 +189,6 @@ namespace FaceDetection.ViewModel
             {
                 _tabActive = message.Index == 0;
             });
-
-            Messenger.Default.Register<ExecutionDelayValueChangedMessage>(this, (message) =>
-            {
-                UpdateDispatchTimerInterval();
-            });
-        }
-
-        private void UpdateDispatchTimerInterval()
-        {
-            if(_dispatcherTimer == null)
-                return;
-
-            _dispatcherTimer.Stop();
-            _dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, Properties.Settings.Default.ExecutionDelay);
-            _dispatcherTimer.Start();
         }
 
         /// <summary>
@@ -213,8 +196,12 @@ namespace FaceDetection.ViewModel
         /// </summary>
         public void ReadFrame()
         {
+            if(_captureInProgress)
+                return;
+
             if (SelectedCam != -1 && _tabActive && !MainViewModel.IsUpdating)
             {
+                _captureInProgress = true;
                 _delayStopwatch.Restart();
                 Image = DetectionEnabled ? CameraHandler.ProcessImage(Capture, ProcessType) : Capture?.QueryFrame().Bitmap;
                 _fps++;
@@ -226,13 +213,14 @@ namespace FaceDetection.ViewModel
                     Fps = _fps;
                     _fps = 0;
                 }
+
+                _captureInProgress = false;
             }
             else
             {
                 Fps = 0;
                 Delay = 0;
                 Image = null;
-                Logger.Warning($"Resetting picture: SelectedCam: {SelectedCam} - TabActive: {_tabActive} - IsUpdating: {MainViewModel.IsUpdating}");
             }
         }
 
