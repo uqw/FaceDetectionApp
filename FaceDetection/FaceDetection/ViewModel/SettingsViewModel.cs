@@ -65,27 +65,6 @@ namespace FaceDetection.ViewModel
         }
 
         /// <summary>
-        /// Gets or sets the execution delay.
-        /// </summary>
-        /// <value>
-        /// The execution delay.
-        /// </value>
-        public int ExecutionDelay
-        {
-            get { return Properties.Settings.Default.ExecutionDelay; }
-            set
-            {
-                if (Properties.Settings.Default.ExecutionDelay != value)
-                {
-                    Properties.Settings.Default.ExecutionDelay = value;
-                    RaisePropertyChanged(nameof(ExecutionDelay));
-
-                    Messenger.Default.Send(new ExecutionDelayValueChangedMessage());
-                }
-            }
-        }
-
-        /// <summary>
         /// Gets the radius.
         /// </summary>
         /// <value>

@@ -38,6 +38,7 @@ namespace FaceDetection.Model.Recognition
             {
                 try
                 {
+                    Directory.CreateDirectory(Path.GetDirectoryName(Properties.Settings.Default.RecognitionTrainFile));
                     File.Create(Properties.Settings.Default.RecognitionTrainFile).Close();
                 }
                 catch (Exception ex)
