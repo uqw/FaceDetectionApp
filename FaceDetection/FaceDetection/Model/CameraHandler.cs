@@ -197,7 +197,7 @@ namespace FaceDetection.Model
                 }
             }
 
-            return null;
+            return new Capture();
         }
 
         /// <summary>

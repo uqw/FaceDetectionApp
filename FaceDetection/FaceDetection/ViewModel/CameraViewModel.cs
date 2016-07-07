@@ -150,13 +150,13 @@ namespace FaceDetection.ViewModel
 
             SelectedCam = Properties.Settings.Default.SelectedCam;
             DetectionEnabled = Properties.Settings.Default.DetectionEnabled;
-
             Fps = 0;
 
             CameraHandler = new CameraHandler();
             Capture = CameraHandler.CreateCapture(SelectedCam);
-            Capture.ImageGrabbed += CaptureOnImageGrabbed;
             Capture.SetCaptureProperty(CapProp.Fps, 30);
+            Capture.ImageGrabbed += CaptureOnImageGrabbed;
+
             _fpsStopwatch = Stopwatch.StartNew();
             _delayStopwatch = new Stopwatch();
 
