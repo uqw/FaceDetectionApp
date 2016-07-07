@@ -199,6 +199,11 @@
     <Compile Include="Model\Recognition\RecognitionEngine.cs" />
     <Compile Include="Model\Recognition\User.cs" />
     <Compile Include="Model\Updater\UpdateHandler.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\AddFaceViewModel.cs" />
     <Compile Include="ViewModel\CameraViewModel.cs" />
     <Compile Include="ViewModel\Helpers\AsyncObservableCollection.cs" />
@@ -227,11 +232,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -239,8 +239,8 @@
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="FaceDetection.psproj" />
     <None Include="packages.config" />
@@ -254,23 +254,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="lib\opencv\haarcascade_frontalface_alt_tree.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\icon_black.ico" />
     <Resource Include="Resources\icon_white.ico" />
     <Content Include="lib\opencv\cvextern.dll" />
-    <Resource Include="lib\opencv\haarcascade_eye.xml" />
-    <Resource Include="lib\opencv\haarcascade_frontalface_alt.xml" />
-    <Resource Include="lib\opencv\haarcascade_frontalface_alt2.xml" />
     <Resource Include="lib\opencv\haarcascade_frontalface_default.xml" />
-    <Resource Include="lib\opencv\haarcascade_lefteye_2splits.xml" />
-    <Resource Include="lib\opencv\haarcascade_mcs_lefteye.xml" />
-    <Resource Include="lib\opencv\haarcascade_mcs_mouth.xml" />
-    <Resource Include="lib\opencv\haarcascade_mcs_nose.xml" />
-    <Resource Include="lib\opencv\haarcascade_mcs_righteye.xml" />
-    <Resource Include="lib\opencv\haarcascade_profileface.xml" />
-    <Resource Include="lib\opencv\haarcascade_righteye_2splits.xml" />
     <Content Include="lib\opencv\opencv_ffmpeg310.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

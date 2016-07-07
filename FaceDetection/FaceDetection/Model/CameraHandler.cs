@@ -19,27 +19,7 @@ namespace FaceDetection.Model
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
     public class CameraHandler: IDisposable
     {
-        /// <summary>
-        /// Represents different process types
-        /// </summary>
-        public enum ProcessType
-        {
-            /// <summary>
-            /// Processes the front of the face
-            /// </summary>
-            Front,
-            /// <summary>
-            /// Processes the profile of the face
-            /// </summary>
-            Profile,
-            /// <summary>
-            /// Processes both, <see cref="Profile"/> and <see cref="Front"/> of the face.
-            /// </summary>
-            Both
-        }
-
         #region Fields
-        private static CascadeClassifier _cascadeProfileFace;
         private static CascadeClassifier _cascadeFrontDefault;
         #endregion
 
@@ -84,9 +64,6 @@ namespace FaceDetection.Model
             {
                 var cascadeFile = Path.GetTempFileName();
 
-                File.WriteAllText(cascadeFile, Properties.Resources.haarcascade_profileface);
-                _cascadeProfileFace = new CascadeClassifier(cascadeFile);
-
                 File.WriteAllText(cascadeFile, Properties.Resources.haarcascade_frontalface_default);
                 _cascadeFrontDefault = new CascadeClassifier(cascadeFile);
             }
@@ -100,9 +77,8 @@ namespace FaceDetection.Model
         /// Captures and processes the image.
         /// </summary>
         /// <param name="capture">The capture.</param>
-        /// <param name="processType">Type of the process.</param>
         /// <returns>null if any exception occured, otherwise the processed image as a <see cref="Bitmap"/>.</returns>
-        public Bitmap ProcessImage(Capture capture, ProcessType processType)
+        public Bitmap ProcessImage(Capture capture)
         {
             if (capture == null || _cascadeFrontDefault == null)
                 return null;
@@ -116,29 +92,13 @@ namespace FaceDetection.Model
             
             try
             {
-                // Detect the face
-                if (processType == ProcessType.Both || processType == ProcessType.Front)
+                var facesDefault = _cascadeFrontDefault.DetectMultiScale(grayframe, Properties.Settings.Default.ScaleFactorFront, Properties.Settings.Default.MinNeighbours);
+
+                foreach (var face in facesDefault)
                 {
-                    var facesDefault = _cascadeFrontDefault.DetectMultiScale(grayframe, Properties.Settings.Default.ScaleFactorFront, Properties.Settings.Default.MinNeighbours);
+                    imageFrame.Draw(face, new Bgr(Color.BlueViolet), 4);
 
-                    foreach (var face in facesDefault)
-                    {
-                        imageFrame.Draw(face, new Bgr(Color.BlueViolet), 4);
-
-                        RecognizeUser(ref imageFrame, grayframe, face);
-                    }
-                }
-
-                if (processType == ProcessType.Both || processType == ProcessType.Profile)
-                {
-                    var facesProfile = _cascadeProfileFace.DetectMultiScale(grayframe, Properties.Settings.Default.ScaleFactorProfile, Properties.Settings.Default.MinNeighbours);
-
-                    foreach (var face in facesProfile)
-                    {
-                        imageFrame.Draw(face, new Bgr(Color.Aqua), 4);
-
-                        RecognizeUser(ref imageFrame, grayframe, face);
-                    }
+                    RecognizeUser(ref imageFrame, grayframe, face);
                 }
             }
             catch (Exception ex)
@@ -177,7 +137,7 @@ namespace FaceDetection.Model
         /// <param name="capture">The capture.</param>
         /// <param name="processType">Type of the process.</param>
         /// <returns>A <see cref="List{PreviewImage}"/> containing all captured images.</returns>
-        public List<PreviewImage> GetDetectedSnippets(Capture capture, ProcessType processType)
+        public List<PreviewImage> GetDetectedSnippets(Capture capture)
         {
             var mat = capture?.QueryFrame();
 
@@ -190,27 +150,10 @@ namespace FaceDetection.Model
             
             Rectangle[] faces;
 
+            
             try
             {
-                switch (processType)
-                {
-                    case ProcessType.Front:
-                    {
-                        faces = _cascadeFrontDefault.DetectMultiScale(grayframe, 1.2, 10, Size.Empty);
-                    }
-                    break;
-
-                    case ProcessType.Profile:
-                    {
-                        faces = _cascadeProfileFace.DetectMultiScale(grayframe, 1.2, 10, Size.Empty);
-                    }
-                    break;
-
-                    default:
-                    {
-                        return imageList;
-                    }
-                }
+                faces = _cascadeFrontDefault.DetectMultiScale(grayframe, 1.2, 10, Size.Empty);
             }
             catch (Exception ex)
             {
@@ -263,7 +206,6 @@ namespace FaceDetection.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
         public void Dispose()
         {
-            _cascadeProfileFace.Dispose();
             _cascadeFrontDefault.Dispose();
         }
         #endregion

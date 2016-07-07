@@ -89,7 +89,7 @@ namespace FaceDetection.ViewModel
 
         private void TakeSnapshot()
         {
-            var previewImages = _cameraHandler.GetDetectedSnippets(CameraViewModel.Capture, CameraHandler.ProcessType.Front);
+            var previewImages = _cameraHandler.GetDetectedSnippets(CameraViewModel.Capture);
             
             PreviewImages.Clear();
             foreach (var image in previewImages)
