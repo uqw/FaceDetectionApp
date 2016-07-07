@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows.Threading;
 using Emgu.CV;
+using Emgu.CV.CvEnum;
 using FaceDetection.ViewModel.Messages;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -17,7 +18,6 @@ namespace FaceDetection.ViewModel
         #region Locals
         private bool _detectionEnabled;
         private bool _isAddFacePanelOpen;
-        private CameraHandler.ProcessType _processType;
         private ObservableCollection<Camera> _availableCameras;
         private Bitmap _image;
         private int _selectedCam;
@@ -100,17 +100,6 @@ namespace FaceDetection.ViewModel
             }
         }
 
-        public CameraHandler.ProcessType ProcessType
-        {
-            get { return _processType; }
-
-            set
-            {
-                _processType = value;
-                RaisePropertyChanged(nameof(CameraHandler.ProcessType));
-            }
-        }
-
         public bool DetectionEnabled
         {
             get { return _detectionEnabled; }
@@ -161,13 +150,13 @@ namespace FaceDetection.ViewModel
 
             SelectedCam = Properties.Settings.Default.SelectedCam;
             DetectionEnabled = Properties.Settings.Default.DetectionEnabled;
-
             Fps = 0;
-            ProcessType = CameraHandler.ProcessType.Front;
 
             CameraHandler = new CameraHandler();
             Capture = CameraHandler.CreateCapture(SelectedCam);
+            Capture.SetCaptureProperty(CapProp.Fps, 30);
             Capture.ImageGrabbed += CaptureOnImageGrabbed;
+
             _fpsStopwatch = Stopwatch.StartNew();
             _delayStopwatch = new Stopwatch();
 
@@ -203,7 +192,7 @@ namespace FaceDetection.ViewModel
             {
                 _captureInProgress = true;
                 _delayStopwatch.Restart();
-                Image = DetectionEnabled ? CameraHandler.ProcessImage(Capture, ProcessType) : Capture?.QueryFrame().Bitmap;
+                Image = DetectionEnabled ? CameraHandler.ProcessImage(Capture) : Capture?.QueryFrame().Bitmap;
                 _fps++;
 
                 if (_fpsStopwatch.ElapsedTicks / TimeSpan.TicksPerMillisecond > 1000)

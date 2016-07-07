@@ -48,7 +48,7 @@
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="RecognitionThreshold" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">75</Value>
+      <Value Profile="(Default)">85</Value>
     </Setting>
   </Settings>
 </SettingsFile>

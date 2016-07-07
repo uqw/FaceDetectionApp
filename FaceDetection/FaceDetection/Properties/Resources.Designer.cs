@@ -75,34 +75,11 @@ namespace FaceDetection.Properties {
         ///  copy or use the software.
         ///
         ///
-        ///                        Intel L [rest of string was truncated]&quot;;.
+        ///                        Intel License Agreeme [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string haarcascade_frontalface_default {
             get {
                 return ResourceManager.GetString("haarcascade_frontalface_default", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
-        ///&lt;!--
-        ///    20x20 profile face detector.
-        ///    Contributed by David Bradley from Princeton University.
-        ///
-        ///////////////////////////////////////////////////////////////////////////////////////////
-        ///
-        ///  IMPORTANT: READ BEFORE DOWNLOADING, COPYING, INSTALLING OR USING.
-        ///
-        ///  By downloading, copying, installing or using the software you agree to this license.
-        ///  If you do not agree to this license, do not download, install,
-        ///  copy or use the software.
-        ///
-        ///
-        ///                        Intel Licens [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string haarcascade_profileface {
-            get {
-                return ResourceManager.GetString("haarcascade_profileface", resourceCulture);
             }
         }
     }
