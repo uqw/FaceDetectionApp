@@ -34,13 +34,6 @@ namespace FaceDetection
             {
                 System.Diagnostics.Debug.WriteLine("Could not upgrade settings");
             }
-
-            FaceDetection.Properties.Settings.Default.PropertyChanged += DefaultSettingsOnPropertyChanged;
-        }
-
-        private void DefaultSettingsOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
-        {
-            FaceDetection.Properties.Settings.Default.Save();
         }
 
         private void App_OnExit(object sender, ExitEventArgs e)

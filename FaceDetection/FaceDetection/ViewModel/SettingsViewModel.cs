@@ -163,8 +163,23 @@ namespace FaceDetection.ViewModel
                 new CaptureResolution(256, 144)
             };
 
-            ResolutionSelectionIndex = 0;
-            ResolutionSelection = Properties.Settings.Default.ResolutionSelection;
+            LoadSavedSettings();
+        }
+
+        private void LoadSavedSettings()
+        {
+            int i = 0;
+
+            foreach (var resolution in ResolutionList)
+            {
+                if (resolution.Equals(Properties.Settings.Default.ResolutionSelection))
+                {
+                    ResolutionSelectionIndex = i;
+                    break;
+                }
+
+                i++;
+            }
         }
 
         public void ReinitializeRecognition()

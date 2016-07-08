@@ -1,14 +1,32 @@
-﻿namespace FaceDetection.Model
+﻿using System;
+using System.Configuration;
+using System.Xml.Serialization;
+
+namespace FaceDetection.Model
 {
+    [Serializable]
+    [SettingsSerializeAs(SettingsSerializeAs.Xml)]
+    [XmlRoot (ElementName = "CaptureResolution", IsNullable = false)]
     public class CaptureResolution
     {
-        public int Width { get; }
-        public int Height { get; }
+        [UserScopedSetting]
+        [SettingsSerializeAs(SettingsSerializeAs.Xml)]
+        [XmlAttribute (AttributeName = "Width")]
+        public int Width { get; set; }
+
+        [UserScopedSetting]
+        [SettingsSerializeAs(SettingsSerializeAs.Xml)]
+        [XmlAttribute(AttributeName = "Height")]
+        public int Height { get; set; }
 
         public CaptureResolution(int width, int height)
         {
             Width = width;
             Height = height;
+        }
+
+        public CaptureResolution(): this(1024, 720)
+        {
         }
 
         public override int GetHashCode()

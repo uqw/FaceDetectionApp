@@ -50,8 +50,5 @@
     <Setting Name="RecognitionThreshold" Type="System.Double" Scope="User">
       <Value Profile="(Default)">85</Value>
     </Setting>
-    <Setting Name="ResolutionSelection" Type="FaceDetection.Model.CaptureResolution" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
   </Settings>
 </SettingsFile>

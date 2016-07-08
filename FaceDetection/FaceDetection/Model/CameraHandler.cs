@@ -95,7 +95,8 @@ namespace FaceDetection.Model
 
                 foreach (var face in facesDefault)
                 {
-                    imageFrame.Draw(face, new Bgr(Color.BlueViolet), 4);
+                    var rectangleThickness = Math.Max((imageFrame.Height + imageFrame.Width)/250, 1);
+                    imageFrame.Draw(face, new Bgr(Color.BlueViolet), rectangleThickness);
 
                     RecognizeUser(ref imageFrame, grayframe, face);
                 }
@@ -121,7 +122,13 @@ namespace FaceDetection.Model
                 {
                     var user = RecognitionData.GetUser(id);
                     if (user != null)
-                        original.Draw(user.Username, new Point(rectangle.Left, rectangle.Top - 10), FontFace.HersheyPlain, 2, new Bgr(Color.DarkTurquoise));
+                    {
+                        var fontSize = Math.Max((original.Height + original.Width) / 400, 1);
+                        var fontThickness = Math.Max((original.Height + original.Width) / 600, 1);
+                        var fontShifting = Math.Max(original.Height / 50, 1);
+                        original.Draw(user.Username, new Point(rectangle.Left, rectangle.Top - fontShifting), FontFace.HersheyPlain, fontSize, new Bgr(Color.DarkTurquoise), fontThickness);
+                    }
+                        
                 }
             }
             catch (CvException)
