@@ -190,6 +190,7 @@
     </ApplicationDefinition>
     <Compile Include="Model\Camera.cs" />
     <Compile Include="Model\CameraHandler.cs" />
+    <Compile Include="Model\CaptureResolution.cs" />
     <Compile Include="Model\Logger.cs" />
     <Compile Include="Model\Recognition\AddedFaceData.cs" />
     <Compile Include="Model\Recognition\DatabaseHandler.cs" />
@@ -209,6 +210,7 @@
     <Compile Include="ViewModel\Helpers\AsyncObservableCollection.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\DatabaseMangementViewModel.cs" />
+    <Compile Include="ViewModel\Messages\CaptureResolutionChangedMessage.cs" />
     <Compile Include="ViewModel\Messages\FaceAddedMessage.cs" />
     <Compile Include="ViewModel\Messages\TabSelectionChangedMessage.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
@@ -247,6 +249,7 @@
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Threading.Tasks;
 using DirectShowLib;
 using Emgu.CV;
 using Emgu.CV.CvEnum;

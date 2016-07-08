@@ -3,7 +3,6 @@ using FaceDetection.Model;
 using System.Drawing;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Windows.Threading;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using FaceDetection.ViewModel.Messages;
@@ -155,6 +154,7 @@ namespace FaceDetection.ViewModel
             CameraHandler = new CameraHandler();
             Capture = CameraHandler.CreateCapture(SelectedCam);
             Capture.SetCaptureProperty(CapProp.Fps, 30);
+            SetCaptureResolution();
             Capture.ImageGrabbed += CaptureOnImageGrabbed;
 
             _fpsStopwatch = Stopwatch.StartNew();
@@ -178,6 +178,26 @@ namespace FaceDetection.ViewModel
             {
                 _tabActive = message.Index == 0;
             });
+
+            Messenger.Default.Register<CaptureResolutionChangedMessage>(this,
+            (message) =>
+            {
+                SetCaptureResolution();
+            });
+        }
+
+        private void SetCaptureResolution()
+        {
+            if (Properties.Settings.Default.ResolutionSelection == null)
+            {
+                Capture.SetCaptureProperty(CapProp.FrameWidth, 1080);
+                Capture.SetCaptureProperty(CapProp.FrameHeight, 720);
+            }
+            else
+            {
+                Capture.SetCaptureProperty(CapProp.FrameWidth, Properties.Settings.Default.ResolutionSelection.Width);
+                Capture.SetCaptureProperty(CapProp.FrameHeight, Properties.Settings.Default.ResolutionSelection.Height);
+            }
         }
 
         /// <summary>

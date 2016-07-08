@@ -95,6 +95,12 @@ namespace FaceDetection.Model.Recognition
             var result = _faceRecognizer.Predict(grayframe);
             return result.Label;
         }
+
+        public static void RotateImage<TColor, TDepth>(ref Image<TColor, TDepth> image) where TColor: struct, IColor where TDepth : new()
+        {
+            // TODO: Verify background color
+            image.Rotate(10, new TColor());
+        }
         #endregion
     }
 }

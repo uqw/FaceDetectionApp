@@ -1,9 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows.Controls.Primitives;
-using System.Windows.Input;
 using System.Windows.Threading;
-using FaceDetection.Model.Recognition;
 using FaceDetection.ViewModel;
 using MahApps.Metro.Controls.Dialogs;
 

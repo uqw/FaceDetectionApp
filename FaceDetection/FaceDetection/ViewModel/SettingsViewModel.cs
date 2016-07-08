@@ -1,8 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using FaceDetection.Model;
 using FaceDetection.Model.Recognition;
 using FaceDetection.ViewModel.Messages;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 
 namespace FaceDetection.ViewModel
@@ -12,6 +13,9 @@ namespace FaceDetection.ViewModel
     /// </summary>
     public class SettingsViewModel: ViewModelBase
     {
+        private ObservableCollection<CaptureResolution> _resolutionList;
+        private int _resolutionSelectionIndex;
+
         #region Fields
         #endregion
 
@@ -77,7 +81,6 @@ namespace FaceDetection.ViewModel
             {
                 Properties.Settings.Default.RecognitionRadius = value;
                 RaisePropertyChanged(nameof(Radius));
-                // ReinitializeRecognition();
             }
         }
 
@@ -94,7 +97,6 @@ namespace FaceDetection.ViewModel
             {
                 Properties.Settings.Default.RecognitionNeighbours = value;
                 RaisePropertyChanged(nameof(Neighbours));
-                // ReinitializeRecognition();
             }
         }
 
@@ -111,11 +113,59 @@ namespace FaceDetection.ViewModel
             {
                 Properties.Settings.Default.RecognitionThreshold = value;
                 RaisePropertyChanged(nameof(Threshold));
-                // ReinitializeRecognition();
+            }
+        }
+
+        public ObservableCollection<CaptureResolution> ResolutionList
+        {
+            get { return _resolutionList; }
+            set
+            {
+                _resolutionList = value;
+                RaisePropertyChanged(nameof(ResolutionList));
+            }
+        }
+
+        public CaptureResolution ResolutionSelection
+        {
+            get { return Properties.Settings.Default.ResolutionSelection; }
+            set
+            {
+                if (Properties.Settings.Default.ResolutionSelection != value)
+                {
+                    Properties.Settings.Default.ResolutionSelection = value;
+                    RaisePropertyChanged(nameof(ResolutionSelection));
+                    Messenger.Default.Send(new CaptureResolutionChangedMessage());
+                }
+            }
+        }
+
+        public int ResolutionSelectionIndex
+        {
+            get { return _resolutionSelectionIndex; }
+            set
+            {
+                _resolutionSelectionIndex = value;
+                RaisePropertyChanged(nameof(ResolutionSelectionIndex));
             }
         }
 
         #endregion
+
+        public SettingsViewModel()
+        {
+            ResolutionList = new ObservableCollection<CaptureResolution>
+            {
+                new CaptureResolution(1920, 1080),
+                new CaptureResolution(1024, 720),
+                new CaptureResolution(640, 480),
+                new CaptureResolution(480, 360),
+                new CaptureResolution(256, 144)
+            };
+
+            ResolutionSelectionIndex = 0;
+            ResolutionSelection = Properties.Settings.Default.ResolutionSelection;
+        }
 
         public void ReinitializeRecognition()
         {

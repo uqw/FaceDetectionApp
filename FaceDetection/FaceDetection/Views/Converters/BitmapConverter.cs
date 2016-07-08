@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Runtime;
-using System.Runtime.CompilerServices;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using FaceDetection.Model;

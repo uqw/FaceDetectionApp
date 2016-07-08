@@ -202,5 +202,16 @@ namespace FaceDetection.Properties {
                 this["RecognitionThreshold"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::FaceDetection.Model.CaptureResolution ResolutionSelection {
+            get {
+                return ((global::FaceDetection.Model.CaptureResolution)(this["ResolutionSelection"]));
+            }
+            set {
+                this["ResolutionSelection"] = value;
+            }
+        }
     }
 }
